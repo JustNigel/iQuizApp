@@ -50,10 +50,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.dashboard'); //Dashboard Page
     Route::get('/admin/dashboard/request-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
     Route::get('/admin/dashboard/trainer-list', [AdminController::class,'trainerList'])->name('admin.trainer-list'); //All the Trainers existing
-    Route::get('/admin/dashboard/registration', [AdminController::class,'register'])->name('admin.register'); //Registration for Admin and Trainer
+    
+    Route::get('/admin/dashboard/trainer-list/add-trainer', [AdminController::class,'addTrainer'])->name('admin.add-trainer'); //Registration for Admin and Trainer
+    Route::post('/admin/dashboard/trainer-list/store-trainer', [AdminController::class, 'storeTrainer'])->name('admin.store-trainer');
+
+    
     Route::post('/admin/dashboard/store-category', [AdminController::class, 'storeCategory'])->name('admin.store-category'); //Category Page
     Route::get('/admin/dashboard/add-category', [AdminController::class,'create'])->name('admin.add-category');
     Route::get('/admin/dashboard/all-category', [AdminController::class, 'allCategories'])->name('admin.all-category');
+    
     Route::get('/admin/dashboard/{category}/add-questionnaire',[AdminController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); //Exam Questionnaire Page
     Route::get('/admin/dashboard/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
     Route::get('/admin/dashboard/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam
@@ -66,6 +71,10 @@ Route::middleware('auth')->group(function () {
 
 
 });
+
+// Route::get('/admin/add-trainer', function () {
+//     return view('admin.add-trainer');
+// })->name('admin.add-trainer');
 
 // Route::get('/profile', function () {
 //     return view('profile/profile');

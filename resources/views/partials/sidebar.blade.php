@@ -103,8 +103,9 @@
                             </svg>
                         </a>
                         <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
-                            <a href="{{route('category.join')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all trainers</a>
-                            <a href="{{route('category.available-exams')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all students</a>
+                            <a href="{{route('admin.add-trainer')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Trainers</a>
+                            <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all students</a>
+                            <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all students</a>
                         </div>
                     </li>
                     
