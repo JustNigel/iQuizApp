@@ -1,3 +1,50 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('/fonts/satoshi/Satoshi-Regular.woff2') format('woff2'),
+         url('/fonts/satoshi/Satoshi-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Satoshi', sans-serif;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 1rem; 
+}
+  
+  .category-card {
+    background-color: #e9ecef;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out; 
+}
+
+.category-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+@media (max-width: 1024px) {
+    .card-container {
+      grid-template-columns: repeat(2, 1fr); 
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .card-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  

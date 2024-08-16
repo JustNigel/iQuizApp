@@ -7,18 +7,28 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use Illuminate\View\View;   
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request)
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = Auth::user();
+
+        // Return the profile view based on user type
+        if ($user->type_name === 'student') {
+            return view('profile.profile', compact('user'));
+        } elseif ($user->type_name === 'trainer') {
+            return view('profile.profile', compact('user'));
+        } elseif ($user->type_name === 'admin') {
+            return view('profile.profile', compact('user'));
+        }
+
+        // Default to a general profile page if needed
+        return view('profile.profile', compact('user'));
     }
 
     /**
@@ -34,7 +44,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile')->with('status', 'profile-updated');
     }
 
     /**
