@@ -19,12 +19,6 @@ class AdminController extends Controller
         return view('admin.dashboard.dashboard', compact('user'));
     }
 
-    // public function addCategory()
-    // {
-    //     $user = auth()->user();
-    //     return view('admin.add-category', compact('user'));
-    // }
-
     public function create()
     {
         // Get the authenticated user
@@ -46,7 +40,7 @@ class AdminController extends Controller
             'details' => 'required|string',
             'trainer_id' => [
                 'required',
-                'exists:users,id', // Ensure that the selected trainer exists in the users table
+                'exists:users,id',
                 function ($attribute, $value, $fail) {
                     if (!User::where('id', $value)->where('type_name', 'trainer')->exists()) {
                         $fail('The selected trainer is invalid.');
@@ -62,10 +56,15 @@ class AdminController extends Controller
             'trainer_id' => $request->trainer_id,
         ]);
 
-        // Redirect to some page with a success message
         return redirect()->route('admin.all-category')->with('success', 'Exam category created successfully!');
     }
     
+    public function trainerList(){
+        $user = auth()->user();
+        return view('admin.all-trainers', compact('user'));
+
+    }
+
     public function allCategories()
     {
         // Fetch all categories
@@ -104,5 +103,20 @@ class AdminController extends Controller
 
 
         return redirect()->route('admin.add-trainer')->with('success', 'Trainer registered successfully!');
+    }
+
+    public function showCategoryDeleteConfirmation($id)
+    {
+        $user = auth()->user();
+        $category = ExamCategory::findOrFail($id);
+        return view('admin.confirm-delete', compact('category','user'));
+    }
+
+    public function deleteCategory(Request $request, $id)
+    {
+        $category = ExamCategory::findOrFail($id);
+        $category->delete();
+
+        return redirect()->route('admin.all-category')->with('success', 'Category deleted successfully!');
     }
 }
