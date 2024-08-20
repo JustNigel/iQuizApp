@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
@@ -39,37 +40,40 @@ Route::middleware('auth')->group(function () {
     
     // Routes for Trainer
     Route::prefix('trainer')->group(function () {
-    Route::get('/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard.dashboard'); //Dashboard Page
-    Route::get('/request-list',[TrainerController::class, 'requestList'])->name('trainer.request-list'); //All the Requests of Students Page
-    Route::get('/category', [TrainerController::class, 'category'])->name('trainer.category'); //Category Page
-    Route::get('/category/add-category', [TrainerController::class, 'addCategory'])->name('trainer.add-category'); //Add Category Page
-    Route::get('/{category}/add-questionnaire',[TrainerController::class, 'addQuestionnaire'])->name('trainer.add-questionnaire'); //Exam Questionnaire Page
-    Route::get('/respondents', [TrainerController::class, 'respondent'])->name('trainer.respondent');
-    Route::get('/{category}/respondents', [TrainerController::class, 'respondentsCategory'])->name('trainer.respondents-category'); //All Respondents In the Exam
+        Route::get('/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard.dashboard'); //Dashboard Page
+        Route::get('/request-list',[TrainerController::class, 'requestList'])->name('trainer.request-list'); //All the Requests of Students Page
+        Route::get('/category', [TrainerController::class, 'category'])->name('trainer.category'); //Category Page
+        Route::get('/category/add-category', [TrainerController::class, 'addCategory'])->name('trainer.add-category'); //Add Category Page
+        Route::get('/{category}/add-questionnaire',[TrainerController::class, 'addQuestionnaire'])->name('trainer.add-questionnaire'); //Exam Questionnaire Page
+        Route::get('/respondents', [TrainerController::class, 'respondent'])->name('trainer.respondent');
+        Route::get('/{category}/respondents', [TrainerController::class, 'respondentsCategory'])->name('trainer.respondents-category'); //All Respondents In the Exam
     });
 
 
     // Routes for Admin
     Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.dashboard'); //Dashboard Page
-    Route::get('/request-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
-    Route::get('/trainer-list', [AdminController::class,'trainerList'])->name('admin.all-trainers'); //All the Trainers existing
-    
-    Route::get('/trainer-list/add-trainer', [AdminController::class,'addTrainer'])->name('admin.add-trainer'); //Registration for Admin and Trainer
-    Route::post('/trainer-list/store-trainer', [AdminController::class, 'storeTrainer'])->name('admin.store-trainer');
-    Route::get('/admin/trainer-categories/{trainer_id}', [AdminController::class, 'trainerCategories'])->name('admin.trainer-categories');
-    
-    Route::post('/store-category', [AdminController::class, 'storeCategory'])->name('admin.store-category'); //Category Page
-    Route::get('/add-category', [AdminController::class,'create'])->name('admin.add-category');
-    Route::get('/all-category', [AdminController::class, 'allCategories'])->name('admin.all-category');
-    
-    Route::get('/admin/confirm-delete/{id}', [AdminController::class, 'showCategoryDeleteConfirmation'])->name('admin.confirm-delete');
-    Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteCategory'])->name('admin.category.delete');
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.dashboard'); //Dashboard Page
+        Route::get('/request-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
+        Route::get('/trainer-list', [AdminController::class,'trainerList'])->name('admin.all-trainers'); //All the Trainers existing
+        
+        Route::get('/trainer-list/add-trainer', [AdminController::class,'addTrainer'])->name('admin.add-trainer'); //Registration for Admin and Trainer
+        Route::post('/trainer-list/store-trainer', [AdminController::class, 'storeTrainer'])->name('admin.store-trainer');
 
 
-    Route::get('/{category}/add-questionnaire',[AdminController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); //Exam Questionnaire Page
-    Route::get('/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
-    Route::get('/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam
+        Route::post('/store-category', [AdminController::class, 'storeCategory'])->name('admin.store-category'); //Category Page
+        Route::get('/add-category', [AdminController::class,'create'])->name('admin.add-category');
+        Route::get('/all-category', [AdminController::class, 'allCategories'])->name('admin.all-category');
+        Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('admin.edit');
+        Route::get('/admin/confirm-delete/{id}', [AdminController::class, 'showCategoryDeleteConfirmation'])->name('admin.confirm-delete');
+        Route::put('/category/{id}', [CategoryController::class, 'update'])->name('admin.update-category');
+
+        
+        Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteCategory'])->name('admin.category.delete');
+
+
+        Route::get('/{category}/add-questionnaire',[AdminController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); //Exam Questionnaire Page
+        Route::get('/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
+        Route::get('/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam
     });
 
 

@@ -16,9 +16,9 @@
             <p class="text-gray-700 mb-4">{{ $category->description }}</p>
             <p class="text-gray-800 mb-6"><strong class="font-semibold">Trainer: </strong>{{ optional($category->trainer)->name }}</p>
             <div class="flex justify-center space-x-3">
-                <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">Edit Category</a>
-                <a href="#" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200">Edit Questionnaire</a>
-                <a href="{{ route('admin.confirm-delete', $category->id) }}" class="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition duration-200">Delete Category</a>
+            <a href="{{ route('admin.edit', $category->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">Edit Category</a>
+            <a href="#" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200">Edit Questionnaire</a>
+            <a href="{{ route('admin.confirm-delete', $category->id) }}" class="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition duration-200">Delete Category</a>
             </div>
         </div>
         @endforeach
