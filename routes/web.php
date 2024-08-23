@@ -74,11 +74,12 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/confirm-delete/{id}', [CategoryController::class, 'showCategoryDeleteConfirmation'])->name('admin.confirm-delete');
         Route::put('/category-{id}', [CategoryController::class, 'updateCategory'])->name('admin.update-category');
         Route::delete('/delete-category-{id}', [CategoryController::class, 'deleteCategory'])->name('admin.category.delete');
+        Route::get('/add-another-questionnaire/{categoryId}', [QuestionnaireController::class, 'addAnotherQuestionnaire'])->name('admin.add-another-questionnaire');
 
 
         Route::get('/category/add-questionnaire',[QuestionnaireController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); 
         Route::post('/category/store-questionnaire', [QuestionnaireController::class, 'storeQuestionnaire'])->name('admin.store-questionnaire');
-        Route::get('/questionnaires/{categoryId}/{trainerId?}',[QuestionnaireController::class, 'displayAllQuestionnaire'])->name('admin.all-questionnaire'); //Exam Questionnaire Page
+        Route::get('/category-{categoryId}/all-questionnaires',[QuestionnaireController::class, 'displayAllQuestionnaire'])->name('admin.all-questionnaire'); //Exam Questionnaire Page
         Route::delete('/category/questionnaire/{id}', [QuestionnaireController::class, 'destroy'])->name('admin.delete-questionnaire');
         Route::get('/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
         Route::get('/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam

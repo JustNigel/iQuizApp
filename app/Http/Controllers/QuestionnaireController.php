@@ -56,6 +56,7 @@ class QuestionnaireController extends Controller
     public function displayAllQuestionnaire($categoryId, $trainerId = null)
     {
         $user = auth()->user();
+        $category = ExamCategory::findOrFail($categoryId); // Fetch the selected category
         $query = Questionnaire::where('category_id', $categoryId);
         
         if ($trainerId) {
@@ -64,9 +65,22 @@ class QuestionnaireController extends Controller
         
         $questionnaires = $query->get();
     
-        return view('admin.all-questionnaire', compact('questionnaires', 'user'));
+        // Pass the category to the view
+        return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category'));
     }
     
+    public function addAnotherQuestionnaire($categoryId)
+    {
+        $user = auth()->user();
+        $categories = ExamCategory::all(); // Fetch all categories
+        $trainers = User::where('type_name', 'trainer')->get(); // Fetch trainers
+        $selectedCategory = ExamCategory::findOrFail($categoryId); // Fetch the selected category
+    
+        return view('admin.add-another-questionnaire', compact('user', 'categories', 'trainers', 'selectedCategory'));
+    }
+    
+    
+
 
     
 }

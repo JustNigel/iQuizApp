@@ -1,13 +1,19 @@
 @extends('layouts.admin')
 
-@section('title', 'Filtered Questionnaires')
+@section('title', 'All Questionnaires')
 
 @section('content')
 <div class="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow-md">
     <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-semibold">All Existing Questionnaires</h1>
+        <a href="{{ route('admin.add-another-questionnaire', ['categoryId' => $category->id]) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
+            Create New Questionnaire
+        </a>
+
+    </div>
     <div>
-        <h1 class="text-3xl font-semibold mb-6">All Existing Questionnaires</h1>
-        <table class="min-w-full divide-y divide-gray-200">
+        <table class="min-w-full divide-y divide-gray-200"> 
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
