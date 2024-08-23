@@ -22,13 +22,11 @@
 
         <div>
             <label for="trainer" class="block text-lg font-medium text-gray-700">Trainer</label>
-            <select id="trainer" name="trainer_id" class="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" required>
-                <option value="" disabled selected>Select a trainer</option>
+            <select id="trainer" name="trainer_id[]" multiple class="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
                 @foreach($trainers as $trainer)
                     <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
                 @endforeach
             </select>
-
         </div>
 
         <div>

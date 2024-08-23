@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // $table->enum('type_name', ['admin', 'trainer','student']);
+        Schema::table('exam_categories', function (Blueprint $table) {
+            $table->unsignedBigInteger('trainer_id')->nullable()->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // $table->dropColumn('type_name');
+        Schema::table('exam_categories', function (Blueprint $table) {
+            $table->unsignedBigInteger('trainer_id')->nullable(false)->change();
         });
     }
 };

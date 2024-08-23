@@ -27,10 +27,12 @@
         
         <!-- Trainer -->
         <div class="mb-4">
-            <label for="trainer" class="block text-gray-700 font-bold mb-2">Trainer:</label>
-            <select name="trainer_id" id="trainer" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <label for="trainers" class="block text-gray-700 font-bold mb-2">Trainers:</label>
+            <select name="trainer_id[]" id="trainers" multiple class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 @foreach($trainers as $trainer)
-                    <option value="{{ $trainer->id }}" {{ $trainer->id == $category->trainer_id ? 'selected' : '' }}>{{ $trainer->name }}</option>
+                    <option value="{{ $trainer->id }}" {{ in_array($trainer->id, $category->trainers->pluck('id')->toArray()) ? 'selected' : '' }}>
+                        {{ $trainer->name }}
+                    </option>
                 @endforeach
             </select>
         </div>

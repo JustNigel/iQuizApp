@@ -19,45 +19,6 @@ class AdminController extends Controller
         return view('admin.dashboard.dashboard', compact('user'));
     }
 
-    public function create()
-    {
-        // Get the authenticated user
-        $user = auth()->user();
-    
-        // Fetch all trainers from the users table where type_name is 'trainer'
-        $trainers = User::where('type_name', 'trainer')->get(); 
-    
-        // Pass both user and trainers to the view
-        return view('admin.add-category', compact('user', 'trainers'));
-    }
-    
-
-    public function storeCategory(Request $request)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'details' => 'required|string',
-            'trainer_id' => [
-                'required',
-                'exists:users,id',
-                function ($attribute, $value, $fail) {
-                    if (!User::where('id', $value)->where('type_name', 'trainer')->exists()) {
-                        $fail('The selected trainer is invalid.');
-                    }
-                },
-            ],
-        ]);
-
-        // Store the new exam category
-        ExamCategory::create([
-            'title' => $request->title,
-            'description' => $request->details,
-            'trainer_id' => $request->trainer_id,
-        ]);
-
-        return redirect()->route('admin.all-category')->with('success', 'Exam category created successfully!');
-    }
     
     public function trainerList(){
         $user = auth()->user();
@@ -65,15 +26,15 @@ class AdminController extends Controller
 
     }
 
-    public function allCategories()
-    {
-        // Fetch all categories
-        $categories = ExamCategory::all();
+    // public function allCategories()
+    // {
+    //     // Fetch all categories
+    //     $categories = ExamCategory::all();
 
-        $user = auth()->user();
-        // Pass categories to the view
-        return view('admin.all-category', compact('categories','user'));
-    }
+    //     $user = auth()->user();
+    //     // Pass categories to the view
+    //     return view('admin.all-category', compact('categories','user'));
+    // }
     
 
     public function addTrainer(){

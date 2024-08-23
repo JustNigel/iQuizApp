@@ -5,8 +5,10 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\TrainerListController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,7 +19,7 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
 
     // The universal routes in editing profile for Student, Trainer, and Admin
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
@@ -53,25 +55,31 @@ Route::middleware('auth')->group(function () {
     // Routes for Admin
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.dashboard'); //Dashboard Page
-        Route::get('/request-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
-        Route::get('/trainer-list', [AdminController::class,'trainerList'])->name('admin.all-trainers'); //All the Trainers existing
-        
+        Route::get('/student-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
+        Route::get('/trainer-list', [TrainerListController::class,'index'])->name('admin.all-trainers'); //All the Trainers existing
+
         Route::get('/trainer-list/add-trainer', [AdminController::class,'addTrainer'])->name('admin.add-trainer'); //Registration for Admin and Trainer
         Route::post('/trainer-list/store-trainer', [AdminController::class, 'storeTrainer'])->name('admin.store-trainer');
+        Route::get('/trainer-list/confirm-delete/{id}', [TrainerListController::class,'showTrainerDeleteConfirmation'])->name('admin.delete-trainer');
+        Route::delete('/trainer-list/confirm-delete/{id}', [TrainerListController::class, 'deleteTrainer'])->name('admin.confirm-delete-trainer');
 
 
-        Route::post('/store-category', [AdminController::class, 'storeCategory'])->name('admin.store-category'); //Category Page
-        Route::get('/add-category', [AdminController::class,'create'])->name('admin.add-category');
-        Route::get('/all-category', [AdminController::class, 'allCategories'])->name('admin.all-category');
-        Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('admin.edit');
-        Route::get('/admin/confirm-delete/{id}', [AdminController::class, 'showCategoryDeleteConfirmation'])->name('admin.confirm-delete');
-        Route::put('/category/{id}', [CategoryController::class, 'update'])->name('admin.update-category');
-
-        
-        Route::delete('/admin/delete/{id}', [AdminController::class, 'deleteCategory'])->name('admin.category.delete');
+    
+        Route::get('/add-category', [CategoryController::class,'createCategory'])->name('admin.add-category');
+        Route::post('/store-category', [CategoryController::class, 'storeCategory'])->name('admin.store-category'); 
+        Route::get('/category-{id}/edit-category', [CategoryController::class, 'editCategory'])->name('admin.edit');//Category Page
+        Route::get('/all-category', [CategoryController::class, 'allCategories'])->name('admin.all-category');
 
 
-        Route::get('/{category}/add-questionnaire',[AdminController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); //Exam Questionnaire Page
+        Route::get('/confirm-delete/{id}', [CategoryController::class, 'showCategoryDeleteConfirmation'])->name('admin.confirm-delete');
+        Route::put('/category-{id}', [CategoryController::class, 'updateCategory'])->name('admin.update-category');
+        Route::delete('/delete-category-{id}', [CategoryController::class, 'deleteCategory'])->name('admin.category.delete');
+
+
+        Route::get('/category/add-questionnaire',[QuestionnaireController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); 
+        Route::post('/category/store-questionnaire', [QuestionnaireController::class, 'storeQuestionnaire'])->name('admin.store-questionnaire');
+        Route::get('/questionnaires/{categoryId}/{trainerId?}',[QuestionnaireController::class, 'displayAllQuestionnaire'])->name('admin.all-questionnaire'); //Exam Questionnaire Page
+        Route::delete('/category/questionnaire/{id}', [QuestionnaireController::class, 'destroy'])->name('admin.delete-questionnaire');
         Route::get('/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
         Route::get('/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam
     });

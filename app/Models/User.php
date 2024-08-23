@@ -53,6 +53,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function examCategories()
     {
-        return $this->hasMany(ExamCategory::class, 'trainer_id');
+        return $this->belongsToMany(ExamCategory::class, 'category_trainer', 'trainer_id', 'category_id');
     }
 }

@@ -14,11 +14,16 @@
         <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 duration-300">
             <h2 class="text-2xl font-semibold text-gray-900 mb-3">{{ $category->title }}</h2>
             <p class="text-gray-700 mb-4">{{ $category->description }}</p>
-            <p class="text-gray-800 mb-6"><strong class="font-semibold">Trainer: </strong>{{ optional($category->trainer)->name }}</p>
+            <p class="text-gray-800 mb-6">
+                <strong class="font-semibold">Trainers: </strong>
+                @foreach($category->trainers as $trainer)
+                    {{ $trainer->name }}@if(!$loop->last), @endif
+                @endforeach
+            </p>
             <div class="flex justify-center space-x-3">
-            <a href="{{ route('admin.edit', $category->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">Edit Category</a>
-            <a href="#" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200">Edit Questionnaire</a>
-            <a href="{{ route('admin.confirm-delete', $category->id) }}" class="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition duration-200">Delete Category</a>
+                <a href="{{ route('admin.edit', $category->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">Edit Category</a>
+                <a href="{{ route('admin.all-questionnaire', ['categoryId' => $category->id]) }}" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200">Edit Questionnaire</a>
+                <a href="{{ route('admin.confirm-delete', $category->id) }}" class="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition duration-200">Delete Category</a>
             </div>
         </div>
         @endforeach

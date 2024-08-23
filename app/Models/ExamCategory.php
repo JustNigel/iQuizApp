@@ -13,8 +13,10 @@ class ExamCategory extends Model
     protected $fillable = ['title', 'description', 'trainer_id'];
 
     // Define the relationship to the trainer (user)
-    public function trainer()
+    
+    public function trainers()
     {
-        return $this->belongsTo(User::class, 'trainer_id');
+        return $this->belongsToMany(User::class, 'category_trainer', 'category_id', 'trainer_id');
     }
+
 }
