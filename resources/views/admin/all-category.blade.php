@@ -6,8 +6,12 @@
 
 <main class="flex-1 p-6">
     <header class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">All Categories</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-5">All Categories</h1>
+        <a href="{{ route('admin.add-category') }}" class=" bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
+            Add New Category
+        </a>
     </header>
+    
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @foreach($categories as $category)

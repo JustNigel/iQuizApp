@@ -16,7 +16,6 @@
                 <label for="title" class="w-1/4 text-lg font-medium text-gray-700">Questionnaire Name:</label>
                 <input type="text" id="title" name="title" class="block w-3/4 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" required>
             </div>
-
             <div class="grid grid-cols-2 gap-6">
                 <div class="flex items-center">
                     <label for="number_of_items" class="w-full text-lg font-medium text-gray-700">Number of Items:</label>
