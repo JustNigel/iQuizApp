@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -31,7 +32,14 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
 
         if ($user->type_name === 'student') {
-            return redirect()->intended(route('dashboard'));
+            $requestStatus = DB::table('registration_requests')
+                ->where('user_id', $user->id)
+                ->value('request_status');
+            if ($requestStatus === 'accepted') {
+                return redirect()->intended(route('dashboard'));
+            } else {
+                return redirect()->route('auth.verify-registration');
+            }
         } elseif ($user->type_name === 'admin') {
             return redirect()->intended(route('admin.dashboard.dashboard'));
         } elseif ($user->type_name === 'trainer') {
@@ -53,4 +61,10 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    public function showLoginForm()
+{
+    return view('auth.login'); 
+}
+
 }

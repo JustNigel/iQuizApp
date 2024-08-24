@@ -7,7 +7,9 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
@@ -45,11 +47,17 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        DB::table('registration_requests')->insert([
+            'user_id' => $user->id,
+            'request_status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('auth.verify-registration', absolute: false));
     }
 
 }

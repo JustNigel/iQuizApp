@@ -21,28 +21,17 @@ class RegistrationController extends Controller
     }
     
     public function displayVerificationRegistration(){
-        return view('admin.verify-registration');
+        return view('auth.verify-registration');
     }
     
-    public function checkStatus()
+    public function checkIfAccepted(Request $request)
     {
-        $user = auth()->user();
-    
-        // Replace `exam_user` with your pivot table name and adjust field names as needed
-        $registration = DB::table('registration_request')
-            ->where('user_id', $user->id)
-            ->where('request_status', 'accepted')
-            ->first();
-    
-        if ($registration) {
-            return response()->json(['redirect' => route('student.dashboard')]);
+        $user = $request->user();
+        if ($user->request_status === 'accepted') {
+            return redirect()->route('login');
         }
-    
-        return response()->json(['redirect' => null]);
+        return redirect()->route('auth.verify-registration')->with('status', 'Please wait for admin confirmation.');
     }
-    
-    
-
     
     public function acceptRequest($id)
     {

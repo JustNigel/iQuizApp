@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExamController;
@@ -26,6 +27,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::get('login', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
 
     // Routes for Student
     Route::prefix('student')->group(function () {
@@ -38,6 +41,9 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/{category}/{exam}', [ExamController::class, 'exam'])->name('student.exam'); // Get Started Page
         Route::get('/{category}/{exam}/{questionnaire}', [ExamController::class, 'questionnaire'])->name('student.questionnaire'); // Exam Page
         Route::get('/{category}/{exam}/{result}', [ExamController::class, 'result'])->name('student.result'); // Result Page
+        Route::get('/verify-registration', [RegistrationController::class, 'displayVerificationRegistration'])->name('auth.verify-registration');
+        Route::get('/verify-registration-refresh', [RegistrationController::class, 'checkIfAccepted'])->name('auth.accepted-registration');
+        
     });
 
     
@@ -94,10 +100,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/all-registration-request', [RegistrationController::class, 'displayAllRegistrationRequest'])->name('admin.all-registration-request');
         Route::get('/accept-request/{id}', [RegistrationController::class, 'acceptRequest'])->name('admin.acceptRequest');
         Route::get('/deny-request/{id}', [RegistrationController::class, 'denyRequest'])->name('admin.denyRequest');
-        Route::get('/verify-registration', [RegistrationController::class, 'displayVerificationRegistration'])->name('admin.verify-registration');
-        Route::get('/check-registration-status', [RegistrationController::class, 'checkStatus'])->name('check.registration.status');
-
-
+        
     });
 
 
@@ -107,28 +110,5 @@ Route::middleware(['auth','verified'])->group(function () {
 
 
 });
-
-// Route::get('/admin/add-trainer', function () {
-//     return view('admin.add-trainer');
-// })->name('admin.add-trainer');
-
-// Route::get('/profile', function () {
-//     return view('profile/profile');
-// })->name('profile');
-
-// Route::prefix('category')->group(function () {
-    
-//     Route::view('/join', 'category/join')->name('category.join');
-//     Route::view('/available-exams', 'category/available-exams')->name('category.available-exams');
-// });
-
-// Route::get('/history', function () {
-//     return view('history/history');
-// })->name('history');
-
-// Route::get('/category/available-exams', [CardController::class, 'showAvailableExams'])->name('category.available-exams');
-
-// Route for join exams
-// Route::get('/category/join', [CardController::class, 'showJoinExams'])->name('category.join');
 
 require __DIR__.'/auth.php';
