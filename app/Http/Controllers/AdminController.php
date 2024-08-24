@@ -26,17 +26,6 @@ class AdminController extends Controller
 
     }
 
-    // public function allCategories()
-    // {
-    //     // Fetch all categories
-    //     $categories = ExamCategory::all();
-
-    //     $user = auth()->user();
-    //     // Pass categories to the view
-    //     return view('admin.all-category', compact('categories','user'));
-    // }
-    
-
     public function addTrainer(){
         $user = auth()->user();
         return view('admin.add-trainer', compact('user'));
@@ -66,19 +55,5 @@ class AdminController extends Controller
         return redirect()->route('admin.add-trainer')->with('success', 'Trainer registered successfully!');
     }
 
-    public function showCategoryDeleteConfirmation($id)
-    {
-        $user = auth()->user();
-        $category = ExamCategory::findOrFail($id);
-        return view('admin.confirm-delete', compact('category','user'));
-    }
-
-    public function deleteCategory(Request $request, $id)
-    {
-        $category = ExamCategory::findOrFail($id);
-        $category->delete();
-
-        return redirect()->route('admin.all-category')->with('success', 'Category deleted successfully!');
-    }
     
 }

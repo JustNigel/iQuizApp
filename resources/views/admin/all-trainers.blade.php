@@ -41,7 +41,7 @@
                         </td>
                         
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">
-                            150
+                            0
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">
                             <div class="flex justify-center space-x-3">

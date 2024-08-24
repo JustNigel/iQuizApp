@@ -9,6 +9,9 @@ class ExamCategory extends Model
 {
     use HasFactory;
 
+    protected $table = 'exam_categories';
+
+    
     // Define the fillable fields
     protected $fillable = ['title', 'description', 'trainer_id'];
 

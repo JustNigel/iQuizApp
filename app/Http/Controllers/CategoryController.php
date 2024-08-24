@@ -69,8 +69,7 @@ class CategoryController extends Controller
     }
     
 
-    public function editCategory($id)
-    {
+    public function editCategory($id){
         $user = auth()->user();
         $category = ExamCategory::with('trainers')->findOrFail($id);
         $trainers = User::where('type_name', 'trainer')->get(); 
@@ -115,15 +114,13 @@ class CategoryController extends Controller
     }
     
 
-    public function showCategoryDeleteConfirmation($id)
-    {
+    public function showCategoryDeleteConfirmation($id){
         $user = auth()->user();
         $category = ExamCategory::findOrFail($id);
         return view('admin.confirm-delete', compact('category','user'));
     }
 
-    public function deleteCategory(Request $request, $id)
-    {
+    public function deleteCategory(Request $request, $id){
         $category = ExamCategory::findOrFail($id);
         $category->delete();
 

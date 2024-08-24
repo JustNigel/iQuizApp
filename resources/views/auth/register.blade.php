@@ -2,6 +2,7 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('First Name')" />
@@ -14,6 +15,13 @@
             <x-input-label for="last_name" :value="__('Last Name')" />
             <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="last_name" />
             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+        </div>
+
+        <!-- UserName -->
+        <div class="mt-4">
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

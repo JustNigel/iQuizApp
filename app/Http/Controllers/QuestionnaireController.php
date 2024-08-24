@@ -10,8 +10,7 @@ use Illuminate\Http\Request;
 class QuestionnaireController extends Controller
 {
 
-    public function storeQuestionnaire(Request $request)
-    {
+    public function storeQuestionnaire(Request $request){
         $request->validate([
             'title' => 'required|string|max:255',
             'number_of_items' => 'required|integer',
@@ -43,7 +42,49 @@ class QuestionnaireController extends Controller
     
         return view('admin.add-questionnaire', compact('user', 'categories', 'trainers'));
     }
+
+    public function editQuestionnaire($id)
+    {
+        $user = auth()->user();
+        $questionnaire = Questionnaire::findOrFail($id);
+        $trainers = User::where('type_name', 'trainer')->get(); 
+        $categories = ExamCategory::all(); // Fetch all categories
+
+        return view('admin.edit-questionnaire', compact('user', 'questionnaire', 'trainers', 'categories'));
+    }
     
+    
+    
+    public function updateQuestionnaire(Request $request, $id){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'number_of_items' => 'required|integer',
+            'time_interval' => 'required|integer',
+            'passing_grade' => 'required|integer',
+            'category_id' => 'required|exists:exam_categories,id',
+            'trainer_id' => 'required|array',
+            'trainer_id.*' => 'exists:users,id',
+            'shuffle' => 'nullable|boolean',
+        ]);
+
+        $questionnaire = Questionnaire::findOrFail($id);
+        $questionnaire->update([
+            'title' => $request->input('title'),
+            'number_of_items' => $request->input('number_of_items'),
+            'time_interval' => $request->input('time_interval'),
+            'passing_grade' => $request->input('passing_grade'),
+            'category_id' => $request->input('category_id'),
+            'shuffle' => $request->has('shuffle'),
+        ]);
+
+        // Sync the trainers if needed
+        $questionnaire->trainers()->sync($request->input('trainer_id'));
+
+        return redirect()->route('admin.all-questionnaire', ['categoryId' => $request->input('category_id')])
+                        ->with('success', 'Questionnaire updated successfully!');
+    }
+
+
     /**
      * Summary of displayAllQuestionnaire
      * 
@@ -53,8 +94,7 @@ class QuestionnaireController extends Controller
      * @param mixed $trainerId
      * @return \Illuminate\Contracts\View\View
      */
-    public function displayAllQuestionnaire($categoryId, $trainerId = null)
-    {
+    public function displayAllQuestionnaire($categoryId, $trainerId = null){
         $user = auth()->user();
         $category = ExamCategory::findOrFail($categoryId); // Fetch the selected category
         $query = Questionnaire::where('category_id', $categoryId);
@@ -69,8 +109,7 @@ class QuestionnaireController extends Controller
         return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category'));
     }
     
-    public function addAnotherQuestionnaire($categoryId)
-    {
+    public function addAnotherQuestionnaire($categoryId){
         $user = auth()->user();
         $categories = ExamCategory::all(); // Fetch all categories
         $trainers = User::where('type_name', 'trainer')->get(); // Fetch trainers
@@ -78,6 +117,25 @@ class QuestionnaireController extends Controller
     
         return view('admin.add-another-questionnaire', compact('user', 'categories', 'trainers', 'selectedCategory'));
     }
+
+
+    public function showQuestionnaireDeleteConfirmation($id){
+        $user = auth()->user();
+        $questionnaire = Questionnaire::findOrFail($id);
+        return view('admin.confirm-delete-questionnaire', compact('questionnaire', 'user'));
+    }
+
+    public function deleteQuestionnaire($id){
+        $questionnaire = Questionnaire::findOrFail($id);
+        $categoryId = $questionnaire->category_id;
+        $questionnaire->delete();
+    
+        return redirect()->route('admin.all-questionnaire', ['categoryId' => $categoryId])
+                        ->with('success', 'Questionnaire deleted successfully!');
+    }
+    
+    
+    
     
     
 

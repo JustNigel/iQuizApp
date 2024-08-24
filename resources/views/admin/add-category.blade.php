@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Exam')
+@section('title', 'Create Category')
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">

@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionnaireController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TrainerListController;
@@ -75,14 +76,28 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::put('/category-{id}', [CategoryController::class, 'updateCategory'])->name('admin.update-category');
         Route::delete('/delete-category-{id}', [CategoryController::class, 'deleteCategory'])->name('admin.category.delete');
         Route::get('/add-another-questionnaire/{categoryId}', [QuestionnaireController::class, 'addAnotherQuestionnaire'])->name('admin.add-another-questionnaire');
-
-
+        
+    
+        Route::get('/confirm-delete-questionnaire/{id}', [QuestionnaireController::class, 'showQuestionnaireDeleteConfirmation'])->name('admin.confirm-delete-questionnaire');
+        Route::delete('/delete-questionnaire/{id}', [QuestionnaireController::class, 'deleteQuestionnaire'])->name('admin.delete-questionnaire');
         Route::get('/category/add-questionnaire',[QuestionnaireController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); 
         Route::post('/category/store-questionnaire', [QuestionnaireController::class, 'storeQuestionnaire'])->name('admin.store-questionnaire');
         Route::get('/category-{categoryId}/all-questionnaires',[QuestionnaireController::class, 'displayAllQuestionnaire'])->name('admin.all-questionnaire'); //Exam Questionnaire Page
-        Route::delete('/category/questionnaire/{id}', [QuestionnaireController::class, 'destroy'])->name('admin.delete-questionnaire');
+        
+        Route::put('/questionnaire-{id}', [QuestionnaireController::class, 'updateQuestionnaire'])->name('admin.update-questionnaire');
+        Route::get('/edit-questionnaire-{id}', [QuestionnaireController::class, 'editQuestionnaire'])->name('admin.edit-questionnaire');
+        
         Route::get('/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
         Route::get('/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam
+
+
+        Route::get('/all-registration-request', [RegistrationController::class, 'displayAllRegistrationRequest'])->name('admin.all-registration-request');
+        Route::get('/accept-request/{id}', [RegistrationController::class, 'acceptRequest'])->name('admin.acceptRequest');
+        Route::get('/deny-request/{id}', [RegistrationController::class, 'denyRequest'])->name('admin.denyRequest');
+        Route::get('/verify-registration', [RegistrationController::class, 'displayVerificationRegistration'])->name('admin.verify-registration');
+        Route::get('/check-registration-status', [RegistrationController::class, 'checkStatus'])->name('check.registration.status');
+
+
     });
 
 

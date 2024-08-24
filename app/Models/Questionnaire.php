@@ -30,4 +30,16 @@ class Questionnaire extends Model
     {
         return $this->belongsTo(User::class, 'trainer_id');
     }
+
+    /**
+     * 
+     * Pivot Table for Questionnaire and Trainer
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function trainers()
+    {
+        return $this->belongsToMany(User::class, 'questionnaire_trainer', 'questionnaire_id', 'trainer_id');
+    }
+
+
 }

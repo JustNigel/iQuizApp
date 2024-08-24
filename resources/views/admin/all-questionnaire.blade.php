@@ -35,8 +35,8 @@
                     <td class="px-6 py-4 text-center whitespace-nowrap">{{ $questionnaire->category->title }}</td>
                     <td class="px-6 py-4 text-center whitespace-nowrap">{{ $questionnaire->trainer->name }}</td>
                     <td class="px-6 py-4 text-center whitespace-nowrap">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-700 mr-4">Edit</a>
-                        <a href="#" class="text-red-600 hover:text-red-700">Delete</a>
+                        <a href="{{route('admin.edit-questionnaire', $questionnaire -> id)}}" class="text-indigo-600 hover:text-indigo-700 mr-4">Edit</a>
+                        <a href="{{route('admin.confirm-delete-questionnaire', $questionnaire -> id)}}" class="text-red-600 hover:text-red-700">Delete</a>
                     </td>
                 </tr>
                 @endforeach
