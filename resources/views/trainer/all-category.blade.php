@@ -19,7 +19,7 @@
 
     <header class="mb-6">
         <a href="{{ route('trainer.all-category') }}"><h1 class="text-3xl font-bold text-gray-800 mb-5">All Categories</h1> </a>
-        <a href="{{route('admin.add-questionnaire')}}" class="bg-transparent border-2 border-blue-500 text-black px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white transition duration-200">
+        <a href="{{ route('trainer.add-questionnaire') }}" class="bg-transparent border-2 border-blue-500 text-black px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white transition duration-200">
             Add New Questionnaire
         </a>
     </header>

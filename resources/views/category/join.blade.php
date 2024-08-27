@@ -14,7 +14,7 @@
                 autofocus
             />
         </div>
-
+    
         <div id="cards-container" class="card-container mt-6">
             @include('category._cards', ['cards' => $cards])
         </div>

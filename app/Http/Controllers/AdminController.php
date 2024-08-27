@@ -20,7 +20,6 @@ class AdminController extends Controller
         return view('admin.dashboard.dashboard', compact('user'));
     }
 
-    
     public function trainerList(){
         $user = auth()->user();
         return view('admin.all-trainers', compact('user'));
@@ -101,23 +100,26 @@ class AdminController extends Controller
         $trainer->save();
         return redirect()->route('admin.edit-trainer-profile', $trainer->id)->with('status', 'Password updated!');
     }
+
     public function deleteTrainerProfile($id){
         $trainer = User::where('id', $id)->where('type_name', 'trainer')->firstOrFail();
         $trainer->delete();
     
         return redirect()->route('admin.all-trainers')->with('status', 'Trainer deleted!');
     }
-    public function displayAllStudents(){
+
+    public function displayAllStudents()
+    {
         $user = auth()->user();
-        $student = DB::table('registration_requests')
-            ->join('users', 'registration_requests.user_id', '=', 'users.id')
+        $student = DB::table('confirmed_registrations')
+            ->join('users', 'confirmed_registrations.student_id', '=', 'users.id')
             ->where('users.type_name', 'student')
-            ->where('registration_requests.request_status', '=', 'accepted') // Only accepted students
-            ->select('users.id','users.name', 'users.last_name','users.username', 'users.email', 'registration_requests.request_status')
+            ->select('users.name', 'users.last_name', 'users.username', 'users.email', 'confirmed_registrations.id', 'confirmed_registrations.request_status')
             ->get();
         
         return view('admin.all-students', compact('student', 'user'));
     }
+
 
     public function showStudentDeleteConfirmation($id){
         $user = auth()->user();

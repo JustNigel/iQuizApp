@@ -32,7 +32,7 @@
                         </svg>
                     </a>
                     <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
-                        <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Join an exam</a>
+                        <a href="{{ route('category.join') }}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Join an exam</a>
                         <a href="{{ route('category.available-exams') }}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Available Exams</a>
                     </div>
                 </li>
@@ -47,7 +47,7 @@
                 @elseif (Auth::user()->type_name === 'trainer')
 
                 <li class="py-2">
-                    <a href="{{ route('trainer.dashboard.dashboard') }}" class="block rounded p-2 space-x-2 hover:bg-gray-700 ease-in-out duration-200">
+                    <a href="{{ route('trainer.dashboard') }}" class="block rounded p-2 space-x-2 hover:bg-gray-700 ease-in-out duration-200">
                         <i class="fa-solid fa-calendar-days"></i>
                         <span>Dashboard</span>
                     </a>

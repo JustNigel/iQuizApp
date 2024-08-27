@@ -10,7 +10,6 @@
         <a href="{{ route('admin.add-another-questionnaire', ['categoryId' => $category->id]) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
             Create New Questionnaire
         </a>
-
     </div>
     <div>
         <table class="min-w-full divide-y divide-gray-200"> 
@@ -22,6 +21,7 @@
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Passing Grade</th>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Trainer</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Accessible</th>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
@@ -35,8 +35,13 @@
                     <td class="px-6 py-4 text-center whitespace-nowrap">{{ $questionnaire->category->title }}</td>
                     <td class="px-6 py-4 text-center whitespace-nowrap">{{ $questionnaire->trainer->name }}</td>
                     <td class="px-6 py-4 text-center whitespace-nowrap">
-                        <a href="{{route('admin.edit-questionnaire', $questionnaire -> id)}}" class="text-indigo-600 hover:text-indigo-700 mr-4">Edit</a>
-                        <a href="{{route('admin.confirm-delete-questionnaire', $questionnaire -> id)}}" class="text-red-600 hover:text-red-700">Delete</a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800" aria-label="View Questionnaire">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    </td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                        <a href="{{ route('admin.edit-questionnaire', $questionnaire->id) }}" class="text-indigo-600 hover:text-indigo-700 mr-4">Edit</a>
+                        <a href="{{ route('admin.confirm-delete-questionnaire', $questionnaire->id) }}" class="text-red-600 hover:text-red-700">Delete</a>
                     </td>
                 </tr>
                 @endforeach

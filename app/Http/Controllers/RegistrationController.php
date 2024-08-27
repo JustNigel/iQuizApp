@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
-    public function displayAllRegistrationRequest(){
+    public function displayAllRegistrationRequest()
+    {
         $user = auth()->user();
         $requests = DB::table('registration_requests')
             ->join('users', 'registration_requests.user_id', '=', 'users.id')
@@ -34,12 +35,28 @@ class RegistrationController extends Controller
     
     public function acceptRequest($id)
     {
-        DB::table('registration_requests')
-            ->where('id', $id)
-            ->update(['request_status' => 'accepted']);
-
-        return redirect()->route('admin.all-registration-request')->with('status', 'Request accepted');
+        // Find the registration request by ID
+        $request = DB::table('registration_requests')->where('id', $id)->first();
+    
+        if ($request) {
+            // Insert the accepted request into the confirmed_registrations table
+            DB::table('confirmed_registrations')->insert([
+                'student_id' => $request->user_id, // Assuming user_id is the student_id
+                'request_status' => 'accepted',   // Setting the request status to 'accepted'
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+    
+            // Delete the original registration request
+            DB::table('registration_requests')->where('id', $id)->delete();
+    
+            return redirect()->route('admin.all-registration-request')->with('status', 'Request accepted and student confirmed');
+        }
+    
+        return redirect()->route('admin.all-registration-request')->with('status', 'Request not found');
     }
+    
+
 
     public function denyRequest($id)
     {

@@ -5,12 +5,14 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExamRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TrainerListController;
+use App\Http\Middleware\UserType;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,13 +33,18 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
 
     // Routes for Student
-    Route::prefix('student')->group(function () {
+    Route::prefix('student')->middleware([UserType::class.':student'])->group(function () {
         Route::get('/dashboard', [StudentController::class, 'index'])->name('dashboard'); // Dashboard Page
         Route::get('/history', [StudentController::class, 'history'])->name('history'); // History Page
         Route::get('/history/reviewer/{exam}', [StudentController::class, 'reviewer'])->name('student.reviewer'); // History Exam Review Page
         Route::get('/category', [StudentController::class, 'category'])->name('student.category'); // Category Page
-        Route::get('/category/request-to-join', [StudentController::class, 'requestJoin'])->name('category.join'); // Request To Join Page
+        Route::get('/category/request', [StudentController::class, 'requestJoin'])->name('category.join'); // Request To Join Page
+        Route::post('/request-to-join', [ExamRequestController::class, 'storeRequest'])->name('exam.request.store');
+        
+        
         Route::get('/category/available-exam', [StudentController::class, 'availableExam'])->name('category.available-exams'); // Request To Join Page
+        
+        
         Route::get('/{category}/{exam}', [ExamController::class, 'exam'])->name('student.exam'); // Get Started Page
         Route::get('/{category}/{exam}/{questionnaire}', [ExamController::class, 'questionnaire'])->name('student.questionnaire'); // Exam Page
         Route::get('/{category}/{exam}/{result}', [ExamController::class, 'result'])->name('student.result'); // Result Page
@@ -48,23 +55,24 @@ Route::middleware(['auth','verified'])->group(function () {
 
     
     // Routes for Trainer
-    Route::prefix('trainer')->group(function () {
-        Route::get('/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard.dashboard'); //Dashboard Page
+    Route::prefix('trainer')->middleware([UserType::class.':trainer'])->group(function () {
+        Route::get('/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard'); //Dashboard Page
         Route::get('/request-list',[TrainerController::class, 'requestList'])->name('trainer.request-list'); //All the Requests of Students Page
         Route::get('/all-category', [TrainerController::class, 'displayAllCategory'])->name('trainer.all-category'); //Category Page
+
+        Route::get('/category/add-questionnaire',[TrainerController::class, 'addQuestionnaire'])->name('trainer.add-questionnaire'); //Exam Questionnaire Page
+        Route::post('/store-questionnaire', [TrainerController::class, 'storeQuestionnaire'])->name('trainer.store-questionnaire');
         
         
-        Route::get('/category/add-category', [TrainerController::class, 'addCategory'])->name('trainer.add-category'); //Add Category Page
-        Route::get('/{category}/add-questionnaire',[TrainerController::class, 'addQuestionnaire'])->name('trainer.add-questionnaire'); //Exam Questionnaire Page
         Route::get('/respondents', [TrainerController::class, 'respondent'])->name('trainer.respondent');
         Route::get('/{category}/respondents', [TrainerController::class, 'respondentsCategory'])->name('trainer.respondents-category'); //All Respondents In the Exam
     
-    
+
     });
 
 
     // Routes for Admin
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware([UserType::class.':admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.dashboard'); //Dashboard Page
         Route::get('/student-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
         Route::get('/trainer-list', [TrainerListController::class,'index'])->name('admin.all-trainers'); //All the Trainers existing

@@ -43,7 +43,7 @@ class AuthenticatedSessionController extends Controller
         } elseif ($user->type_name === 'admin') {
             return redirect()->intended(route('admin.dashboard.dashboard'));
         } elseif ($user->type_name === 'trainer') {
-            return redirect()->intended(route('trainer.dashboard.dashboard'));
+            return redirect()->intended(route('trainer.dashboard'));
         }
 
     }
