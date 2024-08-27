@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
-    public function displayAllRegistrationRequest()
-    {
+    public function displayAllRegistrationRequest(){
         $user = auth()->user();
         $requests = DB::table('registration_requests')
             ->join('users', 'registration_requests.user_id', '=', 'users.id')
@@ -44,11 +43,15 @@ class RegistrationController extends Controller
 
     public function denyRequest($id)
     {
-        DB::table('registration_requests')
-            ->where('id', $id)
-            ->update(['request_status' => 'denied']);
-
-        return redirect()->route('admin.all-registration-request')->with('status', 'Request denied');
+        $request = DB::table('registration_requests')->where('id', $id)->first();
+    
+        if ($request) {
+            DB::table('users')->where('id', $request->user_id)->delete();
+            DB::table('registration_requests')->where('id', $id)->delete();
+        }
+    
+        return redirect()->route('admin.all-registration-request')->with('status', 'User and request deleted successfully');
     }
+    
 
 }

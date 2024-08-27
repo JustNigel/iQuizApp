@@ -51,11 +51,15 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::prefix('trainer')->group(function () {
         Route::get('/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard.dashboard'); //Dashboard Page
         Route::get('/request-list',[TrainerController::class, 'requestList'])->name('trainer.request-list'); //All the Requests of Students Page
-        Route::get('/category', [TrainerController::class, 'category'])->name('trainer.category'); //Category Page
+        Route::get('/all-category', [TrainerController::class, 'displayAllCategory'])->name('trainer.all-category'); //Category Page
+        
+        
         Route::get('/category/add-category', [TrainerController::class, 'addCategory'])->name('trainer.add-category'); //Add Category Page
         Route::get('/{category}/add-questionnaire',[TrainerController::class, 'addQuestionnaire'])->name('trainer.add-questionnaire'); //Exam Questionnaire Page
         Route::get('/respondents', [TrainerController::class, 'respondent'])->name('trainer.respondent');
         Route::get('/{category}/respondents', [TrainerController::class, 'respondentsCategory'])->name('trainer.respondents-category'); //All Respondents In the Exam
+    
+    
     });
 
 
@@ -81,6 +85,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/confirm-delete/{id}', [CategoryController::class, 'showCategoryDeleteConfirmation'])->name('admin.confirm-delete');
         Route::put('/category-{id}', [CategoryController::class, 'updateCategory'])->name('admin.update-category');
         Route::delete('/delete-category-{id}', [CategoryController::class, 'deleteCategory'])->name('admin.category.delete');
+        Route::get('/cancel-delete', [CategoryController::class, 'cancelDeleteCategory'])->name('admin.cancel-delete');
         Route::get('/add-another-questionnaire/{categoryId}', [QuestionnaireController::class, 'addAnotherQuestionnaire'])->name('admin.add-another-questionnaire');
         
     
@@ -89,7 +94,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/category/add-questionnaire',[QuestionnaireController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); 
         Route::post('/category/store-questionnaire', [QuestionnaireController::class, 'storeQuestionnaire'])->name('admin.store-questionnaire');
         Route::get('/category-{categoryId}/all-questionnaires',[QuestionnaireController::class, 'displayAllQuestionnaire'])->name('admin.all-questionnaire'); //Exam Questionnaire Page
-        
+        Route::get('/category/trainer-{trainerId}/filtered-categories', [CategoryController::class, 'filterByTrainer'])->name('admin.filter-by-trainer');
         Route::put('/questionnaire-{id}', [QuestionnaireController::class, 'updateQuestionnaire'])->name('admin.update-questionnaire');
         Route::get('/edit-questionnaire-{id}', [QuestionnaireController::class, 'editQuestionnaire'])->name('admin.edit-questionnaire');
         
@@ -101,6 +106,13 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/accept-request/{id}', [RegistrationController::class, 'acceptRequest'])->name('admin.acceptRequest');
         Route::get('/deny-request/{id}', [RegistrationController::class, 'denyRequest'])->name('admin.denyRequest');
         
+        Route::get('/edit-trainer-profile/{id}', [AdminController::class, 'editTrainerProfile'])->name('admin.edit-trainer-profile');
+        Route::patch('/update-trainer-profile/{id}', [AdminController::class, 'updateTrainerProfile'])->name('admin.update-trainer-profile');
+        Route::delete('/delete-trainer-profile/{id}', [AdminController::class, 'deleteTrainerProfile'])->name('admin.delete-trainer-profile');
+
+        Route::get('/all-students', [AdminController::class, 'displayAllStudents'])->name('admin.all-students');
+        Route::get('/confirm-delete-student/{id}', [AdminController::class, 'showStudentDeleteConfirmation'])->name('admin.confirm-delete-student');
+        Route::delete('/delete-student/{id}', [AdminController::class, 'deleteStudent'])->name('admin.delete-student');
     });
 
 

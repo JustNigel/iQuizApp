@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Trainer Overview')
+@section('title', 'Student Overview')
 
 @section('content')
 <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">Trainer Overview</h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">Student Overview</h1>
 
     <div class="flex justify-center">
         <div class="overflow-x-auto w-full max-w-full">
@@ -12,16 +12,16 @@
                 <thead>
                     <tr class="bg-gray-100 border-b border-gray-200">
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Trainer Name
+                            Student Name
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Exams Created
+                            Request Status
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Number of Respondents
+                            Username
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            View All Categories
+                            Email
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions
@@ -29,31 +29,24 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @foreach($trainers as $trainer)
+                    @foreach($student as $student)
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-700">
-                            {{ $trainer->name }} {{ $trainer->last_name }}
+                            {{ $student->name }} {{ $student->last_name }}
+                        </td>
+                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-green-600">
+                            {{ $student->request_status }}
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">
-                            @foreach($trainer->examCategories as $category)
-                                <div>{{ $category->title }}</div>
-                            @endforeach
-                            @if($trainer->examCategories->count() > 3)
-                                <div>+{{ $trainer->examCategories->count() - 3 }}</div>
-                            @endif
+                            {{ $student->username }}
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">
-                            0
-                        </td>
-                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">
-                            <div class="flex justify-center space-x-3">
-                                <a href="{{ route('admin.filter-by-trainer', $trainer->id) }}" class="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out">View Categories</a>
-                            </div>
+                            {{ $student->email }}
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
                             <div class="flex justify-center space-x-3">
-                                <a href="{{ route('admin.edit-trainer-profile', $trainer->id) }}" class="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out">Edit</a>
-                                <a href="{{ route('admin.delete-trainer', $trainer->id) }}" class="text-red-500 hover:text-red-700 transition duration-150 ease-in-out">Delete</a>
+                                <a href="#" class="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out">Edit</a>
+                                <a href="{{ route('admin.confirm-delete-student', $student->id) }}" class="text-red-500 hover:text-red-700 transition duration-150 ease-in-out">Delete</a>
                             </div>
                         </td>
                     </tr>

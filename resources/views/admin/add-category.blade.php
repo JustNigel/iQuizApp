@@ -4,7 +4,9 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <h1 class="text-3xl font-semibold mb-6">Create Category</h1>
+    <a href="{{route ('admin.all-category')}}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+
+    <h1 class="text-3xl font-semibold mb-6 text-center">Create Category</h1>
 
     <form action="{{ route('admin.store-category') }}" method="POST" class="space-y-6">
         @csrf

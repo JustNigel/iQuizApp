@@ -8,43 +8,45 @@ use Illuminate\Http\Request;
 
 class TrainerListController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         $user = auth()->user();
-        // Fetch all trainers with their associated categories
-        $last_name = User::where('last_name')->get();
-        $trainers = User::where('type_name', 'trainer')->with('examCategories')->get(); 
+        $trainers = User::where('type_name', 'trainer')
+            ->with(['examCategories' => function ($query) { $query->take(3); }])
+            ->get();
+        $last_name = User::whereNotNull('last_name')
+            ->get();
 
-        return view('admin.all-trainers', ['user' =>$user,
-            'last_name'  => $last_name,
+        return view('admin.all-trainers', [
+            'user' => $user,
+            'last_name' => $last_name,
             'trainers' => $trainers
         ]);
     }
+
     public function editTrainer($id){
         $user = auth()->user();
-        $trainers = User::where('type_name', 'trainer')->get(); 
+        $trainers = User::where('type_name', 'trainer')
+            ->get(); 
+
         return view('admin.add-trainer', compact('trainers','user'));
     }
 
-    public function showTrainerDeleteConfirmation($id)
-    {
+    public function showTrainerDeleteConfirmation($id){
         $user = auth()->user();
         $trainer = User::findOrFail($id);
+
         return view('admin.delete-trainer', compact('trainer','user'));
     }
-public function deleteTrainer($id)
-{
-    // Find the trainer by ID
-    $trainer = User::where('type_name', 'trainer')->findOrFail($id);
+    public function deleteTrainer($id){
+        $trainer = User::where('type_name', 'trainer')
+            ->findOrFail($id);
+        ExamCategory::where('trainer_id', $trainer->id)
+            ->update(['trainer_id' => null]);
+        $trainer->delete();
 
-    // Remove the association with the trainer but keep the category existing
-    ExamCategory::where('trainer_id', $trainer->id)->update(['trainer_id' => null]);
-
-    // Now delete the trainer
-    $trainer->delete();
-
-    return redirect()->route('admin.all-trainers')->with('success', 'Trainer deleted successfully, but associated categories are retained!');
-}
+        return redirect()->route('admin.all-trainers')
+            ->with('success', 'Trainer deleted successfully, but associated categories are retained!');
+    }
 
     
     

@@ -7,6 +7,8 @@
         <nav class="px-8 py-4 mt-8">
             <h3 class="mb-6 text-sm font-medium text-sidebar-menu">MENU</h3>
             <ul>
+                
+                <!-- STUDENT SIDE BAR -->
                 @if (Auth::user()->type_name === 'student')
 
                 <li class="py-2">
@@ -30,7 +32,7 @@
                         </svg>
                     </a>
                     <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
-                        <a href="{{ route('category.join') }}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Join an exam</a>
+                        <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Join an exam</a>
                         <a href="{{ route('category.available-exams') }}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Available Exams</a>
                     </div>
                 </li>
@@ -41,6 +43,7 @@
                     </a>
                 </li>
 
+                <!-- TRAINER SIDE BAR -->
                 @elseif (Auth::user()->type_name === 'trainer')
 
                 <li class="py-2">
@@ -64,10 +67,12 @@
                         </svg>
                     </a>
                     <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
-                        <a href="{{ route('category.join') }}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Join an exam</a>
-                        <a href="{{ route('category.available-exams') }}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Available Exams</a>
+                        <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Questionnaire</a>
+                        <a href="{{route('trainer.all-category')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View All Category</a>
+
                     </div>
                 </li>
+
                 <!-- ADMIN SIDE BAR -->
                 @elseif (Auth::user()->type_name === 'admin') 
 
@@ -106,7 +111,7 @@
                             <a href="{{route('admin.add-trainer')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Trainers</a>
                             <a href="{{route('admin.all-trainers')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Trainers</a>
                             <a href="{{route('admin.all-registration-request')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Requests</a>
-                            <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Students</a>
+                            <a href="{{route('admin.all-students')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Students</a>
                         </div>
                     </li>
                     

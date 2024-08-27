@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+    <a href="{{route ('admin.all-category')}}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
 
     <h1 class="text-3xl font-semibold mb-6 text-center">Create Questionnaire</h1>
 
