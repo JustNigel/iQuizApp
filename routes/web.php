@@ -38,10 +38,9 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/history', [StudentController::class, 'history'])->name('history'); // History Page
         Route::get('/history/reviewer/{exam}', [StudentController::class, 'reviewer'])->name('student.reviewer'); // History Exam Review Page
         Route::get('/category', [StudentController::class, 'category'])->name('student.category'); // Category Page
-        Route::get('/category/request', [StudentController::class, 'requestJoin'])->name('category.join'); // Request To Join Page
+        Route::get('/category/request', [ExamRequestController::class, 'requestJoin'])->name('category.join'); // Request To Join Page
         Route::post('/request-to-join', [ExamRequestController::class, 'storeRequest'])->name('exam.request.store');
-        
-        
+        Route::delete('/request-to-cancel/{id}', [ExamRequestController::class, 'cancelRequest'])->name('exam.request.cancel');
         Route::get('/category/available-exam', [StudentController::class, 'availableExam'])->name('category.available-exams'); // Request To Join Page
         
         
@@ -105,10 +104,10 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/category/trainer-{trainerId}/filtered-categories', [CategoryController::class, 'filterByTrainer'])->name('admin.filter-by-trainer');
         Route::put('/questionnaire-{id}', [QuestionnaireController::class, 'updateQuestionnaire'])->name('admin.update-questionnaire');
         Route::get('/edit-questionnaire-{id}', [QuestionnaireController::class, 'editQuestionnaire'])->name('admin.edit-questionnaire');
-        
+        Route::post('/questionnaire/toggle-visibility/{id}', [QuestionnaireController::class, 'toggleVisibility'])->name('questionnaire.toggle-visibility');
         Route::get('/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
         Route::get('/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam
-
+        
 
         Route::get('/all-registration-request', [RegistrationController::class, 'displayAllRegistrationRequest'])->name('admin.all-registration-request');
         Route::get('/accept-request/{id}', [RegistrationController::class, 'acceptRequest'])->name('admin.acceptRequest');

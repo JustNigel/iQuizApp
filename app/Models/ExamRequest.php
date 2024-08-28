@@ -15,6 +15,7 @@ class ExamRequest extends Model
         'student_id',
         'category_id',
         'trainer_id',
+        'questionnaire_id',
         'request_status',
     ];
 

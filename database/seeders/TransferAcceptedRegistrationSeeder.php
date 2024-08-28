@@ -13,24 +13,38 @@ class TransferAcceptedRegistrationSeeder extends Seeder
      */
     public function run()
     {
-        // Get all accepted records from registration_requests
-        $acceptedRequests = DB::table('registration_requests')
-            ->where('request_status', 'accepted')
-            ->get();
+        // Start a database transaction
+        DB::transaction(function () {
+            // Get all accepted records from registration_requests
+            $acceptedRequests = DB::table('registration_requests')
+                ->where('request_status', 'accepted')
+                ->get();
 
-        // Insert each accepted request into confirmed_registrations
-        foreach ($acceptedRequests as $request) {
-            DB::table('confirmed_registrations')->insert([
-                'student_id' => $request->user_id, // Insert into student_id
-                'request_status' => $request->request_status,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+            // Check if there are any records to process
+            if ($acceptedRequests->isNotEmpty()) {
+                // Insert each accepted request into confirmed_registrations
+                foreach ($acceptedRequests as $request) {
+                    // Check if the student_id already exists in confirmed_registrations
+                    $exists = DB::table('confirmed_registrations')
+                        ->where('student_id', $request->user_id)
+                        ->exists();
 
-        // Delete the accepted records from registration_requests
-        DB::table('registration_requests')
-            ->where('request_status', 'accepted')
-            ->delete();
+                    // Insert only if it doesn't exist
+                    if (!$exists) {
+                        DB::table('confirmed_registrations')->insert([
+                            'student_id' => $request->user_id,
+                            'request_status' => $request->request_status,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+
+                // Delete the accepted records from registration_requests
+                DB::table('registration_requests')
+                    ->where('request_status', 'accepted')
+                    ->delete();
+            }
+        });
     }
 }

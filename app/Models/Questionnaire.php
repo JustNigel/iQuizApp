@@ -19,6 +19,7 @@ class Questionnaire extends Model
         'category_id',
         'trainer_id',
         'shuffle',
+        'access_status',
     ];
 
     public function category()

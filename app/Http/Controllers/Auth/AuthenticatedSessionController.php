@@ -32,11 +32,11 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
 
         if ($user->type_name === 'student') {
-            $requestStatus = DB::table('registration_requests')
-                ->where('user_id', $user->id)
+            $requestStatus = DB::table('confirmed_registrations')
+                ->where('student_id', $user->id)
                 ->value('request_status');
             if ($requestStatus === 'accepted') {
-                return redirect()->intended(route('dashboard'));
+                return redirect()->intended(route('student.dashboard'));
             } else {
                 return redirect()->route('auth.verify-registration');
             }

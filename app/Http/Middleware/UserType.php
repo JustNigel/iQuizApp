@@ -23,7 +23,7 @@ class UserType
         }
     
         if ($user->type_name === $type) {
-            // Proceed with the request if the user type matches
+            
             return $next($request);
         }
     
@@ -33,7 +33,7 @@ class UserType
             case 'trainer':
                 return redirect()->route('trainer.dashboard'); 
             case 'admin':
-                return redirect()->route('admin.dashboard'); 
+                return redirect()->route('admin.dashboard.dashboard'); 
             default:
                 return redirect('/')->with('error', 'Unauthorized access');
         }

@@ -22,4 +22,9 @@ class ExamCategory extends Model
         return $this->belongsToMany(User::class, 'category_trainer', 'category_id', 'trainer_id');
     }
 
+    public function questionnaires()
+    {
+        return $this->hasMany(Questionnaire::class, 'category_id');
+    }
+
 }

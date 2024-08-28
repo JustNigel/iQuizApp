@@ -13,15 +13,18 @@
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div class="mt-4 relative">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
+            <x-text-input id="password" class="block mt-1 w-full pr-10"
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <!-- Eye Icon -->
+            <span onclick="togglePasswordVisibility('password')" class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer">
+                <i id="eyeIcon" class="fa fa-eye text-gray-500 dark:text-gray-400"></i>
+            </span>
         </div>
 
         <!-- Remember Me -->

@@ -94,20 +94,22 @@ class QuestionnaireController extends Controller
      * @param mixed $trainerId
      * @return \Illuminate\Contracts\View\View
      */
-    public function displayAllQuestionnaire($categoryId, $trainerId = null){
+    public function displayAllQuestionnaire($categoryId, $trainerId = null)
+    {
         $user = auth()->user();
         $category = ExamCategory::findOrFail($categoryId); // Fetch the selected category
         $query = Questionnaire::where('category_id', $categoryId);
-        
+
         if ($trainerId) {
             $query->where('trainer_id', $trainerId);
         }
-        
-        $questionnaires = $query->get();
-    
+
+        $questionnaires = $query->orderByRaw("CASE WHEN access_status = 'visible' THEN 0 ELSE 1 END")->get();
+
         // Pass the category to the view
         return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category'));
     }
+
     
     public function addAnotherQuestionnaire($categoryId){
         $user = auth()->user();
@@ -133,8 +135,22 @@ class QuestionnaireController extends Controller
         return redirect()->route('admin.all-questionnaire', ['categoryId' => $categoryId])
                         ->with('success', 'Questionnaire deleted successfully!');
     }
-    
-    
+
+    public function toggleVisibility($id)
+    {
+        $questionnaire = Questionnaire::findOrFail($id);
+        if ($questionnaire->access_status === 'hidden') {
+            Questionnaire::where('trainer_id', $questionnaire->trainer_id)
+                ->where('category_id', $questionnaire->category_id)
+                ->update(['access_status' => 'hidden']);
+            $questionnaire->access_status = 'visible';
+        } else {
+            $questionnaire->access_status = 'hidden';
+        }
+        $questionnaire->save();
+        return redirect()->back()->with('status', 'Questionnaire visibility updated!');
+    }
+
     
     
     

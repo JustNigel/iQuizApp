@@ -7,48 +7,6 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
 
-    public function requestJoin(Request $request){
-        {
-            $user = auth()->user();
-            $query = $request->input('query');
-            $cards = [
-                (object) [
-                    'title' => 'MS Azure Fundamentals',
-                    'description' => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi vero, sit numquam fugit repellat laudantium similique ab temporibus eum ea necessitatibus odit autem accusantium ullam? Expedita architecto alias ut nobis!",
-                    'url' => '#',
-                    'buttonText' => 'Request to Join',
-                    'passingScore' => '60%',
-                    'numItems' => 50,
-                    'timeLimit' => '75 minutes'
-                ],
-                (object) [
-                    'title' => 'MS Azure Administrator',
-                    'description' => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi vero, sit numquam fugit repellat laudantium similique ab temporibus eum ea necessitatibus odit autem accusantium ullam? Expedita architecto alias ut nobis!",
-                    'url' => '#',
-                    'buttonText' => 'Request to Join',
-                    'passingScore' => '75%',
-                    'numItems' => 70,
-                    'timeLimit' => '120 minutes'
-                ],
-                // Add more cards as needed
-            ];
-    
-            if ($query) {
-                $cards = array_filter($cards, function($card) use ($query) {
-                    return stripos($card->title, $query) !== false || stripos($card->description, $query) !== false;
-                });
-            }
-    
-            if ($request->ajax()) {
-                return view('category._cards', compact('cards'))->render();
-            }
-    
-            return view('category.join', compact('user'), [
-                'cards' => $cards,
-                'headerTitle' => 'Join an Exam' // Pass the header title here
-            ]);
-        }
-    }
 
     public function availableExam(Request $request)
     {
@@ -94,11 +52,11 @@ class StudentController extends Controller
     public function index(){
 
         $user = auth()->user();
-        return view('dashboard/dashboard', compact('user'));
+        return view('student.dashboard', compact('user'));
     }
 
     public function history(){
         $user = auth()->user();
-        return view('history/history', compact('user'));
+        return view('history', compact('user'));
     }
 }

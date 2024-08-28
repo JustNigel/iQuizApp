@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('trainer_id'); 
-            $table->string('request_status'); 
+            $table->unsignedBigInteger('trainer_id');
+            $table->string('request_status')->default('pending');
             $table->timestamps();
 
+            // Foreign key constraints
             $table->foreign('student_id')->references('student_id')->on('confirmed_registrations')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('exam_categories')->onDelete('cascade');
-            $table->foreign('trainer_id')->references('id')->on('users')->onDelete('cascade'); // Assuming trainers are in the users table
+            $table->foreign('trainer_id')->references('trainer_id')->on('category_trainer')->onDelete('cascade');
         });
     }
 

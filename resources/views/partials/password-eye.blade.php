@@ -1,7 +1,7 @@
 <script>
     function togglePasswordVisibility(id) {
         const input = document.getElementById(id);
-        const icon = input.nextElementSibling;
+        const icon = document.getElementById('eyeIcon');
         if (input.type === 'password') {
             input.type = 'text';
             icon.classList.remove('fa-eye');
