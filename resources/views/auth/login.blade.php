@@ -23,7 +23,7 @@
 
             <!-- Eye Icon -->
             <span onclick="togglePasswordVisibility('password')" class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer">
-                <i id="eyeIcon" class="fa fa-eye text-gray-500 dark:text-gray-400"></i>
+                <i id="eyeIcon" class="fa fa-eye text-gray-500 dark:text-gray-400 mt-6"></i>
             </span>
         </div>
 
