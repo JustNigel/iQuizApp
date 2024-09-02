@@ -35,19 +35,16 @@ class RegistrationController extends Controller
     
     public function acceptRequest($id)
     {
-        // Find the registration request by ID
         $request = DB::table('registration_requests')->where('id', $id)->first();
     
         if ($request) {
-            // Insert the accepted request into the confirmed_registrations table
             DB::table('confirmed_registrations')->insert([
-                'student_id' => $request->user_id, // Assuming user_id is the student_id
-                'request_status' => 'accepted',   // Setting the request status to 'accepted'
+                'student_id' => $request->user_id, 
+                'request_status' => 'accepted',   
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
     
-            // Delete the original registration request
             DB::table('registration_requests')->where('id', $id)->delete();
     
             return redirect()->route('admin.all-registration-request')->with('status', 'Request accepted and student confirmed');
@@ -55,7 +52,6 @@ class RegistrationController extends Controller
     
         return redirect()->route('admin.all-registration-request')->with('status', 'Request not found');
     }
-    
 
 
     public function denyRequest($id)

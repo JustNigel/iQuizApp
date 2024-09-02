@@ -22,7 +22,9 @@
     </p>
 
     <div class="absolute bottom-4 right-4">
-        @if($requestStatus === 'pending')
+        @if($requestStatus === 'accepted')
+            <span class="text-green-500 font-semibold mr-3">Accepted</span>
+        @elseif($requestStatus === 'pending')
             <form action="{{ route('exam.request.cancel', $requestId) }}" method="POST">
                 @csrf
                 @method('DELETE')

@@ -113,12 +113,15 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/accept-request/{id}', [RegistrationController::class, 'acceptRequest'])->name('admin.acceptRequest');
         Route::get('/deny-request/{id}', [RegistrationController::class, 'denyRequest'])->name('admin.denyRequest');
         
+        Route::get('/all-exam-requests', [ExamRequestController::class, 'displayAllExamRequest'])->name('admin.all-exam-request');
+        Route::put('/exam-request/{id}/accept', [ExamRequestController::class, 'acceptExamRequest'])->name('exam.request.accept');
+
         Route::get('/edit-trainer-profile/{id}', [AdminController::class, 'editTrainerProfile'])->name('admin.edit-trainer-profile');
         Route::patch('/update-trainer-profile/{id}', [AdminController::class, 'updateTrainerProfile'])->name('admin.update-trainer-profile');
         Route::delete('/delete-trainer-profile/{id}', [AdminController::class, 'deleteTrainerProfile'])->name('admin.delete-trainer-profile');
 
         Route::get('/all-students', [AdminController::class, 'displayAllStudents'])->name('admin.all-students');
-        Route::get('/confirm-delete-student/{id}', [AdminController::class, 'showStudentDeleteConfirmation'])->name('admin.confirm-delete-student');
+        Route::get('/confirm-delete-student-{id}', [AdminController::class, 'showStudentDeleteConfirmation'])->name('admin.confirm-delete-student');
         Route::delete('/delete-student/{id}', [AdminController::class, 'deleteStudent'])->name('admin.delete-student');
     });
 

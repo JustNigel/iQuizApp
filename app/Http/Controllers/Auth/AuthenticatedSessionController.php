@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
                 ->where('student_id', $user->id)
                 ->value('request_status');
             if ($requestStatus === 'accepted') {
-                return redirect()->intended(route('student.dashboard'));
+                return redirect()->intended(route('dashboard'));
             } else {
                 return redirect()->route('auth.verify-registration');
             }
