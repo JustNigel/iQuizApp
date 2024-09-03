@@ -6,6 +6,7 @@ use App\Models\ExamCategory;
 use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionnaireController extends Controller
 {
@@ -35,17 +36,17 @@ class QuestionnaireController extends Controller
     }
 
     public function addQuestionnaire(){
-        $user = auth()->user();
-        $categories = ExamCategory::all(); // Fetch all categories
+        $user = Auth::user();
+        $categories = ExamCategory::all(); 
     
-        $trainers = User::where('type_name', 'trainer')->get(); // Fetch trainers
+        $trainers = User::where('type_name', 'trainer')->get(); 
     
         return view('admin.add-questionnaire', compact('user', 'categories', 'trainers'));
     }
 
     public function editQuestionnaire($id)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $questionnaire = Questionnaire::findOrFail($id);
         $trainers = User::where('type_name', 'trainer')->get(); 
         $categories = ExamCategory::all(); // Fetch all categories
@@ -76,8 +77,6 @@ class QuestionnaireController extends Controller
             'category_id' => $request->input('category_id'),
             'shuffle' => $request->has('shuffle'),
         ]);
-
-        // Sync the trainers if needed
         $questionnaire->trainers()->sync($request->input('trainer_id'));
 
         return redirect()->route('admin.all-questionnaire', ['categoryId' => $request->input('category_id')])
@@ -96,7 +95,7 @@ class QuestionnaireController extends Controller
      */
     public function displayAllQuestionnaire($categoryId, $trainerId = null)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $category = ExamCategory::findOrFail($categoryId); // Fetch the selected category
         $query = Questionnaire::where('category_id', $categoryId);
 
@@ -112,7 +111,7 @@ class QuestionnaireController extends Controller
 
     
     public function addAnotherQuestionnaire($categoryId){
-        $user = auth()->user();
+        $user = Auth::user();
         $categories = ExamCategory::all(); // Fetch all categories
         $trainers = User::where('type_name', 'trainer')->get(); // Fetch trainers
         $selectedCategory = ExamCategory::findOrFail($categoryId); // Fetch the selected category
@@ -122,7 +121,7 @@ class QuestionnaireController extends Controller
 
 
     public function showQuestionnaireDeleteConfirmation($id){
-        $user = auth()->user();
+        $user = Auth::user();
         $questionnaire = Questionnaire::findOrFail($id);
         return view('admin.confirm-delete-questionnaire', compact('questionnaire', 'user'));
     }

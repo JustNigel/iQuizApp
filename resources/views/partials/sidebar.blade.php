@@ -96,6 +96,7 @@
                         <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
                             <a href="{{route('admin.add-questionnaire')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a questionnaire</a>
                             <a href="{{route('admin.add-category')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a category</a>
+                            <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Exam</a>
                             <a href="{{route('admin.all-category')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all category</a>
                             <a href="{{route('admin.all-exam-request')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Exam Request</a>
                         </div>

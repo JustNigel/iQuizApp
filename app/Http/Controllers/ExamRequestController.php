@@ -142,7 +142,7 @@ class ExamRequestController extends Controller
 
         $examRequest->delete();
 
-        return redirect()->route('admin.all-exam-requests')->with('success', 'Request has been accepted and moved to confirmed requests.');
+        return redirect()->route('admin.all-exam-request')->with('success', 'Request has been accepted and moved to confirmed requests.');
     }
     
 

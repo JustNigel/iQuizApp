@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExamCategory;
+use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -136,6 +137,14 @@ class AdminController extends Controller
                         ->firstOrFail(); 
         $student->delete();
         return redirect()->route('admin.all-students')->with('success', 'Student deleted successfully!');
+    }
+    
+    public function displayAddQuestionnaire($id)
+    {
+        $user = Auth::user();
+        $questionnaire = Questionnaire::with('trainer', 'category')->findOrFail($id);
+    
+        return view('layouts.questionnaire', compact('user', 'questionnaire'));
     }
     
     

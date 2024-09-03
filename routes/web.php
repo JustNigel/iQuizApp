@@ -123,6 +123,8 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/all-students', [AdminController::class, 'displayAllStudents'])->name('admin.all-students');
         Route::get('/confirm-delete-student-{id}', [AdminController::class, 'showStudentDeleteConfirmation'])->name('admin.confirm-delete-student');
         Route::delete('/delete-student/{id}', [AdminController::class, 'deleteStudent'])->name('admin.delete-student');
+        Route::get('/questionnaire-{id}/add-questions', [AdminController::class, 'displayAddQuestionnaire'])->name('admin.questionnaire');
+        
     });
 
 

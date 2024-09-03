@@ -65,8 +65,9 @@
             </div>
         </div>
 
-        <div>
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 mt-6 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Update</button>
+        <div class="flex justify-between items-center mt-6">
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Update</button>
+            <a href="{{ route('admin.questionnaire', ['id' => $questionnaire->id]) }}" class="bg-green-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Add Questions</a>
         </div>
     </form>
 </div>
