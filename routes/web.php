@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
@@ -124,7 +125,8 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/confirm-delete-student-{id}', [AdminController::class, 'showStudentDeleteConfirmation'])->name('admin.confirm-delete-student');
         Route::delete('/delete-student/{id}', [AdminController::class, 'deleteStudent'])->name('admin.delete-student');
         Route::get('/questionnaire-{id}/add-questions', [AdminController::class, 'displayAddQuestionnaire'])->name('admin.questionnaire');
-        
+        Route::post('/questionnaire-{id}/store-question', [AdminController::class, 'store'])->name('questions.store');
+
     });
 
 

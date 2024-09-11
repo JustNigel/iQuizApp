@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const matchingKeyList = document.getElementById('matching-key-list');
     const saveMatchingKeyBtn = document.getElementById('save-matching-key');
     const reloadMatchingKeyBtn = document.getElementById('reload-matching-key');
+    const form = document.getElementById('questionForm');
+    const submitButton = document.getElementById('submit-button-id');
 
     function updateAnswersContainer() {
         const selectedVariant = variantSelect.value;
@@ -31,6 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (selectedVariant === 'paragraph') {
                 addParagraphItem();
             }
+        }
+
+        if (selectedVariant === 'drag-drop') {
+            Sortable.create(answersContainer, {
+                handle: '.drag-handle',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+            });
         }
     }
 
@@ -74,45 +84,48 @@ document.addEventListener('DOMContentLoaded', function() {
     function addMatchingItem() {
         const matchingItemContainer = document.createElement('div');
         matchingItemContainer.className = 'matching-item-container mb-2 p-2 border rounded grid grid-cols-2 gap-4';
-
+    
         const leftSide = document.createElement('div');
         leftSide.className = 'matching-left-side';
-
+    
         const rightSide = document.createElement('div');
         rightSide.className = 'matching-right-side';
-
+    
         const addButtonContainer = document.createElement('div');
         addButtonContainer.className = 'flex justify-between items-center mb-2';
-
+    
         const addLeftButton = document.createElement('button');
         addLeftButton.className = 'bg-blue-500 text-white p-2 rounded mr-2';
         addLeftButton.textContent = '+ Add Left Item';
-        addLeftButton.addEventListener('click', function() {
+        addLeftButton.addEventListener('click', function(event) {
+            event.preventDefault();  
             addLeftItem(leftSide);
         });
-
+    
         const addRightButton = document.createElement('button');
         addRightButton.className = 'bg-yellow-500 text-white p-2 rounded';
         addRightButton.textContent = '+ Add Right Item';
-        addRightButton.addEventListener('click', function() {
+        addRightButton.addEventListener('click', function(event) {
+            event.preventDefault(); 
             addRightItem(rightSide);
         });
-
+    
         addButtonContainer.appendChild(addLeftButton);
         addButtonContainer.appendChild(addRightButton);
         answersContainer.appendChild(addButtonContainer);
-
+    
         matchingItemContainer.appendChild(leftSide);
         matchingItemContainer.appendChild(rightSide);
-
+    
         answersContainer.appendChild(matchingItemContainer);
-
+    
         addLeftItem(leftSide);
         addRightItem(rightSide);
-
+    
         matchingKeyContainer.classList.remove('hidden');
         createMatchingKey();
     }
+    
 
     function addLeftItem(leftSide) {
         const letter = String.fromCharCode(65 + leftSide.children.length);
@@ -184,26 +197,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function addMultipleChoiceItem() {
+        const answersContainer = document.getElementById('answers-container');
+        const index = answersContainer.children.length;
+
         const newMultipleChoiceItem = document.createElement('div');
         newMultipleChoiceItem.className = 'multiple-choice-item mb-2 p-2 border rounded flex items-center';
         newMultipleChoiceItem.innerHTML = `
-            <input type="radio" name="multiple-choice" class="mr-2">
-            <input type="text" placeholder="New Option" class="w-full border-0 rounded">
+            <input type="radio" name="answer_key" value="${index}" class="mr-2">
+            <input type="text" name="options[]" placeholder="New Option" class="w-full border-0 rounded">
         `;
-        newMultipleChoiceItem.appendChild(createDeleteButton(newMultipleChoiceItem));
         answersContainer.appendChild(newMultipleChoiceItem);
     }
 
     function addCheckboxItem() {
+        const answersContainer = document.getElementById('answers-container');
+        const index = answersContainer.children.length;
+    
         const newCheckboxItem = document.createElement('div');
         newCheckboxItem.className = 'checkbox-item mb-2 p-2 border rounded flex items-center';
         newCheckboxItem.innerHTML = `
-            <input type="checkbox" class="mr-2">
-            <input type="text" placeholder="New Option" class="w-full border-0 rounded">
+            <input type="checkbox" name="answer_key[]" value="${index}" class="mr-2">
+            <input type="text" name="options[]" placeholder="New Option" class="w-full border-0 rounded">
         `;
         newCheckboxItem.appendChild(createDeleteButton(newCheckboxItem));
         answersContainer.appendChild(newCheckboxItem);
     }
+    
+    
 
     function addTextItem() {
         const newTextItem = document.createElement('div');
@@ -256,6 +276,25 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             reloadMatchingKeys();
         }
+    });
+
+
+    document.getElementById('variant-select').addEventListener('change', function() {
+        const selectedVariant = this.value;
+        document.getElementById('question-type-hidden').value = selectedVariant;
+    });
+
+    document.getElementById('question-type-hidden').value = document.getElementById('variant-select').value;
+
+    
+    document.getElementById('points-input').addEventListener('input', function () {
+        document.getElementById('points-hidden').value = this.value;
+    });
+
+    submitButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        form.submit(); 
     });
 
     updateAnswersContainer();

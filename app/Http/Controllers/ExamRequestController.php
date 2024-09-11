@@ -77,7 +77,7 @@ class ExamRequestController extends Controller
 
 
     public function storeRequest(Request $request){
-        $user = auth()->user();
+        $user = Auth::user();
         $categoryId = $request->input('category_id');
         $trainerId = $request->input('trainer_id');
         $questionnaireId = $request->input('questionnaire_id'); 

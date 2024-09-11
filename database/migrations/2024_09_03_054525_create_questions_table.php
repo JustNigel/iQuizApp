@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
+            $table->text('question_text');
+            $table->integer('points');
+            $table->string('question_type');
+            $table->unsignedBigInteger('questionnaire_id');
+            $table->string('answer_key');
             $table->timestamps();
+
+            $table->foreign('questionnaire_id')->references('id')->on('exam_questionnaires')->onDelete('cascade');
+            
         });
     }
 

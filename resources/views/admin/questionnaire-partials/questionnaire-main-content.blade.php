@@ -1,8 +1,14 @@
 <div class="flex-1 p-4">
     <div class="bg-white p-6 rounded-lg border shadow-lg">
-        <input type="text" placeholder="Question" class="w-full text-custom-black text-xl font-bold p-3 border-0 rounded-lg mb-4">
-
-        <div id="answers-container">
+        <form id="questionForm" method="POST" action="/submit-question">
+            @csrf
+            <input type="text" name="question_text" placeholder="Question" class="w-full text-custom-black text-xl font-bold p-3 border-0 rounded-lg mb-4">
+            <input type="hidden" name="questionnaire_id" value="{{ $questionnaire->id }}">
+            <input type="hidden" name="points" id="points-hidden" value="1">
+            <input type="hidden" name="question_type" id="question-type-hidden">
+            
+        
+            <div id="answers-container">
         </div>
 
         <div id="matching-key-container" class="hidden p-4 border rounded bg-gray-100">
@@ -21,8 +27,9 @@
             <!-- File inputs will be added here -->
         </div>
 
-        <button id="add-answer-btn" class="bg-gray-200 p-3 rounded-lg shadow-sm mb-2">+ Add Answer</button>
-        <button id="add-file-btn" class="bg-gray-200 p-3 rounded-lg shadow-sm mb-2">+ Add File</button>
-        <button id="submit-question-btn" class="bg-blue-700 text-gray-100 p-3 rounded-lg shadow-lg hover:bg-blue-800 ">Submit Question</button>
+            <button id="add-answer-btn" type="button" class="bg-gray-200 p-3 rounded-lg shadow-sm mb-2">+ Add Answer</button>
+            <button id="add-file-btn" type="button" class="bg-gray-200 p-3 rounded-lg shadow-sm mb-2">+ Add File</button>
+            <button id="submit-question-btn" type="submit" class="bg-blue-700 text-gray-100 p-3 rounded-lg shadow-lg hover:bg-blue-800">Submit Question</button>
+        </form>
     </div>
 </div>

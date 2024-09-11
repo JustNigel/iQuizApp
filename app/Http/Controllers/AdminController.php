@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExamCategory;
+use App\Models\Question;
 use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -17,18 +18,18 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         return view('admin.dashboard.dashboard', compact('user'));
     }
 
     public function trainerList(){
-        $user = auth()->user();
+        $user = Auth::user();
         return view('admin.all-trainers', compact('user'));
 
     }
 
     public function addTrainer(){
-        $user = auth()->user();
+        $user = Auth::user();
         return view('admin.add-trainer', compact('user'));
     }
 
@@ -58,7 +59,7 @@ class AdminController extends Controller
 
     public function editTrainerProfile($id)
     {
-        $user = auth()->user(); 
+        $user = Auth::user();
         $trainer = User::where('id', $id)->where('type_name', 'trainer')->firstOrFail();
         
         // Pass both $trainer and $user to the view
@@ -111,7 +112,7 @@ class AdminController extends Controller
 
     public function displayAllStudents()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $student = DB::table('confirmed_registrations')
             ->join('users', 'confirmed_registrations.student_id', '=', 'users.id')
             ->where('users.type_name', 'student')
@@ -123,7 +124,7 @@ class AdminController extends Controller
 
 
     public function showStudentDeleteConfirmation($id){
-        $user = auth()->user();
+        $user =  Auth::user();
         $student = User::where('id', $id)
                         ->where('type_name', 'student')
                         ->firstOrFail(); 
@@ -147,7 +148,48 @@ class AdminController extends Controller
         return view('layouts.questionnaire', compact('user', 'questionnaire'));
     }
     
-    
-    
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'question_text' => 'required|string',
+            'question_type' => 'required|string',
+            'questionnaire_id' => 'nullable|exists:exam_questionnaires,id', 
+            'points' => 'required|integer|min:1',
+            'options' => 'nullable|array',
+            'options.*' => 'string',
+            'answer_key' => 'nullable|array',
+            'answer_key.*' => 'string', 
+        ]);
+
+        $question = new Question();
+        $question->question_text = $validatedData['question_text'];
+        $question->question_type = $validatedData['question_type'];
+        $question->questionnaire_id = $validatedData['questionnaire_id'] ?? null;
+        $question->points = $validatedData['points'];
+
+        if (!empty($validatedData['questionnaire_id'])) {
+            $questionnaire = Questionnaire::find($validatedData['questionnaire_id']);
+            $question->category_id = $questionnaire->category_id ?? null; 
+        }
+
+        if (!empty($validatedData['options'])) {
+            $question->options = json_encode($validatedData['options']);
+        }
+
+        if (!empty($validatedData['answer_key'])) {
+            $question->answer_key = implode(',', $validatedData['answer_key']);
+        } else {
+            $question->answer_key = null;
+        }
+
+        $question->save();
+
+        return redirect()->route('admin.questionnaire', ['id' => $validatedData['questionnaire_id']])
+                        ->with('success', 'Question created successfully.');
+    }
+
+
+        
+        
     
 }

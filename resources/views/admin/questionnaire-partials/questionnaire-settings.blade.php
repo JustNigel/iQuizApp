@@ -16,7 +16,7 @@
 
     <div class="mb-6">
         <label class="block text-gray-800 font-medium mb-2">Points</label>
-        <input type="number" class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-500" value="1">
+        <input type="number"id="points-input" class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-500" value="1">
     </div>
 
     <div class="mb-6">
