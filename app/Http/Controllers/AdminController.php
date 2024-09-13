@@ -150,17 +150,28 @@ class AdminController extends Controller
     
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $rules = [
             'question_text' => 'required|string',
             'question_type' => 'required|string',
-            'questionnaire_id' => 'nullable|exists:exam_questionnaires,id', 
+            'questionnaire_id' => 'nullable|exists:exam_questionnaires,id',
             'points' => 'required|integer|min:1',
             'options' => 'nullable|array',
             'options.*' => 'string',
-            'answer_key' => 'nullable|array',
-            'answer_key.*' => 'string', 
-        ]);
+        ];
 
+        if ($request->input('question_type') === 'multiple-choice') {
+            $rules['answer_key'] = 'nullable|string';
+        } else {
+            $rules['answer_key'] = 'nullable|array';
+            $rules['answer_key.*'] = 'string';
+        }
+
+        $validatedData = $request->validate($rules);
+
+
+        dd($validatedData);
+
+        // Create a new question instance
         $question = new Question();
         $question->question_text = $validatedData['question_text'];
         $question->question_type = $validatedData['question_type'];
@@ -169,17 +180,22 @@ class AdminController extends Controller
 
         if (!empty($validatedData['questionnaire_id'])) {
             $questionnaire = Questionnaire::find($validatedData['questionnaire_id']);
-            $question->category_id = $questionnaire->category_id ?? null; 
+            $question->category_id = $questionnaire->category_id ?? null;
         }
 
         if (!empty($validatedData['options'])) {
             $question->options = json_encode($validatedData['options']);
         }
 
-        if (!empty($validatedData['answer_key'])) {
-            $question->answer_key = implode(',', $validatedData['answer_key']);
+        // Set answer_key based on question_type
+        if ($request->input('question_type') === 'multiple-choice') {
+            $question->answer_key = $validatedData['answer_key'] ?? null;
+        } elseif ($request->input('question_type') === 'drag-drop') {
+            $options = $validatedData['options'];
+            $indices = array_keys($options);
+            $question->answer_key = !empty($indices) ? implode(',', $indices) : null;
         } else {
-            $question->answer_key = null;
+            $question->answer_key = !empty($validatedData['answer_key']) ? implode(',', $validatedData['answer_key']) : null;
         }
 
         $question->save();
@@ -190,6 +206,7 @@ class AdminController extends Controller
 
 
         
+
         
     
 }

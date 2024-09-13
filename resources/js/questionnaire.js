@@ -187,10 +187,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const newDragDropItem = document.createElement('div');
         newDragDropItem.className = 'drag-drop-item mb-2 p-2 border rounded flex items-center';
         newDragDropItem.innerHTML = `
-            <div class="drag-handle bg-blue-500 text-white p-2 rounded-l flex-shrink-0 cursor-grab">
+            <div class="drag-handle bg-blue-500 text-white p-2 rounded-l flex-shrink-0 cursor-grab ">
                 <i class="fas fa-grip-vertical"></i>
             </div>
-            <input type="text" placeholder="New Option" class="w-full border rounded">
+            <input type="text" name="options[]" placeholder="New Option" class="w-full border rounded">
         `;
         newDragDropItem.appendChild(createDeleteButton(newDragDropItem));
         answersContainer.appendChild(newDragDropItem);
@@ -206,6 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <input type="radio" name="answer_key" value="${index}" class="mr-2">
             <input type="text" name="options[]" placeholder="New Option" class="w-full border-0 rounded">
         `;
+        newMultipleChoiceItem.appendChild(createDeleteButton(newMultipleChoiceItem));
         answersContainer.appendChild(newMultipleChoiceItem);
     }
 
@@ -218,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         newCheckboxItem.innerHTML = `
             <input type="checkbox" name="answer_key[]" value="${index}" class="mr-2">
             <input type="text" name="options[]" placeholder="New Option" class="w-full border-0 rounded">
-        `;
+        `; 
         newCheckboxItem.appendChild(createDeleteButton(newCheckboxItem));
         answersContainer.appendChild(newCheckboxItem);
     }
@@ -293,7 +294,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     submitButton.addEventListener('click', function(event) {
         event.preventDefault();
-
         form.submit(); 
     });
 
