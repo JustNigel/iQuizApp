@@ -157,8 +157,11 @@ class AdminController extends Controller
             'points' => 'required|integer|min:1',
             'options' => 'nullable|array',
             'options.*' => 'string',
+            'descriptions' => 'nullable|array',
+            'descriptions.*' => 'string',
         ];
 
+        // Validate answer_key based on question type
         if ($request->input('question_type') === 'multiple-choice') {
             $rules['answer_key'] = 'nullable|string';
         } else {
@@ -168,45 +171,65 @@ class AdminController extends Controller
 
         $validatedData = $request->validate($rules);
 
-
-        dd($validatedData);
-
-        // Create a new question instance
         $question = new Question();
         $question->question_text = $validatedData['question_text'];
         $question->question_type = $validatedData['question_type'];
         $question->questionnaire_id = $validatedData['questionnaire_id'] ?? null;
         $question->points = $validatedData['points'];
 
+        // Associate category if questionnaire_id exists
         if (!empty($validatedData['questionnaire_id'])) {
             $questionnaire = Questionnaire::find($validatedData['questionnaire_id']);
             $question->category_id = $questionnaire->category_id ?? null;
         }
 
+        // Set options if present
         if (!empty($validatedData['options'])) {
             $question->options = json_encode($validatedData['options']);
         }
 
-        // Set answer_key based on question_type
+        // Set answer_key and descriptions based on question_type
         if ($request->input('question_type') === 'multiple-choice') {
+            // For multiple choice questions, answer_key is a string
             $question->answer_key = $validatedData['answer_key'] ?? null;
         } elseif ($request->input('question_type') === 'drag-drop') {
+            // For drag-drop, the answer_key is a comma-separated list of option indices
             $options = $validatedData['options'];
             $indices = array_keys($options);
             $question->answer_key = !empty($indices) ? implode(',', $indices) : null;
-        } else {
-            $question->answer_key = !empty($validatedData['answer_key']) ? implode(',', $validatedData['answer_key']) : null;
+        } elseif ($request->input('question_type') === 'matching') {
+            // For matching, pair descriptions and options to create the answer key
+            $descriptions = $validatedData['descriptions'] ?? [];
+            $options = $validatedData['options'] ?? [];
+            $answerKey = [];
+
+            foreach ($descriptions as $index => $description) {
+                if (isset($options[$index])) {
+                    // Use concatenation to create the string properly
+                    $answerKey[] = $index . '[' . $description . ', ' . $options[$index] . ']';
+                }
+            }
+
+            // Handle cases where descriptions or options are missing
+            if (empty($descriptions) || empty($options)) {
+                $answerKey = [];
+            }
+
+            // Save the answer_key as a JSON-encoded string
+            $question->answer_key = !empty($answerKey) ? json_encode($answerKey) : null;
+
+            // Save the descriptions as a JSON-encoded string in the descriptions column
+            $question->descriptions = !empty($descriptions) ? json_encode($descriptions) : null;
         }
 
+        // Save the question
         $question->save();
+
+
+
 
         return redirect()->route('admin.questionnaire', ['id' => $validatedData['questionnaire_id']])
                         ->with('success', 'Question created successfully.');
     }
 
-
-        
-
-        
-    
 }
