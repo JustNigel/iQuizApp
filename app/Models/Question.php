@@ -19,6 +19,7 @@ class Question extends Model
         'question_type',
         'questionnaire_id',
         'answer_key',
+        'descriptions',
         'options',
     ];
     

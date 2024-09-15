@@ -1,7 +1,26 @@
 <div class="bg-white shadow p-4 flex justify-between items-center font-satoshi">
     
-    <div class="flex items-center border border-transparent rounded-lg p-1 w-1/3">
-        <h2 class="text-xl font-semibold">Title</h2>
+    <div class="flex items-center border border-transparent rounded-lg p-1 w-1/2">
+        <h2 class="text-xl font-semibold">
+            @php
+                $titles = [
+                    'trainer.dashboard' => 'Welcome to your Dashboard, Trainer ',
+                    'trainer.all-category' => 'All Categories',
+                    'trainer.add-questionnaire' => 'Add Questionnaire',
+                    'admin.dashboard.dashboard' => 'Admin Dashboard',
+                    'profile' => 'Your Profile'
+                ];
+
+                $currentRoute = Route::currentRouteName();
+                $title = $titles[$currentRoute] ?? 'Dashboard';
+
+                // If the current route is 'trainer.dashboard', append the user's name
+                if ($currentRoute == 'trainer.dashboard') {
+                    $title .= ' ' . $user->name . '!';
+                }
+            @endphp
+            {{ $title }}
+        </h2>
     </div>
 
     <!-- Notification Dropdown -->

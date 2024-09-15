@@ -62,6 +62,9 @@ Route::middleware(['auth','verified'])->group(function () {
 
         Route::get('/category/add-questionnaire',[TrainerController::class, 'addQuestionnaire'])->name('trainer.add-questionnaire'); //Exam Questionnaire Page
         Route::post('/store-questionnaire', [TrainerController::class, 'storeQuestionnaire'])->name('trainer.store-questionnaire');
+        Route::get('/confirm-delete-all-questionnaire/{categoryId}', [TrainerController::class, 'showAllQuestionnaireDeleteConfirmation'])->name('trainer.confirm-delete');
+        Route::delete('/delete-all-questionnaire/{categoryId}', [TrainerController::class, 'deleteAllQuestionnaire'])->name('trainer.questionnaire.delete');
+    
         
         
         Route::get('/respondents', [TrainerController::class, 'respondent'])->name('trainer.respondent');

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ExamCategory;
 use App\Models\Questionnaire;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TrainerController extends Controller
 {
@@ -48,7 +50,7 @@ class TrainerController extends Controller
             'shuffle' => 'nullable|boolean',
         ]);
     
-        $trainer = auth()->user(); 
+        $trainer = Auth::user();
     
         if ($trainer->type_name !== 'trainer') {
             return redirect()->route('trainer.dashboard')->with('error', 'Unauthorized access.');
@@ -66,6 +68,37 @@ class TrainerController extends Controller
     
         return redirect()->route('trainer.add-questionnaire')->with('success', 'Questionnaire created successfully!');
     }
+    
+    public function showAllQuestionnaireDeleteConfirmation($categoryId)
+    {
+        $user = Auth::user();
+        $category = ExamCategory::findOrFail($categoryId);
+        return view('trainer.confirm-delete', compact('category', 'user'));
+    }
+    
+    
+    
+    public function deleteAllQuestionnaire(Request $request, $categoryId)
+    {
+        // Find the category to ensure it exists
+        $category = ExamCategory::findOrFail($categoryId);
+    
+        // Delete all questionnaires associated with this category
+        $questionnaires = $category->questionnaires; // Adjust this if your relationship is different
+    
+        foreach ($questionnaires as $questionnaire) {
+            $questionnaire->delete();
+        }
+    
+        // Optionally, you can also delete the category itself
+        // $category->delete();
+    
+        return redirect()->route('trainer.all-category')->with('success', 'All questionnaires have been deleted.');
+    }
+    
+    
+    
+    
     
 
 

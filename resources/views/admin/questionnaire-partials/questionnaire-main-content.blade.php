@@ -6,6 +6,8 @@
             <input type="hidden" name="questionnaire_id" value="{{ $questionnaire->id }}">
             <input type="hidden" name="points" id="points-hidden" value="1">
             <input type="hidden" name="question_type" id="question-type-hidden">
+            <input type="hidden" name="selected_values" value='{}'>
+
             
         
             <div id="answers-container">

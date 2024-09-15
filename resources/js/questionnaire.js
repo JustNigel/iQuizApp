@@ -128,60 +128,59 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     function addLeftItem(leftSide) {
-        const letter = String.fromCharCode(65 + leftSide.children.length);
-
         const newMatchingItemLeft = document.createElement('div');
         newMatchingItemLeft.className = 'matching-item-left mb-2 p-2 border rounded flex items-center';
-        newMatchingItemLeft.innerHTML = `<input type="text" value="${letter}" class="w-full border-0 rounded bg-gray-200">`;
+        newMatchingItemLeft.innerHTML = `<input type="text" name="descriptions[]" placeholder="Description" class="w-full border-0 rounded">`;  // Placeholder updated to accept description
         newMatchingItemLeft.appendChild(createDeleteButton(newMatchingItemLeft));
-
+    
         leftSide.appendChild(newMatchingItemLeft);
         createMatchingKey();
     }
-
+    
     function addRightItem(rightSide) {
         const newMatchingItemRight = document.createElement('div');
         newMatchingItemRight.className = 'matching-item-right mb-2 p-2 border rounded flex items-center';
-        newMatchingItemRight.innerHTML = `<input type="text" placeholder="Description" class="w-full border-0 rounded">`;
+        newMatchingItemRight.innerHTML = ` <input type="text" name="options[]" placeholder="Option" class="w-full border-0 rounded">`;  // Placeholder updated to accept option
         newMatchingItemRight.appendChild(createDeleteButton(newMatchingItemRight));
-
+    
         rightSide.appendChild(newMatchingItemRight);
         createMatchingKey();
     }
-
+    
     function createMatchingKey() {
         matchingKeyList.innerHTML = '';
-
+    
         const leftItems = Array.from(document.querySelectorAll('.matching-left-side input'));
         const rightItems = Array.from(document.querySelectorAll('.matching-right-side input'));
-
-        leftItems.forEach((leftItem) => {
+    
+        leftItems.forEach((leftItem, index) => {
             const keyItem = document.createElement('div');
             keyItem.className = 'matching-key-item mb-2 p-2 border rounded flex items-center justify-between';
-
+    
             const leftInput = document.createElement('input');
             leftInput.type = 'text';
             leftInput.value = leftItem.value;
             leftInput.className = 'w-1/2 border-0 rounded bg-gray-200';
             leftInput.disabled = true;
-
+    
             const rightSelect = document.createElement('select');
             rightSelect.className = 'w-1/2 border rounded';
-
+    
             function updateDropdown() {
-                rightSelect.innerHTML = rightItems.map(item => `<option value="${item.value}">${item.value || 'No Description'}</option>`).join('');
+                rightSelect.innerHTML = rightItems.map(item => `<option value="${item.value}">${item.value || 'No Option'}</option>`).join('');
             }
-
+    
             updateDropdown();
-
+    
             rightSelect.addEventListener('focus', updateDropdown);
-
+    
             keyItem.appendChild(leftInput);
             keyItem.appendChild(rightSelect);
-
+    
             matchingKeyList.appendChild(keyItem);
         });
     }
+    
 
     function addDragDropItem() {
         const newDragDropItem = document.createElement('div');

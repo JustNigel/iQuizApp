@@ -6,12 +6,13 @@ use App\Models\Exam;
 use App\Models\ExamCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
     public function createCategory(){
-        $user = auth()->user();
+        $user = Auth::user();
         $trainers = User::where('type_name', 'trainer')
             ->get(); 
             
@@ -47,7 +48,7 @@ class CategoryController extends Controller
     }
 
     public function allCategories(){
-        $user = auth()->user();
+        $user = Auth::user();
         $categories = ExamCategory::with('trainers')
             ->get();
         return view('admin.all-category', compact('categories', 'user'));
@@ -55,7 +56,7 @@ class CategoryController extends Controller
     
 
     public function editCategory($id){
-        $user = auth()->user();
+        $user = Auth::user();
         $category = ExamCategory::with('trainers')->findOrFail($id);
         $trainers = User::where('type_name', 'trainer')->get(); 
         return view('admin.edit', compact('category', 'trainers', 'user'));
@@ -94,7 +95,7 @@ class CategoryController extends Controller
     }
     
     public function filterByTrainer($trainerId){
-        $user = auth()->user();
+        $user = Auth::user();
         $categories = ExamCategory::whereHas('trainers', function ($query) use ($trainerId) {
         $query->where('users.id', $trainerId);
             })->get();
@@ -103,7 +104,7 @@ class CategoryController extends Controller
     }
 
     public function showCategoryDeleteConfirmation($id){
-        $user = auth()->user();
+        $user = Auth::user();
         $category = ExamCategory::findOrFail($id);
 
         return view('admin.confirm-delete', compact('category','user'));

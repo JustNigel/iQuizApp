@@ -67,7 +67,7 @@
                         </svg>
                     </a>
                     <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
-                        <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Questionnaire</a>
+                        <a href="{{route('trainer.add-questionnaire')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Questionnaire</a>
                         <a href="{{route('trainer.all-category')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View All Category</a>
 
                     </div>
