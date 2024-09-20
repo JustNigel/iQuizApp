@@ -32,7 +32,7 @@ class QuestionnaireController extends Controller
         $questionnaire->shuffle = $request->input('shuffle', false);
         $questionnaire->save();
 
-        return redirect()->route('admin.add-questionnaire')->with('success', 'Questionnaire created successfully!');
+        return redirect()->route('admin.all-questionnaire', ['categoryId' => $questionnaire->category_id])->with('success', 'Questionnaire created successfully!');
     }
 
     public function addQuestionnaire(){
@@ -119,6 +119,13 @@ class QuestionnaireController extends Controller
         return view('admin.add-another-questionnaire', compact('user', 'categories', 'trainers', 'selectedCategory'));
     }
 
+    public function displayConfirmAddQuestionnairePrompt(Request $request) {
+        $user = Auth::user();
+        $data = $request->all();  // Get all form data
+        
+        return view('admin.confirm-add-questionnaire', compact('data', 'user'));
+    }
+    
 
     public function showQuestionnaireDeleteConfirmation($id){
         $user = Auth::user();

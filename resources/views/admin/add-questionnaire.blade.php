@@ -4,11 +4,12 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <a href="{{route ('admin.all-category')}}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+    <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
 
     <h1 class="text-3xl font-semibold mb-6 text-center">Create Questionnaire</h1>
 
-    <form action="{{ route('admin.store-questionnaire') }}" method="POST" class="space-y-6">
+    <!-- Submit to Confirmation Route -->
+    <form action="{{ route('admin.confirm-add-questionnaire') }}" method="GET" class="space-y-6">
         @csrf
 
         <div class="grid grid-cols-1 gap-6">
@@ -55,13 +56,21 @@
 
                 <div class="flex items-center">
                     <label for="shuffle" class="w-1/6 text-lg font-medium text-gray-700">Shuffle:</label>
+
+                    <!-- Hidden input for unchecked value -->
+                    <input type="hidden" name="shuffle" value="0">
+                    
+                    <!-- Checkbox for checked value -->
                     <input type="checkbox" id="shuffle" name="shuffle" value="1" class="border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 </div>
             </div>
         </div>
 
+        <!-- Submit Button -->
         <div>
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 mt-6 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Submit</button>
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 mt-6 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Submit
+            </button>
         </div>
     </form>
 </div>

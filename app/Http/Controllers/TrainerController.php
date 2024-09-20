@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\Auth;
 class TrainerController extends Controller
 {
     public function index(){
-        $user = auth()->user();
+        $user = Auth::user();
         return view('trainer.dashboard', compact('user'));
     }
 
     public function displayAllCategory(){
-        $user = auth()->user();
+        $user = Auth::user();
         $categories = $user->examCategories()->get();
     
         return view('trainer.all-category', compact('categories', 'user'));
@@ -24,7 +24,7 @@ class TrainerController extends Controller
     
     public function addQuestionnaire()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $trainer = $user;
         $categories = ExamCategory::whereHas('trainers', function($query) use ($trainer) {
             $query->where('trainer_id', $trainer->id);

@@ -15,8 +15,10 @@
             />
         </div>
 
-        <div id="cards-container" class="card-container mt-6">
-            @include('category._cards', ['cards' => $cards])
+        <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+            <div id="cards-container" class="card-container mt-6">
+                @include('category._cards', ['cards' => $cards])
+            </div>
         </div>
     </div>
 

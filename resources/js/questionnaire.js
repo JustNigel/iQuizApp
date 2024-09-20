@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const reloadMatchingKeyBtn = document.getElementById('reload-matching-key');
     const form = document.getElementById('questionForm');
     const submitButton = document.getElementById('submit-button-id');
+    
 
     function updateAnswersContainer() {
         const selectedVariant = variantSelect.value;
@@ -290,6 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('points-input').addEventListener('input', function () {
         document.getElementById('points-hidden').value = this.value;
     });
+
+    
 
     submitButton.addEventListener('click', function(event) {
         event.preventDefault();

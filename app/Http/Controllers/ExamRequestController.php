@@ -72,10 +72,6 @@ class ExamRequestController extends Controller
 
         return view('category.join', compact('user', 'cards'));
     }
-
-
-
-
     public function storeRequest(Request $request){
         $user = Auth::user();
         $categoryId = $request->input('category_id');

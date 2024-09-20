@@ -5,6 +5,8 @@
 @section('content')
 
 <main class="flex-1 p-6">
+    <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+
     <header class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Edit Category</h1>
     </header>
