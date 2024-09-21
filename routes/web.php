@@ -126,6 +126,7 @@ Route::middleware(['auth','verified'])->group(function () {
         
         Route::get('/all-exam-requests', [ExamRequestController::class, 'displayAllExamRequest'])->name('admin.all-exam-request');
         Route::put('/exam-request/{id}/accept', [ExamRequestController::class, 'acceptExamRequest'])->name('exam.request.accept');
+        Route::get('/all-exam-students',[ExamRequestController::class,'displayAllAccepted'])->name('admin.all-confirmed-students');
 
         Route::get('/edit-trainer-profile/{id}', [AdminController::class, 'editTrainerProfile'])->name('admin.edit-trainer-profile');
         Route::patch('/update-trainer-profile/{id}', [AdminController::class, 'updateTrainerProfile'])->name('admin.update-trainer-profile');

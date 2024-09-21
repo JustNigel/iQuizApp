@@ -143,6 +143,18 @@ class ExamRequestController extends Controller
     
 
 
+    public function displayAllAccepted(){
+        $user = Auth::user();
+        $confirmedStudents = DB::table('confirmed_exam_requests')
+            ->join('users', 'confirmed_exam_requests.student_id', '=', 'users.id')
+            ->join('exam_categories', 'confirmed_exam_requests.category_id', '=', 'exam_categories.id')
+            ->join('exam_questionnaires', 'confirmed_exam_requests.questionnaire_id', '=', 'exam_questionnaires.id')
+            ->select('users.name', 'users.last_name', 'exam_questionnaires.title as questionnaire_title', 'exam_categories.title', 'confirmed_exam_requests.request_status', 'confirmed_exam_requests.id')
+            ->get();
+    
+        return view('admin.all-confirmed-students', compact('confirmedStudents', 'user'));
+    }
+    
 
 
 

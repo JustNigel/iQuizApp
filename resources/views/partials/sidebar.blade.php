@@ -1,4 +1,4 @@
-<div class="w-64 bg-custombg-gray text-custom-gray min-h-screen font-satoshi w-custom-sidebar-width flex flex-col">
+<div x-data="{ openDropdown: null }" class="w-64 bg-custombg-gray text-custom-gray min-h-screen font-satoshi w-custom-sidebar-width flex flex-col">
 
     <div class="flex-grow">
         <div class="flex items-center justify-center mt-4 px-6 py-5.5 lg:py-6.5">
@@ -85,32 +85,33 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li x-data="{ open: false }" class="py-2">
-                        <a href="#" @click="open = !open" class="block rounded flex items-center space-x-2 hover:bg-gray-700 p-2 ease-in-out duration-200">
+                    <li class="py-2">
+                        <a href="#" @click="openDropdown === 1 ? openDropdown = null : openDropdown = 1" class="block rounded flex items-center space-x-2 hover:bg-gray-700 p-2 ease-in-out duration-200">
                             <i class="fa-solid fa-gauge"></i>
                             <span>Category</span>
-                            <svg x-bind:class="{ 'rotate-180': open }" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-left:auto">
+                            <svg x-bind:class="{ 'rotate-180': openDropdown === 1 }" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-left:auto">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </a>
-                        <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
+                        <div x-show="openDropdown === 1" class="ml-4 my-4 space-y-2" x-cloak>
                             <a href="{{route('admin.add-questionnaire')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a questionnaire</a>
                             <a href="{{route('admin.add-category')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a category</a>
-                            <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Exam</a>
                             <a href="{{route('admin.all-category')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all category</a>
                             <a href="{{route('admin.all-exam-request')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Exam Request</a>
+                            <a href="#" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Questionnaires</a>
+                        
                         </div>
                     </li>
-                    <li x-data="{ open: false }" class="py-2">
-                        <a href="#" @click="open = !open" class="block rounded flex items-center space-x-2 hover:bg-gray-700 p-2 ease-in-out duration-200">
+                    <li class="py-2">
+                        <a href="#"  @click="openDropdown === 2 ? openDropdown = null : openDropdown = 2" class="block rounded flex items-center space-x-2 hover:bg-gray-700 p-2 ease-in-out duration-200">
                             <i class="fa-solid fa-gauge"></i>
                             <span>Manage Users</span>
-                            <svg x-bind:class="{ 'rotate-180': open }" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-left:auto">
+                            <svg x-bind:class="{ 'rotate-180': openDropdown === 2 }" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-left:auto">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </a>
-                        <div x-show="open" class="ml-4 my-4 space-y-2" x-cloak>
-                            <a href="{{route('admin.add-trainer')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Add a Trainers</a>
+                        <div x-show="openDropdown === 2" class="ml-4 my-4 space-y-2 " x-cloak>
+                            <a href="{{route('admin.add-trainer')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200"><i class="fa-solid fa-user-plus"></i> Add a Trainers</a>
                             <a href="{{route('admin.all-trainers')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Trainers</a>
                             <a href="{{route('admin.all-registration-request')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Requests</a>
                             <a href="{{route('admin.all-students')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Students</a>
