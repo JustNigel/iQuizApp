@@ -19,6 +19,7 @@ export default {
                 satoshi: ['Satoshi', 'sans-serif'],
             },
             colors: {
+                'softwhite' : '#f8f9fa',
                 'custom-gray': 'rgb(222, 228, 238)',
                 'custombg-gray' : '#1C2434',
                 'sidebar-menu' : '#8A99AF',
