@@ -13,6 +13,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TrainerListController;
+use App\Http\Middleware\PendingRequests;
 use App\Http\Middleware\UserType;
 use Illuminate\Support\Facades\Route;
 
@@ -34,7 +35,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
 
     // Routes for Student
-    Route::prefix('student')->middleware([UserType::class.':student'])->group(function () {
+    Route::prefix('student')->middleware([UserType::class.':student', PendingRequests::class])->group(function () {
         Route::get('/dashboard', [StudentController::class, 'index'])->name('dashboard'); // Dashboard Page
         Route::get('/history', [StudentController::class, 'history'])->name('history'); // History Page
         Route::get('/history/reviewer/{exam}', [StudentController::class, 'reviewer'])->name('student.reviewer'); // History Exam Review Page
@@ -55,7 +56,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
     
     // Routes for Trainer
-    Route::prefix('trainer')->middleware([UserType::class.':trainer'])->group(function () {
+    Route::prefix('trainer')->middleware([UserType::class.':trainer', PendingRequests::class])->group(function () {
         Route::get('/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard'); //Dashboard Page
         Route::get('/request-list',[TrainerController::class, 'requestList'])->name('trainer.request-list'); //All the Requests of Students Page
         Route::get('/all-category', [TrainerController::class, 'displayAllCategory'])->name('trainer.all-category'); //Category Page
@@ -75,7 +76,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
 
     // Routes for Admin
-    Route::prefix('admin')->middleware([UserType::class.':admin'])->group(function () {
+    Route::prefix('admin')->middleware([UserType::class.':admin', PendingRequests::class])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.dashboard'); //Dashboard Page
         Route::get('/student-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
         Route::get('/trainer-list', [TrainerListController::class,'index'])->name('admin.all-trainers'); //All the Trainers existing
@@ -84,8 +85,6 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('/trainer-list/store-trainer', [AdminController::class, 'storeTrainer'])->name('admin.store-trainer');
         Route::get('/trainer-list/confirm-delete/{id}', [TrainerListController::class,'showTrainerDeleteConfirmation'])->name('admin.delete-trainer');
         Route::delete('/trainer-list/confirm-delete/{id}', [TrainerListController::class, 'deleteTrainer'])->name('admin.confirm-delete-trainer');
-
-
     
         Route::get('/add-category', [CategoryController::class,'createCategory'])->name('admin.add-category');
         Route::post('/store-category', [CategoryController::class, 'storeCategory'])->name('admin.store-category'); 

@@ -30,7 +30,14 @@
                 </div>
                 <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
                     <i class="fas fa-question-circle text-custombg-gray text-3xl mb-2"></i>
-                    <span>Student Exam Request</span>
+                    <div class="flex items-center">
+                        <span>Student Exam Request</span>
+                        @if ($pendingRequestsCount > 0)
+                            <span class="ml-2 flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs rounded-full">
+                                {{ $pendingRequestsCount }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
             </div>
             <!-- Manage Users Section -->
@@ -47,6 +54,17 @@
                 <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
                     <i class="fas fa-user-gear text-custombg-gray text-3xl mb-2"></i>
                     <span>View All Students</span>
+                </div>
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                    <i class="fas fa-user-gear text-custombg-gray text-3xl mb-2"></i>
+                    <div class="flex items-center">
+                        <span>Student Exam Request</span>
+                        @if ($pendingRegRequestsCount > 0)
+                            <span class="ml-2 flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs rounded-full">
+                                {{ $pendingRegRequestsCount }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
     public function displayAllRegistrationRequest()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $requests = DB::table('registration_requests')
             ->join('users', 'registration_requests.user_id', '=', 'users.id')
             ->where('users.type_name', 'student')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Exam;
 use App\Models\ExamCategory;
+use App\Models\ExamRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,7 +70,7 @@ class CategoryController extends Controller
             'description' => 'required|string',
             'trainer_id' => [
                 'required',
-                'array', // Ensure trainer_id is an array for multiple selection
+                'array', 
             ],
             'trainer_id.*' => [
                 'exists:users,id',

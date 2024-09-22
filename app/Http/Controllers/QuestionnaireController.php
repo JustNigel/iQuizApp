@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExamCategory;
+use App\Models\ExamRequest;
 use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -96,7 +97,8 @@ class QuestionnaireController extends Controller
     public function displayAllQuestionnaire($categoryId, $trainerId = null)
     {
         $user = Auth::user();
-        $category = ExamCategory::findOrFail($categoryId); // Fetch the selected category
+        $category = ExamCategory::findOrFail($categoryId); 
+        $pendingRequestsCount = ExamRequest::where('request_status', 'pending')->count();
         $query = Questionnaire::where('category_id', $categoryId);
 
         if ($trainerId) {
@@ -106,7 +108,7 @@ class QuestionnaireController extends Controller
         $questionnaires = $query->orderByRaw("CASE WHEN access_status = 'visible' THEN 0 ELSE 1 END")->get();
 
         // Pass the category to the view
-        return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category'));
+        return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
     }
 
     

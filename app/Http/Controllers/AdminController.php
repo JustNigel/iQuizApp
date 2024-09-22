@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExamCategory;
+use App\Models\ExamRequest;
 use App\Models\Question;
 use App\Models\Questionnaire;
 use App\Models\User;
@@ -19,7 +20,8 @@ class AdminController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('admin.dashboard.dashboard', compact('user'));
+        $pendingRequestsCount = ExamRequest::where('request_status', 'pending')->count();
+        return view('admin.dashboard.dashboard', compact('user','pendingRequestsCount'));
     }
 
     public function trainerList(){
