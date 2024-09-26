@@ -156,6 +156,14 @@ class ExamRequestController extends Controller
     }
     
 
+    public function denyExamRequest($id)
+    {
+        $request = ExamRequest::findOrFail($id);
+        $request->delete();
+    
+        return redirect()->route('admin.all-exam-request')->with('status', 'Exam request deleted successfully');
+    }
+    
 
 
     

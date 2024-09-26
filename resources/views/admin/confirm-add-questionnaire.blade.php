@@ -6,7 +6,7 @@
         <h2 class="text-2xl font-semibold mb-4">Confirm Submission</h2>
         <p>Are you sure you want to insert the following information "<strong>{{ $data['title'] }}</strong>"?</p>
         <div class="mt-6 flex justify-end space-x-3">
-            <a href="{{ route('admin.add-questionnaire') }}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition duration-200">Cancel</a>
+            <a href="{{ route('admin.cancel-add-questionnaire') }}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition duration-200">Cancel</a>
             
             <form action="{{ route('admin.store-questionnaire') }}" method="POST">
                 @csrf

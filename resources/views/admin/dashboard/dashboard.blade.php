@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Form Elements')
+@section('title', 'Home Dashboard')
 
 @section('content')
 <div class="container mx-auto p-6">
@@ -8,27 +8,27 @@
             <!-- Categories Section -->
             <div class="bg-softwhite p-4 rounded-lg shadow-md">
                 <h2 class="text-lg font-semibold mb-4">Categories</h2>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                <a href="{{route('admin.add-category')}}" class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-plus-circle text-custombg-gray text-3xl mb-2"></i>
                     <span>Add Category</span>
-                </div>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                </a>
+                <a href="{{route('admin.all-category')}}" class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-list text-custombg-gray text-3xl mb-2"></i>
                     <span>View All Categories</span>
-                </div>
+                </a>
             </div>
             <!-- Questionnaires Section -->
             <div class="bg-softwhite p-4 rounded-lg shadow-md">
                 <h2 class="text-lg font-semibold mb-4">Questionnaires</h2>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-plus-square text-custombg-gray text-3xl mb-2"></i>
                     <span>Add Questionnaire</span>
                 </div>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-list-alt text-custombg-gray text-3xl mb-2"></i>
-                    <span>View Questionnaires</span>
+                    <span>View All Questionnaires</span>
                 </div>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-question-circle text-custombg-gray text-3xl mb-2"></i>
                     <div class="flex items-center">
                         <span>Student Exam Request</span>
@@ -43,19 +43,19 @@
             <!-- Manage Users Section -->
             <div class="bg-softwhite p-4 rounded-lg shadow-md">
                 <h2 class="text-lg font-semibold mb-4">Manage Users</h2>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300">
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-user-plus text-custombg-gray text-3xl mb-2"></i>
                     <span>Add Trainer</span>
                 </div>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-users text-custombg-gray text-3xl mb-2"></i>
                     <span>View All Trainers</span>
                 </div>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
-                    <i class="fas fa-user-gear text-custombg-gray text-3xl mb-2"></i>
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
+                    <i class="fa-solid fa-user-group text-custombg-gray text-3xl mb-2"></i>
                     <span>View All Students</span>
                 </div>
-                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center">
+                <div class="bg-gray-200 p-4 rounded-lg mb-2 flex flex-col items-center hover:bg-gray-300 transition duration-300 ease-in-out">
                     <i class="fas fa-user-gear text-custombg-gray text-3xl mb-2"></i>
                     <div class="flex items-center">
                         <span>Student Exam Request</span>

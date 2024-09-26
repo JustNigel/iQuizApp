@@ -1,4 +1,3 @@
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {

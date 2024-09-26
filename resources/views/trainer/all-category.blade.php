@@ -47,7 +47,7 @@
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
                             @foreach($category->trainers as $trainer)
-                                <span class="text-black-500">{{ $trainer->name }}</span>@if(!$loop->last), @endif
+                                <a href="{{ route('admin.filter-by-trainer', $trainer->id) }}" class="text-blue-500 hover:underline">{{ $trainer->name }}</a>@if(!$loop->last), @endif
                             @endforeach
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">
@@ -55,7 +55,7 @@
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
                             <div class="flex justify-center space-x-3">
-                                <a href="#" class="bg-green-500 px-3 py-1 rounded-md text-white hover:bg-green-600 transition duration-150 ease-in-out"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="bg-blue-500 px-3 py-1 rounded-md text-white hover:bg-blue-600 transition duration-150 ease-in-out"><i class="fas fa-pencil-alt"></i></a>
                                 <a href="{{ route('trainer.confirm-delete', $category->id) }}" class="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition duration-200"> <i class="fas fa-trash"></i></a>
                             </div>
                         </td>

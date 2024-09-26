@@ -143,6 +143,10 @@ class QuestionnaireController extends Controller
         return redirect()->route('admin.all-questionnaire', ['categoryId' => $categoryId])
                         ->with('success', 'Questionnaire deleted successfully!');
     }
+    public function cancelAddQuestionnaire(Request $request)
+    {
+        return redirect()->route('admin.add-questionnaire')->with('error', 'Adding Questionnaire has been cancelled.');
+    }
 
     public function toggleVisibility($id)
     {

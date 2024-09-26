@@ -1,54 +1,68 @@
 @extends('layouts.admin')
 
-@section('title', 'All Categories')
+@section('title', 'Category: All Categories')
 
 @section('content')
-
-<main class="flex-1 p-6">
-
-    @if (session('success'))
-            <div id="success-message" class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded-lg mb-6">
-                {{ session('success') }}
-            </div>
-    @endif
-    @if (session('error'))
-    <div id="error-message" class="bg-red-100 border border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6">
-        {{ session('error') }}
-    </div>
-    @endif
-
-    <header class="mb-6">
-        <a href="{{ route('admin.all-category') }}"><h1 class="text-3xl font-bold text-gray-800 mb-5">All Categories</h1> </a>
-        <a href="{{ route('admin.add-category') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 mr-4">
-            Add New Category
-        </a>
-        <a href="{{route('admin.add-questionnaire')}}" class="bg-green-500 border-2 border-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:text-white transition duration-200">
-            Add New Questionnaire
-        </a>
-    </header>
-    
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @foreach($categories as $category)
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 duration-300">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-2    ">{{ $category->title }}</h2>
-            <p class="text-gray-700 mb-2">{{ $category->description }}</p>
-            <p class="text-gray-800 mb-6">
-                <strong class="font-semibold">Trainers: </strong>
-                @foreach($category->trainers as $trainer)
-                    <a href="{{ route('admin.filter-by-trainer', ['trainerId' => $trainer->id]) }}" class="text-black-500 hover:underline">{{ $trainer->name }}</a>@if(!$loop->last), @endif
-                @endforeach
-            </p>
-            <div class="space-y-3">
-                <a href="{{ route('admin.edit', $category->id) }}" class="w-full bg-blue-500 text-white px-3 py-2 text-sm rounded-md hover:bg-blue-600 transition duration-200 block text-center"><i class="fa-solid fa-pen-to-square"></i> Edit Category</a>
-                <a href="{{ route('admin.all-questionnaire', ['categoryId' => $category->id]) }}" target="_blank" class="w-full bg-green-500 text-white px-3 py-2 text-sm rounded-md hover:bg-green-600 transition duration-200 block text-center"><i class="fa-solid fa-list"></i> View Questionnaire</a>
-                <a href="{{ route('admin.confirm-delete', $category->id) }}" class="w-full bg-red-500 text-white px-3 py-2 text-sm rounded-md hover:bg-red-600 transition duration-200 block text-center"><i class="fa-solid fa-trash"></i> Delete Category</a>
-            </div>
+<div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <div class="flex justify-between mb-6">
+        <div>
+            @if (Route::is('admin.filter-by-trainer'))
+                <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Categories</a>
+            @else
+                <a href="{{ route('admin.dashboard.dashboard') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+            @endif
         </div>
-        @endforeach
+        <div>
+            <a href="{{ route('admin.add-category', ['from' => 'all-categories']) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 mr-4">
+                <i class="fa-solid fa-plus mr-2"></i>New Category
+            </a>
+            <a href="{{ route('admin.add-questionnaire') }}" class="bg-green-500 border-2 border-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:text-white transition duration-200">
+                <i class="fa-solid fa-plus mr-2"></i>New Questionnaire
+            </a>
+        </div>
     </div>
-</main>
 
-@include('partials.time-interval')
+    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">All Categories</h1>
 
+    <div class="flex justify-center">
+        <div class="overflow-x-auto w-full max-w-full">
+            <table class="min-w-full bg-white rounded-lg mx-auto">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-gray-200">
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Category Title</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Trainers</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach($categories as $category)
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-700">{{ $category->title }}</td>
+                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">{{ $category->description }}</td>
+                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-600">
+                            @foreach($category->trainers as $trainer)
+                                <a href="{{ route('admin.filter-by-trainer', ['trainerId' => $trainer->id]) }}" class="text-black-500 hover:underline">{{ $trainer->name }}</a>@if(!$loop->last), @endif
+                            @endforeach
+                        </td>
+                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
+                            <div class="flex justify-center space-x-3">
+                                <a title="Edit Category" href="{{ route('admin.edit', $category->id) }}" class="bg-blue-500 px-3 py-1 rounded-md text-white hover:bg-blue-600 transition duration-150 ease-in-out">
+                                    <i class="fa-solid fa-gear"></i></a>
+                                <a title="View All Questionnaires" href="{{ route('admin.all-questionnaire', ['categoryId' => $category->id]) }}" target="_blank" class="bg-green-500 px-3 py-1 rounded-md text-white hover:bg-green-600 transition duration-150 ease-in-out">
+                                    <i class="fa-solid fa-list"></i></a>
+                                <a title="Delete Category" href="{{ route('admin.confirm-delete', $category->id) }}" class="bg-red-500 px-3 py-1 rounded-md text-white hover:bg-red-600 transition duration-150 ease-in-out">
+                                    <i class="fa-solid fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="mt-6">
+        {{ $categories->links() }}
+    </div>
+</div>
 @endsection

@@ -1,8 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Questionnaire')
+@section('title', 'Questionnaires: New')
 
 @section('content')
+@if (session('error'))
+    <div id="error-message" class="bg-red-100 border border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6">
+        {{ session('error') }}
+    </div>
+    @endif
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
     <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
 
@@ -74,4 +79,7 @@
         </div>
     </form>
 </div>
+
+@include('partials.time-interval')
+
 @endsection

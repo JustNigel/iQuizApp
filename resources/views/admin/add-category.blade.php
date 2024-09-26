@@ -1,11 +1,19 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Category')
+@section('title', 'Categories: New')
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <a href="{{route ('admin.all-category')}}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+    @php
+        // Get the previous page from the session
+        $previousPage = session('previous_page', 'dashboard');
+    @endphp
 
+    @if ($previousPage === 'all-categories')
+        <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Categories</a>
+    @else
+        <a href="{{ route('admin.dashboard.dashboard') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+    @endif
     <h1 class="text-3xl font-semibold mb-6 text-center">Create Category</h1>
 
     <form action="{{ route('admin.store-category') }}" method="POST" class="space-y-6">

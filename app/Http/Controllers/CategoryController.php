@@ -12,8 +12,11 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function createCategory(){
+    public function createCategory(Request $request){
         $user = Auth::user();
+        $previousPage = $request->input('from', 'dashboard'); // Default to dashboard if not specified
+        session(['previous_page' => $previousPage]);
+
         $trainers = User::where('type_name', 'trainer')
             ->get(); 
             
@@ -50,8 +53,7 @@ class CategoryController extends Controller
 
     public function allCategories(){
         $user = Auth::user();
-        $categories = ExamCategory::with('trainers')
-            ->get();
+        $categories = ExamCategory::with('trainers')->paginate(10);
         return view('admin.all-category', compact('categories', 'user'));
     }
     
@@ -98,11 +100,12 @@ class CategoryController extends Controller
     public function filterByTrainer($trainerId){
         $user = Auth::user();
         $categories = ExamCategory::whereHas('trainers', function ($query) use ($trainerId) {
-        $query->where('users.id', $trainerId);
-            })->get();
-    
+            $query->where('users.id', $trainerId);
+        })->paginate(10);
+        
         return view('admin.all-category', compact('categories', 'user'));
     }
+    
 
     public function showCategoryDeleteConfirmation($id){
         $user = Auth::user();

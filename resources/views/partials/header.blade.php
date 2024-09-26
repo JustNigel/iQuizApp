@@ -1,27 +1,35 @@
 <div class="bg-white shadow p-4 flex justify-between items-center font-satoshi">
-    
     <div class="flex items-center border border-transparent rounded-lg p-1 w-1/2">
-        <h2 class="text-xl font-semibold">
+        <h2 class="text-1.2rem font-400 flex items-center">
             @php
                 $titles = [
-                    'trainer.dashboard' => 'Welcome to your Dashboard, Trainer ',
-                    'trainer.all-category' => 'All Categories',
-                    'trainer.add-questionnaire' => 'Add Questionnaire',
-                    'admin.dashboard.dashboard' => 'Admin Dashboard',
-                    'profile' => 'Your Profile'
+                    'admin.dashboard.dashboard' => '<i class="fa-solid fa-house mr-2"></i> Welcome to your Dashboard, Admin',
+                    'admin.all-category' => '<i class="fa-solid fa-folder mr-2"></i> Categories: All Categories',
+                    'admin.add-category' => '<i class="fa-solid fa-folder mr-2"></i> Categories: New Category',
+                    'trainer.dashboard' => '<i class="fa-solid fa-house-user mr-2"></i>Welcome to your Dashboard, Trainer ',
+                    'trainer.all-category' => '<i class="fa-solid fa-th-list mr-2"></i>All Categories',
+                    'trainer.add-questionnaire' => '<i class="fa-solid fa-file-alt mr-2"></i>Add Questionnaire',
+                    'profile' => '<i class="fa-solid fa-user-circle mr-2"></i>Your Profile'
                 ];
 
                 $currentRoute = Route::currentRouteName();
                 $title = $titles[$currentRoute] ?? 'Dashboard';
 
-                // If the current route is 'trainer.dashboard', append the user's name
-                if ($currentRoute == 'trainer.dashboard') {
-                    $title .= ' ' . $user->name . '!';
+                switch ($currentRoute) {
+                    case 'trainer.dashboard':
+                        $title .= ' ' . $user->name . '!';
+                        break;
+                    case 'admin.dashboard.dashboard':
+                        $title .= ' ' . $user->name . '!';
+                        break;
+                    case 'student.dashboard':
+                        $title .= ' ' . $user->name . '!';
                 }
             @endphp
-            {{ $title }}
+            {!! $title !!}
         </h2>
     </div>
+
 
     <!-- Notification Dropdown -->
     <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg">

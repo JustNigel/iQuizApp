@@ -4,10 +4,12 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <a href="{{route('admin.dashboard.dashboard')}}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
-    <a href="{{ route('admin.all-confirmed-students') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
+    <div class="flex justify-between mb-6">
+        <a href="{{route('admin.dashboard.dashboard')}}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+        <a href="{{ route('admin.all-confirmed-students') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
             View All Students Exam
         </a>
+    </div>
     <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">Student Request Exam Overview</h1>
 
     <div class="flex justify-center">
@@ -34,9 +36,13 @@
                                 <form action="{{ route('exam.request.accept', $exam_request->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out">Accept</button>
+                                    <button type="submit" class="bg-green-500 px-3 py-1 rounded-md text-white hover:bg-green-600 transition duration-150 ease-in-out"><i class="fa-solid fa-check"></i></button>
                                 </form>
-                                <a href="#" class="text-red-500 hover:text-red-700 transition duration-150 ease-in-out">Deny</a>
+                                <form action="{{ route('admin.denyExamRequest', $exam_request->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 px-3 py-1 rounded-md text-white hover:bg-red-600 transition duration-150 ease-in-out"><i class="fa-solid fa-x"></i></button>
+                                </form>
                             </div>
                         </td>
                     </tr>

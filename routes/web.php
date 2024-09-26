@@ -100,6 +100,7 @@ Route::middleware(['auth','verified'])->group(function () {
         
     
         Route::get('/confirm-delete-questionnaire/{id}', [QuestionnaireController::class, 'showQuestionnaireDeleteConfirmation'])->name('admin.confirm-delete-questionnaire');
+        Route::get('/cancel-add', [QuestionnaireController::class,'cancelAddQuestionnaire'])->name('admin.cancel-add-questionnaire');
         Route::delete('/delete-questionnaire/{id}', [QuestionnaireController::class, 'deleteQuestionnaire'])->name('admin.delete-questionnaire');
         
         Route::get('/category/add-questionnaire',[QuestionnaireController::class, 'addQuestionnaire'])->name('admin.add-questionnaire'); 
@@ -126,6 +127,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/all-exam-requests', [ExamRequestController::class, 'displayAllExamRequest'])->name('admin.all-exam-request');
         Route::put('/exam-request/{id}/accept', [ExamRequestController::class, 'acceptExamRequest'])->name('exam.request.accept');
         Route::get('/all-exam-students',[ExamRequestController::class,'displayAllAccepted'])->name('admin.all-confirmed-students');
+        Route::delete('/deny-exam-request/{id}', [ExamRequestController::class,'denyExamRequest'])->name('admin.denyExamRequest');
 
         Route::get('/edit-trainer-profile/{id}', [AdminController::class, 'editTrainerProfile'])->name('admin.edit-trainer-profile');
         Route::patch('/update-trainer-profile/{id}', [AdminController::class, 'updateTrainerProfile'])->name('admin.update-trainer-profile');
