@@ -3,13 +3,24 @@
 @section('title', 'Questionnaires: New')
 
 @section('content')
-@if (session('error'))
+    @if (session('error'))
     <div id="error-message" class="bg-red-100 border border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6">
         {{ session('error') }}
     </div>
     @endif
+
+
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+
+    @php
+        $previousPage = session('previous_page', 'dashboard');
+    @endphp
+
+    @if ($previousPage === 'all-categories')
+        <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Categories</a>
+    @else
+        <a href="{{ route('admin.dashboard.dashboard') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+    @endif
 
     <h1 class="text-3xl font-semibold mb-6 text-center">Create Questionnaire</h1>
 

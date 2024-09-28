@@ -14,6 +14,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TrainerListController;
 use App\Http\Middleware\PendingRequests;
+use App\Http\Middleware\SetPreviousPage;
 use App\Http\Middleware\UserType;
 use Illuminate\Support\Facades\Route;
 
@@ -25,17 +26,17 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::class])->group(function () {
 
     // The universal routes in editing profile for Student, Trainer, and Admin
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::get('/profile', [ProfileController::class, 'edit',])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('login', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
 
     // Routes for Student
-    Route::prefix('student')->middleware([UserType::class.':student', PendingRequests::class])->group(function () {
+    Route::prefix('student')->middleware([UserType::class.':student'])->group(function () {
         Route::get('/dashboard', [StudentController::class, 'index'])->name('dashboard'); // Dashboard Page
         Route::get('/history', [StudentController::class, 'history'])->name('history'); // History Page
         Route::get('/history/reviewer/{exam}', [StudentController::class, 'reviewer'])->name('student.reviewer'); // History Exam Review Page
@@ -56,7 +57,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
     
     // Routes for Trainer
-    Route::prefix('trainer')->middleware([UserType::class.':trainer', PendingRequests::class])->group(function () {
+    Route::prefix('trainer')->middleware([UserType::class.':trainer'])->group(function () {
         Route::get('/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard'); //Dashboard Page
         Route::get('/request-list',[TrainerController::class, 'requestList'])->name('trainer.request-list'); //All the Requests of Students Page
         Route::get('/all-category', [TrainerController::class, 'displayAllCategory'])->name('trainer.all-category'); //Category Page
@@ -76,7 +77,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
 
     // Routes for Admin
-    Route::prefix('admin')->middleware([UserType::class.':admin', PendingRequests::class])->group(function () {
+    Route::prefix('admin')->middleware([UserType::class.':admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard.dashboard'); //Dashboard Page
         Route::get('/student-list',[AdminController::class, 'requestList'])->name('admin.request-list'); //All the Requests of Students Page
         Route::get('/trainer-list', [TrainerListController::class,'index'])->name('admin.all-trainers'); //All the Trainers existing

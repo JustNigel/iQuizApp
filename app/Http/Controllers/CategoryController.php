@@ -14,9 +14,6 @@ class CategoryController extends Controller
 {
     public function createCategory(Request $request){
         $user = Auth::user();
-        $previousPage = $request->input('from', 'dashboard'); // Default to dashboard if not specified
-        session(['previous_page' => $previousPage]);
-
         $trainers = User::where('type_name', 'trainer')
             ->get(); 
             

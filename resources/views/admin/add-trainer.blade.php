@@ -4,7 +4,19 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <h1 class="text-3xl font-semibold mb-6">Add Trainer</h1>
+
+
+    @php
+        // Get the previous page from the session
+        $previousPage = session('previous_page', 'dashboard');
+    @endphp
+
+    @if ($previousPage === 'all-trainers')
+        <a href="{{ route('admin.all-trainers') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Trainers</a>
+    @else   
+        <a href="{{ route('admin.dashboard.dashboard') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+    @endif
+    <h1 class="text-3xl font-semibold mb-6 text-center">Add Trainer</h1>
 
     <form action="{{ route('admin.store-trainer') }}" method="POST" class="space-y-6">
         @csrf

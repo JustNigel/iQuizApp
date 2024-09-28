@@ -5,11 +5,24 @@
 @section('content')
 <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
     <div class="flex justify-between mb-6">
-        <a href="{{route('admin.dashboard.dashboard')}}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
-        <a href="{{ route('admin.all-confirmed-students') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
-            View All Students Exam
-        </a>
+        @php
+            $previousPage = session('previous_page', 'dashboard');
+        @endphp
+
+        @if ($previousPage === 'all-exams')
+            <a href="{{ route('admin.all-confirmed-students') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Students Exam</a>
+        @else
+            <a href="{{ route('admin.dashboard.dashboard') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+        @endif
+
+        {{-- Show the "View All Students Exam" button only if coming from the dashboard --}}
+        @if ($previousPage !== 'all-exams')
+            <a href="{{ route('admin.all-confirmed-students') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
+                View All Students Exam
+            </a>
+        @endif
     </div>
+
     <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">Student Request Exam Overview</h1>
 
     <div class="flex justify-center">

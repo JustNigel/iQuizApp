@@ -16,7 +16,7 @@
             <a href="{{ route('admin.add-category', ['from' => 'all-categories']) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 mr-4">
                 <i class="fa-solid fa-plus mr-2"></i>New Category
             </a>
-            <a href="{{ route('admin.add-questionnaire') }}" class="bg-green-500 border-2 border-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:text-white transition duration-200">
+            <a href="{{ route('admin.add-questionnaire', ['from' => 'all-categories']) }}" class="bg-green-500 border-2 border-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:text-white transition duration-200">
                 <i class="fa-solid fa-plus mr-2"></i>New Questionnaire
             </a>
         </div>

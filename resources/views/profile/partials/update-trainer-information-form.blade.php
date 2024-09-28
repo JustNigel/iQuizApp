@@ -1,4 +1,5 @@
 <section>
+    <a href="{{ route('admin.all-trainers') }}" class="mb-4 text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Trainers</a>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Profile Information') }}
@@ -59,12 +60,12 @@
             <div class="mt-2 flex items-center space-x-4">
                 <label class="inline-flex items-center">
                     <input type="radio" name="gender" value="male" {{ old('gender', $trainer->gender) === 'male' ? 'checked' : '' }} required>
-                    <span class="ml-2 text-black-800 dark:text-black-200">{{ __('Male') }}</span>
+                    <span class="ml-2 text-black-800 ">{{ __('Male') }}</span>
                 </label>
 
                 <label class="inline-flex items-center">
                     <input type="radio" name="gender" value="female" {{ old('gender', $trainer->gender) === 'female' ? 'checked' : '' }} required>
-                    <span class="ml-2 text-black-800 dark:text-gray-200">{{ __('Female') }}</span>
+                    <span class="ml-2 text-black-800 ">{{ __('Female') }}</span>
                 </label>
             </div>
 
@@ -78,10 +79,10 @@
 
             @if ($trainer instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $trainer->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                    <p class="text-sm mt-2 text-gray-800 ">
                         {{ __('Your email address is unverified.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                        <button form="send-verification" class="underline text-sm text-gray-600  hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ">
                             {{ __('Click here to re-send the verification email.') }}
                         </button>
                     </p>
