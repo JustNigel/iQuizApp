@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'All Questionnaires')
+@section('title', 'Categories: All Questionnaires')
 
 @section('content')
 
@@ -11,7 +11,7 @@
     @endif
    
 <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+    <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Return to All Categories</a>
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-semibold">All Existing Questionnaires for <span class="text-azure-color">{{$category->title}}</span> </h1>
         <a href="{{ route('admin.add-another-questionnaire', ['categoryId' => $category->id]) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
@@ -52,7 +52,7 @@
                         </form>
                     </td>
                     <td class="px-6 py-4 text-center whitespace-nowrap">
-                        <a href="{{ route('admin.edit-questionnaire', $questionnaire->id) }}" class="bg-blue-500 px-3 py-1 mr-2 rounded-md text-white hover:bg-blue-600 transition duration-150 ease-in-out">
+                        <a href="{{ route('admin.edit-questionnaire', ['from' => 'all-questionnaire', $questionnaire->id]) }}" class="bg-blue-500 px-3 py-1 mr-2 rounded-md text-white hover:bg-blue-600 transition duration-150 ease-in-out">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                         <a href="{{ route('admin.confirm-delete-questionnaire', $questionnaire->id) }}" class="bg-red-500 px-3 py-1 rounded-md text-white hover:bg-red-600 transition duration-150 ease-in-out">

@@ -37,6 +37,12 @@
         </div>
 
         <div>
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input id="username" name="username" type="text" class="mt-1 block w-full" :value="old('username', $trainer->username)" autofocus autocomplete="username" disabled />
+            <x-input-error class="mt-2" :messages="$errors->get('username')" />
+        </div>
+
+        <div>
             <x-input-label for="age" :value="__('Age')" />
             <x-text-input id="age" name="age" type="text" class="mt-1 block w-full" :value="old('age', $trainer->age)" />
             <x-input-error class="mt-2" :messages="$errors->get('age')" />

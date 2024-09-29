@@ -18,17 +18,24 @@ class PendingRequests
      */ 
     public function handle(Request $request, Closure $next): Response
     {
-        
-        $pendingRequestsCount = ExamRequest::where('request_status', 'pending')->count();  
-        $pendingRegistrationRequestsCount = DB::table('registration_requests')
-            ->where('request_status', 'pending') 
-            ->count();
-    
+        // Fetch pending exam requests with student names and questionnaire details
+        $pendingExamRequests = ExamRequest::with(['student', 'questionnaire'])
+            ->where('request_status', 'pending')
+            ->get(['student_id', 'questionnaire_id', 'created_at']); 
+
+        // Fetch pending registration requests with student names and creation dates
+        $pendingRegistrationRequests = DB::table('registration_requests')
+            ->join('users', 'registration_requests.user_id', '=', 'users.id')
+            ->where('registration_requests.request_status', 'pending')
+            ->select('users.name as student_name', 'registration_requests.created_at')
+            ->get();
+
+        // Share the data with all views
         view()->share([
-            'pendingRequestsCount' => $pendingRequestsCount,
-            'pendingRegRequestsCount' => $pendingRegistrationRequestsCount,
+            'pendingExamRequests' => $pendingExamRequests,
+            'pendingRegistrationRequests' => $pendingRegistrationRequests, // Change the name here
         ]);
-    
+
         return $next($request);
-    }   
+    }
 }

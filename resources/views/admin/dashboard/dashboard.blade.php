@@ -28,7 +28,7 @@
                 <h2 class="text-lg font-semibold">Questionnaires</h2>
             </div>
             <div class="flex items-center justify-between bg-gray-200 p-4 rounded-lg mb-2 hover:bg-gray-300 transition duration-300 ease-in-out">
-                <a href="#" class="flex-grow block text-black">
+                <a href="{{route('admin.all-questionnaires')}}" class="flex-grow block text-black">
                     <i class="fa-solid fa-rectangle-list mr-1"></i>
                     All Questionnaires
                 </a>
@@ -46,9 +46,9 @@
                     <a href="{{route('admin.all-exam-request')}}" class="p-2 bg-gray-300 rounded hover:bg-gray-400 transition duration-300 ease-in-out">
                         <i class="fa-solid fa-bell text-custombg-gray text-lg"></i>
                     </a>
-                    @if ($pendingRequestsCount > 0)
+                    @if ($pendingExamRequests->count() > 0)
                         <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-red-600 text-white text-xs rounded-full flex items-center justify-center">
-                            {{ $pendingRequestsCount }}
+                            {{ $pendingExamRequests->count() }}
                         </span>
                     @endif
                 </div>
@@ -78,9 +78,9 @@
                     <a href="{{route('admin.all-registration-request', ['from' => 'dashboard'])}}" class="p-2 bg-gray-300 rounded hover:bg-gray-400 transition duration-300 ease-in-out">
                         <i class="fa-solid fa-bell text-custombg-gray text-lg"></i>
                     </a>
-                    @if ($pendingRegRequestsCount > 0)
+                    @if ($pendingRegistrationRequests ->count() > 0)
                         <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-red-600 text-white text-xs rounded-full flex items-center justify-center">
-                            {{ $pendingRegRequestsCount }}
+                            {{ $pendingRegistrationRequests->count() > 0 }}
                         </span>
                     @endif
                 </div>

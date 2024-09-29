@@ -110,13 +110,13 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
         
         
         Route::get('/category-{categoryId}/all-questionnaires',[QuestionnaireController::class, 'displayAllQuestionnaire'])->name('admin.all-questionnaire'); //Exam Questionnaire Page
-        
-        
         Route::get('/category/trainer-{trainerId}/filtered-categories', [CategoryController::class, 'filterByTrainer'])->name('admin.filter-by-trainer');
         Route::put('/questionnaire-{id}', [QuestionnaireController::class, 'updateQuestionnaire'])->name('admin.update-questionnaire');
         Route::get('/edit-questionnaire-{id}', [QuestionnaireController::class, 'editQuestionnaire'])->name('admin.edit-questionnaire');
         Route::post('/questionnaire/toggle-visibility/{id}', [QuestionnaireController::class, 'toggleVisibility'])->name('questionnaire.toggle-visibility');
         
+        Route::get('/all-questionnaires', [QuestionnaireController::class, 'displayListQuestionnaires'])->name('admin.all-questionnaires');
+
         Route::get('/respondents', [AdminController::class, 'respondent'])->name('admin.respondent');
         Route::get('/{category}/respondents', [AdminController::class, 'respondents'])->name('admin.respondents'); //All Respondents In the Exam
         
@@ -132,6 +132,7 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
 
         Route::get('/edit-trainer-profile/{id}', [AdminController::class, 'editTrainerProfile'])->name('admin.edit-trainer-profile');
         Route::patch('/update-trainer-profile/{id}', [AdminController::class, 'updateTrainerProfile'])->name('admin.update-trainer-profile');
+        Route::patch('/update-trainer-password/{id}', [AdminController::class, 'updateTrainerPassword'])->name('admin.update-trainer-password');
         Route::delete('/delete-trainer-profile/{id}', [AdminController::class, 'deleteTrainerProfile'])->name('admin.delete-trainer-profile');
 
         Route::get('/all-students', [AdminController::class, 'displayAllStudents'])->name('admin.all-students');

@@ -84,6 +84,12 @@
                     </a>
                 </li>
                 <li class="py-2">
+                    <a href="{{route('profile')}}" class="block rounded p-2 space-x-2 hover:bg-gray-700 ease-in-out duration-200">
+                        <i class="fa-solid fa-user-circle mr-2"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="py-2">
                     <a href="#" @click="openDropdown === 1 ? openDropdown = null : openDropdown = 1" class="block rounded flex items-center space-x-2 hover:bg-gray-700 p-2 ease-in-out duration-200">
                         <i class="fa-solid fa-folder-open"></i>
                         <span>Categories</span>
@@ -93,7 +99,7 @@
                     </a>
                     <div x-show="openDropdown === 1" class="ml-4 my-4 space-y-2" x-cloak>
                         <div class="flex items-center justify-between">
-                            <a href="#" class="flex-grow block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded-l ease-in-out duration-200">
+                            <a href="{{route('admin.all-questionnaires')}}" class="flex-grow block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded-l ease-in-out duration-200">
                                 Questionnaires
                             </a>
                             <a href="{{route('admin.add-questionnaire', ['from' => 'dashboard'])}}" class="p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded-r ease-in-out duration-200">
@@ -112,9 +118,9 @@
                         <a href="{{route('admin.all-exam-request')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200 relative">
                             <span>Exam Requests</span>
                             <!-- Red dot for notification -->
-                            @if ($pendingRequestsCount > 0)
+                            @if ($pendingExamRequests ->count() > 0)
                                 <span class="absolute top-0 right-0 mt-2 mr-2 flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs rounded-full">
-                                    {{ $pendingRequestsCount }}
+                                    {{ $pendingExamRequests ->count() }}
                                 </span>
                             @endif
                         </a>
@@ -122,25 +128,33 @@
                 </li>
                 <li class="py-2">
                     <a href="#" @click="openDropdown === 2 ? openDropdown = null : openDropdown = 2" class="block rounded flex items-center space-x-2 hover:bg-gray-700 p-2 ease-in-out duration-200">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-user-gear"></i>
                         <span>Manage Users</span>
                         <svg x-bind:class="{ 'rotate-180': openDropdown === 2 }" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-left:auto">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </a>
                     <div x-show="openDropdown === 2" class="ml-4 my-4 space-y-2" x-cloak>
-                        <a href="{{route('admin.add-trainer')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200"><i class="fa-solid fa-user-plus"></i> Add a Trainer</a>
-                        <a href="{{route('admin.all-trainers')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Trainers</a>
+                        
+                        <div class="flex items-center justify-between">
+                            <a href="{{route('admin.all-trainers')}}" class="flex-grow block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded-l ease-in-out duration-200">
+                                Trainers
+                            </a>
+                            <a href="{{route('admin.add-trainer', ['from' => 'dashboard'])}}" class="p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded-r ease-in-out duration-200">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+                        <a href="{{route('admin.all-students')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">Students</a>
+                    
                         <a href="{{route('admin.all-registration-request')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200 relative">
-                            <span>View all Requests</span>
+                            <span>Student Requests</span>
                             <!-- Red dot for notification -->
-                            @if ($pendingRegRequestsCount > 0)
+                            @if ($pendingRegistrationRequests ->count() > 0)
                                 <span class="absolute top-0 right-0 mt-2 mr-2 flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs rounded-full">
-                                    {{ $pendingRegRequestsCount }}
+                                    {{ $pendingRegistrationRequests ->count() }}
                                 </span>
                             @endif
                         </a>
-                        <a href="{{route('admin.all-students')}}" class="block p-2 text-sm text-sidebar-menu hover:text-gray-300 hover:bg-gray-700 rounded ease-in-out duration-200">View all Students</a>
                     </div>
                 </li>
                 @endif

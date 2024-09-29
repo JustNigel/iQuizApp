@@ -55,8 +55,6 @@ class QuestionnaireController extends Controller
         return view('admin.edit-questionnaire', compact('user', 'questionnaire', 'trainers', 'categories'));
     }
     
-    
-    
     public function updateQuestionnaire(Request $request, $id){
         $request->validate([
             'title' => 'required|string|max:255',
@@ -110,6 +108,16 @@ class QuestionnaireController extends Controller
         // Pass the category to the view
         return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
     }
+
+    
+    public function displayListQuestionnaires() {
+        session(['previous_page' => 'all-questionnaires']);
+        $questionnaires = Questionnaire::orderByRaw('access_status = "visible" DESC')->paginate(10);
+        return view('admin.all-questionnaires', compact('questionnaires'));
+    }
+    
+    
+
 
     
     public function addAnotherQuestionnaire($categoryId){

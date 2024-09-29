@@ -3,6 +3,17 @@
 @section('title', 'Category: All Categories')
 
 @section('content')
+    @if (session('success'))
+            <div id="success-message" class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded-lg mb-6">
+                {{ session('success') }}
+            </div>
+    @endif
+    @if (session('error'))
+        <div id="success-message" class="bg-red-100 border border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6">
+                {{ session('error') }}
+            </div>
+    @endif
+    
 <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
     <div class="flex justify-between mb-6">
         <div>
@@ -65,4 +76,7 @@
         {{ $categories->links() }}
     </div>
 </div>
+
+    @include('partials.time-interval')
+
 @endsection

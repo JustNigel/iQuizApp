@@ -71,9 +71,8 @@ class AdminController extends Controller
     
     
     
-    public function updateTrainerProfile(Request $request, $id)
+    public function updateTrainerProfile(Request $request, $id): RedirectResponse
     {
-        
         $trainer = User::where('id', $id)->where('type_name', 'trainer')->firstOrFail();
 
         $request->validate([
@@ -91,17 +90,25 @@ class AdminController extends Controller
 
         return redirect()->route('admin.edit-trainer-profile', $trainer->id)->with('status', 'Profile updated!');
     }
-    public function updateTrainerPassword(Request $request, $id){
+
+    public function updateTrainerPassword(Request $request, $id): RedirectResponse
+    {
         $trainer = User::where('id', $id)->where('type_name', 'trainer')->firstOrFail();
+
         $request->validate([
             'current_password' => 'required|string',
-            'new_password' => 'required|string|confirmed|min:8',
+            'password' => 'required|string|confirmed|min:8', // Changed 'new_password' to 'password' to match form
         ]);
-        if (Hash::check($request->current_password, $trainer->password)) {
+
+        // Check if the current password is correct
+        if (!Hash::check($request->current_password, $trainer->password)) {
             return back()->withErrors(['current_password' => 'The provided password does not match our records.']);
         }
-        $trainer->password = Hash::make($request->new_password);
+
+        // Update the trainer's password
+        $trainer->password = Hash::make($request->password);
         $trainer->save();
+
         return redirect()->route('admin.edit-trainer-profile', $trainer->id)->with('status', 'Password updated!');
     }
 

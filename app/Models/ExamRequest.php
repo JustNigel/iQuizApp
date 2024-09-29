@@ -19,5 +19,13 @@ class ExamRequest extends Model
         'request_status',
     ];
 
-    
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id'); // Assuming User model represents students
+    }
+
+    public function questionnaire()
+    {
+        return $this->belongsTo(Questionnaire::class, 'questionnaire_id');
+    }
 }

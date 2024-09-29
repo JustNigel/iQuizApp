@@ -3,8 +3,17 @@
 @section('title', 'Edit Questionnaire')
 
 @section('content')
+
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <a href="{{ route('admin.all-questionnaire', ['categoryId' => $questionnaire->category_id]) }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
+    @php
+        $previousPage = session('previous_page', 'dashboard');
+    @endphp
+
+    @if ($previousPage === 'all-questionnaires')
+        <a href="{{ route('admin.all-questionnaires') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Questionnaires</a>
+    @else   
+        <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Categories</a>
+    @endif
 
     <h1 class="text-3xl font-semibold mb-6 text-center">Edit Questionnaire</h1>
 
