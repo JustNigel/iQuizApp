@@ -66,12 +66,21 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
         Route::post('/store-questionnaire', [TrainerController::class, 'storeQuestionnaire'])->name('trainer.store-questionnaire');
         Route::get('/confirm-delete-all-questionnaire/{categoryId}', [TrainerController::class, 'showAllQuestionnaireDeleteConfirmation'])->name('trainer.confirm-delete');
         Route::delete('/delete-all-questionnaire/{categoryId}', [TrainerController::class, 'deleteAllQuestionnaire'])->name('trainer.questionnaire.delete');
-    
-        
         
         Route::get('/respondents', [TrainerController::class, 'respondent'])->name('trainer.respondent');
         Route::get('/{category}/respondents', [TrainerController::class, 'respondentsCategory'])->name('trainer.respondents-category'); //All Respondents In the Exam
-    
+        
+        Route::get('/all-registration-request', [RegistrationController::class, 'displayAllRegistrationRequest'])->name('trainer.all-registration-request');
+        Route::get('/all-students', [AdminController::class, 'displayAllStudents'])->name('trainer.all-students');
+        Route::get('/accept-request/{id}', [RegistrationController::class, 'acceptRequest'])->name('trainer.acceptRequest');
+        Route::get('/deny-request/{id}', [RegistrationController::class, 'denyRequest'])->name('trainer.denyRequest');
+        
+        Route::get('/all-exam-students',[ExamRequestController::class,'displayAllAccepted'])->name('trainer.all-confirmed-students');
+        Route::get('/all-exam-requests', [ExamRequestController::class, 'displayAllExamRequest'])->name('trainer.all-exam-request');
+        Route::put('/exam-request/{id}/accept', [ExamRequestController::class, 'acceptExamRequest'])->name('trainer.request.accept');
+        Route::get('/all-exam-students',[ExamRequestController::class,'displayAllAccepted'])->name('trainer.all-confirmed-students');
+        Route::delete('/deny-exam-request/{id}', [ExamRequestController::class,'denyExamRequest'])->name('trainer.denyExamRequest');
+
 
     });
 

@@ -128,7 +128,12 @@ class AdminController extends Controller
             ->select('users.name', 'users.last_name', 'users.username', 'users.email', 'confirmed_registrations.id', 'confirmed_registrations.request_status')
             ->get();
         
-        return view('admin.all-students', compact('student', 'user'));
+        if ($user->type_name === 'trainer') {
+            return view('trainer.all-students', compact('student', 'user'));
+        } else {
+            return view('admin.all-students', compact('student', 'user'));
+        }
+
     }
 
 

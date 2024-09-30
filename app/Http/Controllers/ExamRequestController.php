@@ -106,19 +106,33 @@ class ExamRequestController extends Controller
         return redirect()->route('category.join')->with('success', 'Your request to join the exam has been sent.');
     }
 
-    public function displayAllExamRequest(){
+    public function displayAllExamRequest() {
         $user = Auth::user();
-        $exam_requests = DB::table('exam_requests')
+    
+        // Start building the query for exam requests
+        $exam_requests_query = DB::table('exam_requests')
             ->join('users', 'exam_requests.student_id', '=', 'users.id')
             ->join('exam_categories', 'exam_requests.category_id', '=', 'exam_categories.id')
             ->join('exam_questionnaires', 'exam_requests.questionnaire_id', '=', 'exam_questionnaires.id')
             ->where('users.type_name', 'student')
-            ->where('exam_requests.request_status', '!=', 'accepted') 
-            ->select('users.name', 'users.last_name', 'exam_questionnaires.title as questionnaire_title', 'exam_categories.title', 'exam_requests.id', 'exam_requests.request_status')
-            ->get();
+            ->where('exam_requests.request_status', '!=', 'accepted')
+            ->select('users.name', 'users.last_name', 'exam_questionnaires.title as questionnaire_title', 'exam_categories.title', 'exam_requests.id', 'exam_requests.request_status');
     
-        return view('admin.all-exam-requests', compact('exam_requests', 'user'));
+        if ($user->type_name === 'trainer') {
+            $exam_requests_query->where('exam_questionnaires.trainer_id', $user->id);
+                                
+        }
+    
+        // Get the filtered exam requests
+        $exam_requests = $exam_requests_query->get();
+    
+        if (Auth::user()->type_name === 'trainer') {
+            return view('trainer.all-exam-requests', compact('exam_requests', 'user'));
+        } else {
+            return view('admin.all-exam-requests', compact('exam_requests', 'user'));
+        }
     }
+    
     
     public function acceptExamRequest($id)
     {
@@ -143,16 +157,38 @@ class ExamRequestController extends Controller
     
 
 
-    public function displayAllAccepted(){
+    public function displayAllAccepted() {
         $user = Auth::user();
-        $confirmedStudents = DB::table('confirmed_exam_requests')
+    
+        // Start building the query for confirmed exam requests
+        $confirmedStudentsQuery = DB::table('confirmed_exam_requests')
             ->join('users', 'confirmed_exam_requests.student_id', '=', 'users.id')
             ->join('exam_categories', 'confirmed_exam_requests.category_id', '=', 'exam_categories.id')
             ->join('exam_questionnaires', 'confirmed_exam_requests.questionnaire_id', '=', 'exam_questionnaires.id')
-            ->select('users.name', 'users.last_name', 'exam_questionnaires.title as questionnaire_title', 'exam_categories.title', 'confirmed_exam_requests.request_status', 'confirmed_exam_requests.id')
-            ->get();
+            // Select the required fields
+            ->select(
+                'users.name', 
+                'users.last_name', 
+                'exam_questionnaires.title as questionnaire_title', 
+                'exam_categories.title as title', 
+                'confirmed_exam_requests.request_status', 
+                'confirmed_exam_requests.id'
+            );
     
-        return view('admin.all-confirmed-students', compact('confirmedStudents', 'user'));
+        // If the authenticated user is a trainer, filter by their trainer ID
+        if ($user->type_name === 'trainer') {
+            $confirmedStudentsQuery->where('confirmed_exam_requests.trainer_id', $user->id);
+        }
+    
+        // Get the filtered or unfiltered list of confirmed students
+        $confirmedStudents = $confirmedStudentsQuery->get();
+    
+        // Return the appropriate view based on the user type
+        if ($user->type_name === 'trainer') {
+            return view('trainer.all-confirmed-students', compact('confirmedStudents', 'user'));
+        } else {
+            return view('admin.all-confirmed-students', compact('confirmedStudents', 'user'));
+        }
     }
     
 

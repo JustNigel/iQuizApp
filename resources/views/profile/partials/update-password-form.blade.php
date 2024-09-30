@@ -13,21 +13,24 @@
         @csrf
         @method('put')
 
-        <div>
+        <div class="relative">
             <x-input-label for="update_password_current_password" :value="__('Current Password')" />
             <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
+            <i id="eyeIconCurrent" class="fas fa-eye absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer mt-6 text-gray-500 mt-9" onclick="togglePasswordVisibility('update_password_current_password', 'eyeIconCurrent')"></i>
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
-        </div>
+        </div >
 
-        <div>
+        <div class="relative">
             <x-input-label for="update_password_password" :value="__('New Password')" />
             <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            <i id="eyeIconNew" class="fas fa-eye absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer mt-6 text-gray-500 mt-9" onclick="togglePasswordVisibility('update_password_password', 'eyeIconNew')"></i>
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-        </div>
+        </div >
 
-        <div>
+        <div class="relative">
             <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
             <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            <i id="eyeIconConfirm" class="fas fa-eye absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer mt-6 text-gray-500 mt-9" onclick="togglePasswordVisibility('update_password_password_confirmation', 'eyeIconConfirm')"></i>
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
         </div>
 
@@ -46,3 +49,4 @@
         </div>
     </form>
 </section>
+@include('partials.password-eye')

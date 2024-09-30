@@ -1,4 +1,17 @@
 <section>
+    @if ($user->type_name === 'student')
+        <a href="{{ route('dashboard') }}" class="mb-4 text-indigo-600 hover:text-indigo-700 font-medium inline-block">
+            &larr; Return to Dashboard
+        </a>
+    @elseif ($user->type_name === 'trainer')
+        <a href="{{ route('trainer.dashboard') }}" class="mb-4 text-indigo-600 hover:text-indigo-700 font-medium inline-block">
+            &larr; Return to Dashboard
+        </a>
+    @else
+        <a href="{{route('admin.dashboard.dashboard')}}" class="mb-4 text-indigo-600 hover:text-indigo-700 font-medium inline-block">
+            &larr; Return to Dashboard
+        </a>
+    @endif
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Profile Information') }}
@@ -32,6 +45,12 @@
             <x-input-label for="last_name" :value="__('Last Name')" />
             <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $user->last_name)" required autofocus autocomplete="last_name" />
             <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
+        </div>
+
+        <div>
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input id="username" name="username" type="text" class="mt-1 block w-full" :value="old('username', $user->username)" autofocus autocomplete="username" disabled />
+            <x-input-error class="mt-2" :messages="$errors->get('username')" />
         </div>
 
 

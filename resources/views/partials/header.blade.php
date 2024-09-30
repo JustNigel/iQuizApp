@@ -20,6 +20,9 @@
                     'admin.add-questionnaire' => '<i class="fa-solid fa-file-lines mr-2"></i> Questionnaires: New Questionnaire',
                     'trainer.dashboard' => '<i class="fa-solid fa-house-user mr-2"></i> Welcome to your Dashboard, Trainer',
                     'trainer.all-category' => '<i class="fa-solid fa-th-list mr-2"></i> All Categories',
+                    'trainer.all-students' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: All Students',
+                    'trainer.all-registration-request' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: All Registration Request',
+                    
                     'trainer.add-questionnaire' => '<i class="fa-solid fa-file-alt mr-2"></i> Add Questionnaire',
                     'profile' => '<i class="fa-solid fa-user-circle mr-2"></i>Your Profile'
                 ];
@@ -96,8 +99,8 @@
         <a href="{{route('profile')}}">
             <div class="flex items-center space-x-4 mr-4 relative">
                 <span class="hidden text-right lg:block">
-                    <span class="block text-sm font-medium text-black dark:text-black">Nigel</span>
-                    <span class="block text-xs font-medium">Admin</span>
+                    <span class="block text-sm font-medium text-black dark:text-black">{{$user -> name}}</span>
+                    <span class="block text-xs font-medium">{{$user -> type_name}}</span>
                 </span>
                 <img src="{{ asset('images/jameer.jpg') }}" alt="User" class="rounded-full w-10 h-10">
             </div>  

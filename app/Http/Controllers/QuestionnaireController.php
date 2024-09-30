@@ -111,9 +111,10 @@ class QuestionnaireController extends Controller
 
     
     public function displayListQuestionnaires() {
+        $user = Auth::user();
         session(['previous_page' => 'all-questionnaires']);
         $questionnaires = Questionnaire::orderByRaw('access_status = "visible" DESC')->paginate(10);
-        return view('admin.all-questionnaires', compact('questionnaires'));
+        return view('admin.all-questionnaires', compact('questionnaires', 'user'));
     }
     
     
