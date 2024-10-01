@@ -199,6 +199,27 @@ class ExamRequestController extends Controller
     
         return redirect()->route('admin.all-exam-request')->with('status', 'Exam request deleted successfully');
     }
+
+    public function showConfirmDeleteAccess($id) {
+        $user = Auth::user();
+        $exam = DB::table('confirmed_exam_requests')
+            ->join('users', 'confirmed_exam_requests.student_id', '=', 'users.id')
+            ->join('exam_questionnaires', 'confirmed_exam_requests.questionnaire_id', '=', 'exam_questionnaires.id')
+            ->where('confirmed_exam_requests.id', $id)
+            ->select('users.name as student_name', 'confirmed_exam_requests.id', 'exam_questionnaires.title as title')
+            ->first();
+    
+        return view('trainer.confirm-delete-access', compact('exam', 'user'));
+    }
+    
+
+
+    public function deleteExamAccess($id) {
+        DB::table('confirmed_exam_requests')->where('id', $id)->delete();
+        
+        return redirect()->route('trainer.all-confirmed-students')->with('status', 'Exam Access deleted successfully');
+    }
+    
     
 
 

@@ -114,3 +114,16 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.explore{
+  background-color: rgba(31, 115, 225, 0.8);
+}
+.explore:hover{
+  background-color: rgba(31, 115, 225, 0.7);
+}
+.start-quiz{
+  border: 2px solid rgba(31, 115, 225, 0.8);
+}
+.start-quiz:hover{
+  background-color: rgba(90, 90, 90, 0.3);
+}

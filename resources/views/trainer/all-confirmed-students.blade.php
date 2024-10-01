@@ -11,12 +11,11 @@
         @endphp
 
         @if ($previousPage === 'all-exams')
-            <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Categories</a>
+            <a href="{{route('trainer.dashboard')}}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to All Categories</a>
         @else
-            <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+            <a href="{{route('trainer.dashboard')}}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
         @endif
 
-        {{-- Group the buttons together with flex and spacing --}}
         <div class="flex space-x-4">
             <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
                 Review Exam History
@@ -24,7 +23,7 @@
             <a href="#" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200">
                 Accepted Students
             </a>
-            <a href="{{ route('admin.all-exam-request', ['from' => 'all-exams']) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-200">
+            <a href="{{ route('trainer.all-exam-request', ['from' => 'all-exams']) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-200">
                 Exam Requests
             </a>
         </div>
@@ -56,7 +55,7 @@
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
                             <div class="flex justify-center space-x-3">
                                 <a href="#" class="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"><i class="fa-solid fa-eye"></i></a>
-                                <a href="#" class="text-red-500 hover:text-red-700 transition duration-150 ease-in-out"><i class="fa-solid fa-trash"></i></a>
+                                <a href="{{route('trainer.confirm-delete-access', $confirmedStudent -> id)}}" class="text-red-500 hover:text-red-700 transition duration-150 ease-in-out"><i class="fa-solid fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>

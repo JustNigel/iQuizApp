@@ -80,19 +80,14 @@ class TrainerController extends Controller
     
     public function deleteAllQuestionnaire(Request $request, $categoryId)
     {
-        // Find the category to ensure it exists
         $category = ExamCategory::findOrFail($categoryId);
-    
-        // Delete all questionnaires associated with this category
-        $questionnaires = $category->questionnaires; // Adjust this if your relationship is different
+
+        $questionnaires = $category->questionnaires; 
     
         foreach ($questionnaires as $questionnaire) {
             $questionnaire->delete();
         }
-    
-        // Optionally, you can also delete the category itself
-        // $category->delete();
-    
+
         return redirect()->route('trainer.all-category')->with('success', 'All questionnaires have been deleted.');
     }
     

@@ -19,10 +19,15 @@ class QuestionnaireController extends Controller
             'time_interval' => 'required|integer',
             'passing_grade' => 'nullable|integer',
             'category_id' => 'required|exists:exam_categories,id',
-            'trainer_id' => 'nullable|exists:users,id',
+            'trainer_id' => 'required|exists:users,id',
             'shuffle' => 'nullable|boolean',
         ]);
-
+    
+        // Check if a trainer is selected
+        if (is_null($request->input('trainer_id'))) {
+            return redirect()->back()->withInput()->with('error', 'You should choose a trainer.');
+        }
+    
         $questionnaire = new Questionnaire();
         $questionnaire->title = $request->input('title');
         $questionnaire->number_of_items = $request->input('number_of_items');
@@ -32,14 +37,14 @@ class QuestionnaireController extends Controller
         $questionnaire->trainer_id = $request->input('trainer_id');
         $questionnaire->shuffle = $request->input('shuffle', false);
         $questionnaire->save();
-
+    
         return redirect()->route('admin.all-questionnaire', ['categoryId' => $questionnaire->category_id])->with('success', 'Questionnaire created successfully!');
     }
+    
 
     public function addQuestionnaire(){
         $user = Auth::user();
         $categories = ExamCategory::all(); 
-    
         $trainers = User::where('type_name', 'trainer')->get(); 
     
         return view('admin.add-questionnaire', compact('user', 'categories', 'trainers'));
@@ -52,7 +57,15 @@ class QuestionnaireController extends Controller
         $trainers = User::where('type_name', 'trainer')->get(); 
         $categories = ExamCategory::all(); // Fetch all categories
 
-        return view('admin.edit-questionnaire', compact('user', 'questionnaire', 'trainers', 'categories'));
+
+        if (Auth::user()->type_name === 'trainer') {
+            return view('trainer.edit-questionnaire', compact('user', 'questionnaire', 'trainers', 'categories'));
+        } else {
+            return view('admin.edit-questionnaire', compact('user', 'questionnaire', 'trainers', 'categories'));
+    
+        }
+
+    
     }
     
     public function updateQuestionnaire(Request $request, $id){
@@ -99,23 +112,51 @@ class QuestionnaireController extends Controller
         $pendingRequestsCount = ExamRequest::where('request_status', 'pending')->count();
         $query = Questionnaire::where('category_id', $categoryId);
 
-        if ($trainerId) {
-            $query->where('trainer_id', $trainerId);
+        if ($user->type_name === 'trainer') {
+            $query->whereHas('trainers', function ($q) use ($user) {
+                $q->where('trainer_id', $user->id);
+            });
+        } elseif ($trainerId) {
+            $query->whereHas('trainers', function ($q) use ($trainerId) {
+                $q->where('trainer_id', $trainerId);
+            });
         }
+
+
 
         $questionnaires = $query->orderByRaw("CASE WHEN access_status = 'visible' THEN 0 ELSE 1 END")->get();
 
-        // Pass the category to the view
-        return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
+        if (Auth::user()->type_name === 'trainer') {
+            return view('trainer.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
+         } else {
+            return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
+        
+        }
     }
 
     
     public function displayListQuestionnaires() {
         $user = Auth::user();
         session(['previous_page' => 'all-questionnaires']);
-        $questionnaires = Questionnaire::orderByRaw('access_status = "visible" DESC')->paginate(10);
-        return view('admin.all-questionnaires', compact('questionnaires', 'user'));
+
+        if ($user->type_name === 'trainer') {
+            $questionnaires = Questionnaire::where('trainer_id', $user->id)
+                ->orderByRaw('access_status = "visible" DESC')
+                ->paginate(10);
+        } else {
+            $questionnaires = Questionnaire::orderByRaw('access_status = "visible" DESC')->paginate(10);
+        }
+    
+
+        if (Auth::user()->type_name === 'trainer') {
+            return view('trainer.all-questionnaires', compact('questionnaires', 'user'));
+        } else {
+            return view('admin.all-questionnaires', compact('questionnaires', 'user')); }
+
+
+    
     }
+    
     
     
 

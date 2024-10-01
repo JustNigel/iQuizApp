@@ -15,10 +15,12 @@
         </div>
     @endif
 
-
-
 <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">All Catergories</h1>
+
+<a href="{{ route('trainer.dashboard') }}" class="text-indigo-600 hover:text-indigo-700 font-medium inline-block">&larr; Return to Dashboard</a>
+       
+
+    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">All Categories</h1>
 
     <div class="flex justify-center">
         <div class="overflow-x-auto w-full max-w-full">
@@ -55,7 +57,9 @@
                         </td>
                         <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
                             <div class="flex justify-center space-x-3">
-                                <a href="#" class="bg-blue-500 px-3 py-1 rounded-md text-white hover:bg-blue-600 transition duration-150 ease-in-out"><i class="fas fa-pencil-alt"></i></a>
+                                
+                                <a title="View All Questionnaires" href="{{ route('trainer.all-questionnaire', ['categoryId' => $category->id]) }}" target="_blank" class="bg-green-500 px-3 py-1 rounded-md text-white hover:bg-green-600 transition duration-150 ease-in-out">
+                                    <i class="fa-solid fa-list"></i></a>
                                 <a href="{{ route('trainer.confirm-delete', $category->id) }}" class="bg-red-500 text-white px-3 py-1 text-sm rounded-md hover:bg-red-600 transition duration-200"> <i class="fas fa-trash"></i></a>
                             </div>
                         </td>

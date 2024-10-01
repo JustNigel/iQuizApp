@@ -1,12 +1,24 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Questionnaire')
+@section('title', 'Questionnaires: New Questionnaire')
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Back</a>
 
-    <h1 class="text-3xl font-semibold mb-6 text-center">Create Questionnaire for Name of the Category</h1>
+@if ($errors->any())
+        <div class="bg-red-100 border border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
+    <a href="{{route('admin.all-questionnaire', $selectedCategory->id)}}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Return to All Questionnaires</a>
+
+    <h1 class="text-3xl font-semibold mb-6 text-center">Create Questionnaire for <span class="text-blue-500">{{$selectedCategory ->title}}</span></h1>
 
     <form action="{{ route('admin.store-questionnaire') }}" method="POST" class="space-y-6">
         @csrf

@@ -18,11 +18,16 @@
                     'admin.all-registration-request' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: All Registration Request',
                     'admin.filter-by-trainer' => '<i class="fa-solid fa-folder mr-2"></i> Categories: All Filtered Categories',
                     'admin.add-questionnaire' => '<i class="fa-solid fa-file-lines mr-2"></i> Questionnaires: New Questionnaire',
+                    'admin.add-another-questionnaire' => '<i class="fa-solid fa-file-lines mr-2"></i> Questionnaires: New Questionnaire',
                     'trainer.dashboard' => '<i class="fa-solid fa-house-user mr-2"></i> Welcome to your Dashboard, Trainer',
+                    
+                    
+                    
                     'trainer.all-category' => '<i class="fa-solid fa-th-list mr-2"></i> All Categories',
                     'trainer.all-students' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: All Students',
+                    'trainer.all-questionnaires' => '<i class="fa-solid fa-file-lines mr-2"></i> Questionnaires: All Questionnaires',
+                    'trainer.all-confirmed-students' => '<i class="fa-solid fa-user-gear mr-2"></i> Questionnaires: All Students',
                     'trainer.all-registration-request' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: All Registration Request',
-                    
                     'trainer.add-questionnaire' => '<i class="fa-solid fa-file-alt mr-2"></i> Add Questionnaire',
                     'profile' => '<i class="fa-solid fa-user-circle mr-2"></i>Your Profile'
                 ];

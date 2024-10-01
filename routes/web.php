@@ -80,8 +80,16 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
         Route::put('/exam-request/{id}/accept', [ExamRequestController::class, 'acceptExamRequest'])->name('trainer.request.accept');
         Route::get('/all-exam-students',[ExamRequestController::class,'displayAllAccepted'])->name('trainer.all-confirmed-students');
         Route::delete('/deny-exam-request/{id}', [ExamRequestController::class,'denyExamRequest'])->name('trainer.denyExamRequest');
+        Route::get('/confirm-delete-exam-access-{id}', [ExamRequestController::class,'showConfirmDeleteAccess'])->name('trainer.confirm-delete-access');
+        Route::delete('/delete-exam-access/{id}', [ExamRequestController::class,'deleteExamAccess'])->name('trainer.delete-exam-request');
+        Route::get('/all-questionnaires', [QuestionnaireController::class, 'displayListQuestionnaires'])->name('trainer.all-questionnaires');
 
-
+        Route::get('/category-{categoryId}/all-questionnaires',[QuestionnaireController::class, 'displayAllQuestionnaire'])->name('trainer.all-questionnaire'); //Exam Questionnaire Page
+        Route::post('/questionnaire/toggle-visibility/{id}', [QuestionnaireController::class, 'toggleVisibility'])->name('questionnaire.toggle-visibility');
+        Route::get('/edit-questionnaire-{id}', [QuestionnaireController::class, 'editQuestionnaire'])->name('trainer.edit-questionnaire');
+        
+        Route::put('/questionnaire-{id}', [QuestionnaireController::class, 'updateQuestionnaire'])->name('trainer.update-questionnaire');
+        
     });
 
 

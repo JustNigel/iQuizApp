@@ -48,20 +48,20 @@
 
                 <li class="py-2">
                     <a href="{{ route('trainer.dashboard') }}" class="block rounded p-2 space-x-2 hover:bg-gray-700 ease-in-out duration-200">
-                        <i class="fa-solid fa-calendar-days"></i>
+                        <i class="fa-solid fa-house"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="py-2">
                     <a href="{{ route('profile') }}" class="block rounded p-2 space-x-2 hover:bg-gray-700 ease-in-out duration-200">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user-circle mr-2"></i>
                         <span>Profile</span>
                     </a>
                 </li>
                 <li x-data="{ open: false }" class="py-2">
                     <a href="#" @click="open = !open" class="block rounded flex items-center space-x-2 hover:bg-gray-700 p-2 ease-in-out duration-200">
-                        <i class="fa-solid fa-gauge"></i>
-                        <span>Category</span>
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span>Categories</span>
                         <svg x-bind:class="{ 'rotate-180': open }" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-left:auto">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>

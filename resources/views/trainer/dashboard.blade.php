@@ -12,11 +12,11 @@
                 <h2 class="text-lg font-semibold">Questionnaires</h2>
             </div>
             <div class="flex items-center justify-between bg-gray-200 p-4 rounded-lg mb-2 hover:bg-gray-300 transition duration-300 ease-in-out">
-                <a href="{{route('admin.all-questionnaires')}}" class="flex-grow block text-black">
+                <a href="{{route('trainer.all-questionnaires')}}" class="flex-grow block text-black">
                     <i class="fa-solid fa-rectangle-list mr-1"></i>
                     All Questionnaires
                 </a>
-                <a href="{{route('admin.add-questionnaire', ['from' => 'dashboard'])}}" class="p-2 bg-gray-300 rounded hover:bg-gray-400 transition duration-300 ease-in-out">
+                <a href="{{route('trainer.add-questionnaire', ['from' => 'dashboard'])}}" class="p-2 bg-gray-300 rounded hover:bg-gray-400 transition duration-300 ease-in-out">
                     <i class="fas fa-plus text-custombg-gray text-lg"></i>
                 </a>
             </div>         

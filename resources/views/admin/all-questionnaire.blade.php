@@ -9,6 +9,8 @@
                 {{ session('success') }}
             </div>
     @endif
+
+    
    
 <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
     <a href="{{ route('admin.all-category') }}" class="text-indigo-600 hover:text-indigo-700 font-medium mb-6 inline-block">&larr; Return to All Categories</a>
