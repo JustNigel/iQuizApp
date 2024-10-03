@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'iQuiz Homepage')</title>
+    <title>@yield('title', 'iQuiz')</title>
     <script src="//unpkg.com/alpinejs" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js" integrity="sha512-r0dOv5VWXKpZGz7wLZBdyD8HmrAEblgD6OUYF6jL6FdqTEUdT2jVJyzf5FQ30W+UE8dT5G0TgMmnOnibozVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -63,7 +63,7 @@
                 <form action="{{ route('login') }}" method="GET">
                     <button type="submit" class="text-white py-2 px-4 rounded w-[200px] h-[50px] explore">LOG IN</button>
                 </form>
-                <form action="{{ route('login') }}" method="GET">
+                <form action="{{ route('register') }}" method="GET">
                     <button class="border-1 text-white py-2 px-4 rounded hover:bg-b w-[200px] h-[50px] start-quiz">REGISTER</button>
                 </form>
             </div>

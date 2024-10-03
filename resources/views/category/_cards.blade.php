@@ -8,10 +8,10 @@
                             Category Title
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Trainer Name
+                            Questionnaire Title
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Questionnaire Title
+                            Trainer Name
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Passing Grade
@@ -34,10 +34,10 @@
                                 {{ $card->title }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700">
-                                {{ $card->trainerName }}
+                                {{ $card->questionnaireTitle }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700">
-                                {{ $card->questionnaireTitle }}
+                                {{ $card->trainerName }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700">
                                 {{ $card->questionnairePassingGrade }}%

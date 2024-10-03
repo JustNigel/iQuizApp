@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;   
 
@@ -67,4 +68,33 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function updateProfileImage(Request $request)
+    {
+        // Validate the cropped image
+        $request->validate([
+            'cropped_image' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+
+        // Get the cropped image data from the request
+        $imageData = $request->input('cropped_image');
+
+        // Decode the Base64 string into binary data
+        $image = str_replace('data:image/jpeg;base64,', '', $imageData);
+        $image = str_replace(' ', '+', $image);
+        $imageName = time() . '.jpg';
+
+        // Store the image in the profiles folder
+        File::put(public_path('images/profiles/') . $imageName, base64_decode($image));
+
+        // Save the image path in the database
+        $user->image_profile = $imageName;
+        $user->save();
+
+    
+        return Redirect::route('profile')->with('success', 'Profile image updated successfully!');
+    }
+    
 }

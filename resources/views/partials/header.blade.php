@@ -101,15 +101,20 @@
 
 
 
-        <a href="{{route('profile')}}">
-            <div class="flex items-center space-x-4 mr-4 relative">
-                <span class="hidden text-right lg:block">
-                    <span class="block text-sm font-medium text-black dark:text-black">{{$user -> name}}</span>
-                    <span class="block text-xs font-medium">{{$user -> type_name}}</span>
-                </span>
-                <img src="{{ asset('images/jameer.jpg') }}" alt="User" class="rounded-full w-10 h-10">
-            </div>  
-        </a>
+    <a href="{{ route('profile') }}">
+        <div class="flex items-center space-x-4 mr-4 relative">
+            <span class="hidden text-right lg:block">
+                <span class="block text-sm font-medium text-black dark:text-black">{{ auth()->user()->name }}</span>
+                <span class="block text-xs font-medium">{{ auth()->user()->type_name }}</span>
+            </span>
+            @if(auth()->user()->image_profile)
+                <img src="{{ asset('images/profiles/' . auth()->user()->image_profile) }}" alt="Profile Picture" class="rounded-full w-10 h-10 object-cover">
+            @else
+                <i class="fas fa-user-circle text-gray-400 text-4xl"></i>
+            @endif
+        </div>  
+    </a>
+
     </div>
 
 

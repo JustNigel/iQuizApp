@@ -32,6 +32,7 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
     Route::get('/profile', [ProfileController::class, 'edit',])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/profile/update-image', [ProfileController::class, 'updateProfileImage'])->name('profile.update-image');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('login', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
 
@@ -45,6 +46,7 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
         Route::post('/request-to-join', [ExamRequestController::class, 'storeRequest'])->name('exam.request.store');
         Route::delete('/request-to-cancel/{id}', [ExamRequestController::class, 'cancelRequest'])->name('exam.request.cancel');
         Route::get('/category/available-exam', [StudentController::class, 'availableExam'])->name('category.available-exams'); // Request To Join Page
+        
         
         
         Route::get('/{category}/{exam}', [ExamController::class, 'exam'])->name('student.exam'); // Get Started Page

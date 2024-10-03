@@ -49,7 +49,7 @@
 
         <div>
             <x-input-label for="username" :value="__('Username')" />
-            <x-text-input id="username" name="username" type="text" class="mt-1 block w-full" :value="old('username', $user->username)" autofocus autocomplete="username" disabled />
+            <x-text-input id="username" name="username" type="text" class="mt-1 block w-full bg-gray-100 rounded-md text-gray-500" :value="old('username', $user->username)" autofocus autocomplete="username" disabled />
             <x-input-error class="mt-2" :messages="$errors->get('username')" />
         </div>
 

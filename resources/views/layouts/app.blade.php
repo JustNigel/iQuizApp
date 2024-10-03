@@ -7,6 +7,8 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="icon" href="{{ asset('images/logo.png') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+
     @vite('resources/css/app.css')
 </head>
 <body class="bg-gray-100 text-gray-900 font-satoshi">
@@ -27,5 +29,8 @@
 
     <!-- Vite JavaScript assets -->
     @vite('resources/js/app.js')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
 </body>
 </html>
