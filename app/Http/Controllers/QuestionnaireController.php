@@ -95,71 +95,31 @@ class QuestionnaireController extends Controller
                         ->with('success', 'Questionnaire updated successfully!');
     }
 
-
-    /**
-     * Summary of displayAllQuestionnaire
-     * 
-     * The filtering of existing questionnaires is based on
-     * the category_id while optionally for trainer_id
-     * @param mixed $categoryId
-     * @param mixed $trainerId
-     * @return \Illuminate\Contracts\View\View
-     */
     public function displayAllQuestionnaire($categoryId, $trainerId = null)
     {
         $user = Auth::user();
+        $questionnaireModel = new Questionnaire();
         $category = ExamCategory::findOrFail($categoryId); 
         $pendingRequestsCount = ExamRequest::where('request_status', 'pending')->count();
-        $query = Questionnaire::where('category_id', $categoryId);
+        $questionnaires = $questionnaireModel->getQuestionnairesByCategoryAndTrainer($categoryId, $trainerId);
 
-        if ($user->type_name === 'trainer') {
-            $query->whereHas('trainers', function ($q) use ($user) {
-                $q->where('trainer_id', $user->id);
-            });
-        } elseif ($trainerId) {
-            $query->whereHas('trainers', function ($q) use ($trainerId) {
-                $q->where('trainer_id', $trainerId);
-            });
-        }
-
-
-
-        $questionnaires = $query->orderByRaw("CASE WHEN access_status = 'visible' THEN 0 ELSE 1 END")->get();
-
-        if (Auth::user()->type_name === 'trainer') {
-            return view('trainer.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
-         } else {
-            return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
-        
-        }
+        return view($user->type_name === 'trainer' ? 'trainer.all-questionnaire' : 'admin.all-questionnaire', 
+        compact('questionnaires', 'user', 'category', 'pendingRequestsCount'));
     }
-
     
-    public function displayListQuestionnaires() {
+    public function displayListQuestionnaires()
+    {
         $user = Auth::user();
-        session(['previous_page' => 'all-questionnaires']);
-
+        $questionnaireModel = new Questionnaire();
         if ($user->type_name === 'trainer') {
-            $questionnaires = Questionnaire::where('trainer_id', $user->id)
-                ->orderByRaw('access_status = "visible" DESC')
-                ->paginate(10);
+            $questionnaires = $questionnaireModel->getQuestionnairesByTrainer($user->id);
         } else {
-            $questionnaires = Questionnaire::orderByRaw('access_status = "visible" DESC')->paginate(10);
+            $questionnaires = $questionnaireModel->getQuestionnairesByTrainer();
         }
-    
 
-        if (Auth::user()->type_name === 'trainer') {
-            return view('trainer.all-questionnaires', compact('questionnaires', 'user'));
-        } else {
-            return view('admin.all-questionnaires', compact('questionnaires', 'user')); }
-
-
-    
+        return view($user->type_name === 'trainer' ? 'trainer.all-questionnaires' : 'admin.all-questionnaires', 
+        compact('questionnaires', 'user'));
     }
-    
-    
-    
-
 
     
     public function addAnotherQuestionnaire($categoryId){
@@ -171,9 +131,9 @@ class QuestionnaireController extends Controller
         return view('admin.add-another-questionnaire', compact('user', 'categories', 'trainers', 'selectedCategory'));
     }
 
-    public function displayConfirmAddQuestionnairePrompt(Request $request) {
+    public function confirmAddPrompt(Request $request) {
         $user = Auth::user();
-        $data = $request->all();  // Get all form data
+        $data = $request->all();
         
         return view('admin.confirm-add-questionnaire', compact('data', 'user'));
     }

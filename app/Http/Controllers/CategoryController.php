@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Exam;
 use App\Models\ExamCategory;
 use App\Models\ExamRequest;
+use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,5 +126,42 @@ class CategoryController extends Controller
     }
 
     
+    
+    
+    /**
+     * Summary of displayAllQuestionnaire
+     * 
+     * The filtering of existing questionnaires is based on
+     * the category_id while optionally for trainer_id
+     * @param mixed $categoryId
+     * @param mixed $trainerId
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function displayAllQuestionnaire($categoryId, $trainerId = null)
+    {
+        $user = Auth::user();
+        $category = ExamCategory::findOrFail($categoryId); 
+        $pendingRequestsCount = ExamRequest::where('request_status', 'pending')->count();
+        $query = Questionnaire::where('category_id', $categoryId);
+        
+        if ($user->type_name === 'trainer') {
+            $query->whereHas('trainers', function ($q) use ($user) {
+                $q->where('trainer_id', $user->id);
+            });
+        } elseif ($trainerId) {
+            $query->whereHas('trainers', function ($q) use ($trainerId) {
+                $q->where('trainer_id', $trainerId);
+            });
+        }
+        
+        $questionnaires = $query->orderByRaw("CASE WHEN access_status = 'visible' THEN 0 ELSE 1 END")->get();
+
+        if (Auth::user()->type_name === 'trainer') {
+            return view('trainer.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
+        } else {
+            return view('admin.all-questionnaire', compact('questionnaires', 'user', 'category','pendingRequestsCount'));
+        
+        }
+    }
 }
 

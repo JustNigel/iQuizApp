@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\ExamCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TrainerListController extends Controller
 {
     public function index(){
-        $user = auth()->user();
+        $user = Auth::user();
         $trainers = User::where('type_name', 'trainer')
             ->with(['examCategories' => function ($query) { $query->take(3); }])
             ->get();
@@ -24,7 +25,7 @@ class TrainerListController extends Controller
     }
 
     public function editTrainer($id){
-        $user = auth()->user();
+        $user = Auth::user();
         $trainers = User::where('type_name', 'trainer')
             ->get(); 
 
@@ -32,7 +33,7 @@ class TrainerListController extends Controller
     }
 
     public function showTrainerDeleteConfirmation($id){
-        $user = auth()->user();
+        $user = Auth::user();
         $trainer = User::findOrFail($id);
 
         return view('admin.delete-trainer', compact('trainer','user'));

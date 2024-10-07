@@ -34,7 +34,7 @@
                                 @else
                                     <!-- Show View History and Start Exam buttons if questionnaire is visible -->
                                     <a href="#" class="text-blue-500 hover:text-blue-700">View History</a>
-                                    <a href="#" class="text-green-500 hover:text-green-700 ml-2">Start Exam</a>
+                                    <a href="{{ route('student.exam', $card->questionnaire_id) }}" class="text-green-500 hover:text-green-700 ml-2">Start Exam</a>
                                 @endif
                             </td>
                         </tr>

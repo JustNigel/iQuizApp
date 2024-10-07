@@ -28,7 +28,8 @@ class StudentController extends Controller
                 'exam_questionnaires.passing_grade as passing_grade',
                 'exam_questionnaires.time_interval as time_interval',
                 'exam_questionnaires.access_status',
-                'confirmed_exam_requests.request_status as request_status' // Add this line to get the visibility status
+                'confirmed_exam_requests.request_status as request_status',
+                'confirmed_exam_requests.questionnaire_id'  
                 
             )
             ->get()

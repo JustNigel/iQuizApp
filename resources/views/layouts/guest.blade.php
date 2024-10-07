@@ -17,7 +17,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css'])
 
         <style>
         html, body {
@@ -27,20 +27,25 @@
 
 
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0"style="background-image: url('/images/bg-img3.png');">
+    <body class="text-gray-900 font-poppins bg-cover bg-no-repeat min-h-screen" style="background-image: url('/images/bg-img3.png');">
+        <div class="flex flex-col min-h-full relative justify-center">
             <div class="absolute top-0 left-0 w-full h-full bg-bg-violet opacity-94 z-[-1]"></div>
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+            <div class="w-[400px] mx-auto mt-6">
+                <div class="flex flex-col sm:justify-center items-center pt-6 sm:pt-0 z-10 wrapper">
+                    <div class="z-10 mt-4">
+                        <a href="/">
+                            <x-application-logo class="w-10 h-10 fill-current" />
+                        </a>
+                    </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white  shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+                    <div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md overflow-hidden sm:rounded-lg z-10">
+                        {{ $slot }}
+                    </div>
+                </div>
             </div>
         </div>
 
         @include('partials.password-eye')
+        @vite('resources/js/app.js')
     </body>
 </html>

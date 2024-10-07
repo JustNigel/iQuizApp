@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Questionnaire extends Model
 {
@@ -42,5 +43,35 @@ class Questionnaire extends Model
         return $this->belongsToMany(User::class, 'questionnaire_trainer', 'questionnaire_id', 'trainer_id');
     }
 
+
+    public function getQuestionnairesByCategoryAndTrainer($categoryId, $trainerId = null)
+    {
+        $user = Auth::user();
+        $query = Questionnaire::where('category_id', $categoryId);
+        if ($user->type_name === 'trainer') {
+            $query->whereHas('trainers', function ($q) use ($user) {
+                $q->where('trainer_id', $user->id);
+            });
+        } elseif ($trainerId) {
+            $query->whereHas('trainers', function ($q) use ($trainerId) {
+                $q->where('trainer_id', $trainerId);
+            });
+        }
+        
+        return $query->orderByRaw("CASE WHEN access_status = 'visible' THEN 0 ELSE 1 END")->get();
+    }
+
+
+    public function getQuestionnairesByTrainer($trainerId = null)
+    {
+        $query = self::query();
+
+        if ($trainerId) {
+            $query->where('trainer_id', $trainerId);
+        }
+
+        return $query->orderByRaw('access_status = "visible" DESC')->paginate(10);
+    }
+    
 
 }

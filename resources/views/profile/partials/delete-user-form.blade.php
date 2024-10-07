@@ -46,9 +46,13 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
+                <form action="{{route('deactivate')}}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <x-danger-button class="ms-3">
+                        {{ __('Delete Account') }}
+                    </x-danger-button>
+                </form>
             </div>
         </form>
     </x-modal>

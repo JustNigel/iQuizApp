@@ -109,7 +109,6 @@ class ExamRequestController extends Controller
     public function displayAllExamRequest() {
         $user = Auth::user();
     
-        // Start building the query for exam requests
         $exam_requests_query = DB::table('exam_requests')
             ->join('users', 'exam_requests.student_id', '=', 'users.id')
             ->join('exam_categories', 'exam_requests.category_id', '=', 'exam_categories.id')
@@ -123,7 +122,6 @@ class ExamRequestController extends Controller
                                 
         }
     
-        // Get the filtered exam requests
         $exam_requests = $exam_requests_query->get();
     
         if (Auth::user()->type_name === 'trainer') {
@@ -159,13 +157,10 @@ class ExamRequestController extends Controller
 
     public function displayAllAccepted() {
         $user = Auth::user();
-    
-        // Start building the query for confirmed exam requests
         $confirmedStudentsQuery = DB::table('confirmed_exam_requests')
             ->join('users', 'confirmed_exam_requests.student_id', '=', 'users.id')
             ->join('exam_categories', 'confirmed_exam_requests.category_id', '=', 'exam_categories.id')
             ->join('exam_questionnaires', 'confirmed_exam_requests.questionnaire_id', '=', 'exam_questionnaires.id')
-            // Select the required fields
             ->select(
                 'users.name', 
                 'users.last_name', 
@@ -175,15 +170,12 @@ class ExamRequestController extends Controller
                 'confirmed_exam_requests.id'
             );
     
-        // If the authenticated user is a trainer, filter by their trainer ID
         if ($user->type_name === 'trainer') {
             $confirmedStudentsQuery->where('confirmed_exam_requests.trainer_id', $user->id);
         }
     
-        // Get the filtered or unfiltered list of confirmed students
         $confirmedStudents = $confirmedStudentsQuery->get();
     
-        // Return the appropriate view based on the user type
         if ($user->type_name === 'trainer') {
             return view('trainer.all-confirmed-students', compact('confirmedStudents', 'user'));
         } else {

@@ -21,11 +21,13 @@ class ExamRequest extends Model
 
     public function student()
     {
-        return $this->belongsTo(User::class, 'student_id'); // Assuming User model represents students
+        return $this->belongsTo(User::class, 'student_id');
     }
 
     public function questionnaire()
     {
         return $this->belongsTo(Questionnaire::class, 'questionnaire_id');
     }
+
+    
 }
