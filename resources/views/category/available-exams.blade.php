@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container mt-6">
+<div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         @if($cards->count() > 0)
             <table class="min-w-full bg-white border border-gray-200 rounded-lg">
                 <thead>

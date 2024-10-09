@@ -29,7 +29,7 @@
 
             <p class="text-gray-700 mb-4">Good luck!</p>
 
-            <a href="#" class="block text-center bg-custombg-gray text-gray-50 font-bold py-2 px-4 rounded hover:bg-custombg-gray-dark">
+            <a href="{{ route('student.question', $question->id) }}" class="block text-center bg-custombg-gray text-gray-50 font-bold py-2 px-4 rounded hover:bg-custombg-gray-dark">
                 Take the Exam
             </a>
         </div>

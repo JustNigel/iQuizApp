@@ -38,9 +38,9 @@
             trainerItems.forEach(item => {
                 const name = item.querySelector('.trainer-name').textContent.toLowerCase();
                 if (name.includes(input)) {
-                    item.style.display = ''; // Show item
+                    item.style.display = ''; 
                 } else {
-                    item.style.display = 'none'; // Hide item
+                    item.style.display = 'none'; 
                 }
             });
         }
@@ -50,7 +50,6 @@
             document.getElementById('selectedCount').textContent = selectedTrainers;
         }
 
-        // Call updateTrainerCount on page load in case some trainers are pre-selected
         window.onload = function() {
             updateTrainerCount();
         };

@@ -185,8 +185,10 @@ class AdminController extends Controller
             'options.*' => 'string',
             'descriptions' => 'nullable|array',
             'descriptions.*' => 'string',
+            'files' => 'nullable|array', 
+            'files.*' => 'file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
-
+    
         // Validate answer_key based on question type
         if ($request->input('question_type') === 'multiple-choice') {
             $rules['answer_key'] = 'nullable|string';
@@ -194,73 +196,83 @@ class AdminController extends Controller
             $rules['answer_key'] = 'nullable|array';
             $rules['answer_key.*'] = 'string';
         }
-
+    
         $validatedData = $request->validate($rules);
-
+    
         $question = new Question();
         $question->question_text = $validatedData['question_text'];
         $question->question_type = $validatedData['question_type'];
         $question->questionnaire_id = $validatedData['questionnaire_id'] ?? null;
         $question->points = $validatedData['points'];
-
+    
+        if ($request->hasFile('files')) {
+            $uploadedFiles = [];
+            foreach ($request->file('files') as $file) {
+                // Save the file and store its path
+                $path = $file->store('uploads', 'public'); // Store in the public disk
+                $uploadedFiles[] = $path; // Add the path to the array
+            }
+            // Save the file paths as a JSON string
+            $question->file_path = json_encode($uploadedFiles);
+        }
+    
         // Associate category if questionnaire_id exists
         if (!empty($validatedData['questionnaire_id'])) {
             $questionnaire = Questionnaire::find($validatedData['questionnaire_id']);
             $question->category_id = $questionnaire->category_id ?? null;
         }
-
+    
         // Set options if present
         if (!empty($validatedData['options'])) {
             $question->options = json_encode($validatedData['options']);
         }
-
-        // Handle answer_key and descriptions based on question_type
+    
+        // Handle answer_key, matching_key, and descriptions based on question_type
         switch ($request->input('question_type')) {
             case 'multiple-choice':
-                // For multiple choice questions, answer_key is a string
                 $question->answer_key = $validatedData['answer_key'] ?? null;
                 break;
-
+    
             case 'checkboxes':
-                // For checkboxes, convert the array to a comma-separated list
                 $answerKey = $validatedData['answer_key'] ?? [];
                 $question->answer_key = !empty($answerKey) ? implode(',', $answerKey) : null;
                 break;
-
+    
             case 'drag-drop':
-                // For drag-drop, the answer_key is a comma-separated list of option indices
                 $options = $validatedData['options'] ?? [];
                 $indices = array_keys($options);
                 $question->answer_key = !empty($indices) ? implode(',', $indices) : null;
                 break;
-
+    
             case 'matching':
-                // For matching, pair descriptions and options to create the answer key
+                // For matching questions, create the matching_key from descriptions and options
                 $descriptions = $validatedData['descriptions'] ?? [];
                 $options = $validatedData['options'] ?? [];
-                $answerKey = [];
-
+                $matchingKey = [];
+    
                 foreach ($descriptions as $index => $description) {
                     if (isset($options[$index])) {
-                        $answerKey[] = $index . '[' . $description . ', ' . $options[$index] . ']';
+                        $matchingKey[] = [
+                            'description' => $description,
+                            'option' => $options[$index],
+                        ];
                     }
                 }
-
-                // Save the answer_key as a JSON-encoded string
-                $question->answer_key = !empty($answerKey) ? json_encode($answerKey) : null;
-
+    
+                // Save the matching_key as a JSON-encoded string
+                $question->matching_key = !empty($matchingKey) ? json_encode($matchingKey) : null;
+    
                 // Save the descriptions as a JSON-encoded string in the descriptions column
                 $question->descriptions = !empty($descriptions) ? json_encode($descriptions) : null;
                 break;
         }
-
+    
         // Save the question
         $question->save();
-
+    
         return redirect()->route('admin.questionnaire', ['id' => $validatedData['questionnaire_id']])
                         ->with('success', 'Question created successfully.');
     }
-
     
 
 }   

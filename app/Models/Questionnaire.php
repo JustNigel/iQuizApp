@@ -33,6 +33,8 @@ class Questionnaire extends Model
         return $this->belongsTo(User::class, 'trainer_id');
     }
 
+    
+
     /**
      * 
      * Pivot Table for Questionnaire and Trainer
@@ -42,6 +44,13 @@ class Questionnaire extends Model
     {
         return $this->belongsToMany(User::class, 'questionnaire_trainer', 'questionnaire_id', 'trainer_id');
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'questionnaire_id')->select('id', 'question_type', 'questionnaire_id');
+    }
+    
+
 
 
     public function getQuestionnairesByCategoryAndTrainer($categoryId, $trainerId = null)
@@ -72,6 +81,9 @@ class Questionnaire extends Model
 
         return $query->orderByRaw('access_status = "visible" DESC')->paginate(10);
     }
+
+
+
     
 
 }

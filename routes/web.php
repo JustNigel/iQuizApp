@@ -50,6 +50,7 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
         
 
         Route::get('start-exam/{questionnaire}',[ExamController::class,'exam'])->name('student.exam');
+        Route::get('question-{question}', [ExamController::class, 'displayQuestion'])->name('student.question');
     
         Route::get('/verify-registration', [RegistrationController::class, 'displayVerificationRegistration'])->name('auth.verify-registration');
         Route::get('/verify-registration-refresh', [RegistrationController::class, 'checkIfAccepted'])->name('auth.accepted-registration');
@@ -145,7 +146,7 @@ Route::middleware(['auth','verified', PendingRequests::class, SetPreviousPage::c
             Route::get('confirm-delete-{id}', [QuestionnaireController::class, 'showQuestionnaireDeleteConfirmation'])->name('admin.confirm-delete-questionnaire');
             Route::delete('delete/{id}', [QuestionnaireController::class, 'deleteQuestionnaire'])->name('admin.delete-questionnaire');
             Route::post('toggle-visibility-{id}', [QuestionnaireController::class, 'toggleVisibility'])->name('questionnaire.toggle-visibility');
-            Route::get('add-question', [AdminController::class, 'displayAddQuestionnaire'])->name('admin.questionnaire');
+            Route::get('{id}/add-question', [AdminController::class, 'displayAddQuestionnaire'])->name('admin.questionnaire');
             Route::post('{id}/store-question', [AdminController::class, 'store'])->name('questions.store');
         });
         

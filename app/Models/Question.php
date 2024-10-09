@@ -21,10 +21,20 @@ class Question extends Model
         'answer_key',
         'descriptions',
         'options',
+        'file_path'
     ];
     
     public function answerKeys()
     {
         return $this->hasMany(AnswerKey::class, 'question_id');
     }
+
+    public function questionnaire()
+{
+    return $this->belongsTo(Questionnaire::class, 'questionnaire_id');
+}
+
+
+
+    
 }

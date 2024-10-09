@@ -48,22 +48,24 @@ document.addEventListener('DOMContentLoaded', function() {
     function addFileInput() {
         const fileInputContainer = document.createElement('div');
         fileInputContainer.className = 'file-input-container mb-2 flex items-center';
-
+    
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
+        fileInput.name = 'files[]'; // Set the name to 'files[]' to create an array
         fileInput.className = 'file-input p-2 border rounded w-full';
-
+    
         const deleteFileBtn = document.createElement('button');
         deleteFileBtn.className = 'delete-file-btn text-red-500 hover:text-red-700 ml-2';
         deleteFileBtn.innerHTML = '&times;';
         deleteFileBtn.addEventListener('click', function() {
             fileInputContainer.remove();
         });
-
+    
         fileInputContainer.appendChild(fileInput);
         fileInputContainer.appendChild(deleteFileBtn);
         fileInputsContainer.appendChild(fileInputContainer);
     }
+    
 
     function reloadMatchingKeys() {
         createMatchingKey();
