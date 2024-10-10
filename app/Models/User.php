@@ -58,4 +58,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(ExamCategory::class, 'category_trainer', 'trainer_id', 'category_id');
     }
+
+    public static function findStudentById($id)
+    {
+        return self::where('id', $id)
+            ->where('type_name', 'student')
+            ->firstOrFail();
+    }
 }

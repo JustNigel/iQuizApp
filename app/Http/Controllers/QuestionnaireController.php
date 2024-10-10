@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreQuestionnaireRequest;
 use App\Models\ExamCategory;
 use App\Models\ExamRequest;
 use App\Models\Questionnaire;
@@ -12,89 +13,80 @@ use Illuminate\Support\Facades\Auth;
 class QuestionnaireController extends Controller
 {
 
-    public function storeQuestionnaire(Request $request){
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'number_of_items' => 'required|integer',
-            'time_interval' => 'required|integer',
-            'passing_grade' => 'nullable|integer',
-            'category_id' => 'required|exists:exam_categories,id',
-            'trainer_id' => 'required|exists:users,id',
-            'shuffle' => 'nullable|boolean',
-        ]);
+    /**
+     * 
+     * Stores the Questionnaire Data
+     * @param \App\Http\Requests\StoreQuestionnaireRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeQuestionnaire(StoreQuestionnaireRequest $request)
+    {
+        $request->validateTrainerId();
+        Questionnaire::createFromRequest($request->all());
     
-        // Check if a trainer is selected
-        if (is_null($request->input('trainer_id'))) {
-            return redirect()->back()->withInput()->with('error', 'You should choose a trainer.');
-        }
-    
-        $questionnaire = new Questionnaire();
-        $questionnaire->title = $request->input('title');
-        $questionnaire->number_of_items = $request->input('number_of_items');
-        $questionnaire->time_interval = $request->input('time_interval');
-        $questionnaire->passing_grade = $request->input('passing_grade');
-        $questionnaire->category_id = $request->input('category_id');
-        $questionnaire->trainer_id = $request->input('trainer_id');
-        $questionnaire->shuffle = $request->input('shuffle', false);
-        $questionnaire->save();
-    
-        return redirect()->route('admin.all-questionnaire', ['categoryId' => $questionnaire->category_id])->with('success', 'Questionnaire created successfully!');
+        return redirect()->route('admin.all-questionnaire', ['categoryId' => $request->input('category_id')])
+            ->with('success', 'Questionnaire created successfully!');
     }
     
 
+    /**
+     * 
+     * Displays the Add Questionnaire Page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function addQuestionnaire(){
         $user = Auth::user();
         $categories = ExamCategory::all(); 
         $trainers = User::where('type_name', 'trainer')->get(); 
-    
+
         return view('admin.add-questionnaire', compact('user', 'categories', 'trainers'));
     }
 
+
+    /**
+     * 
+     * Displays the Edit Questionnaire Page
+     * @param mixed $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function editQuestionnaire($id)
     {
         $user = Auth::user();
         $questionnaire = Questionnaire::findOrFail($id);
         $trainers = User::where('type_name', 'trainer')->get(); 
-        $categories = ExamCategory::all(); // Fetch all categories
+        $categories = ExamCategory::all(); 
 
-
-        if (Auth::user()->type_name === 'trainer') {
-            return view('trainer.edit-questionnaire', compact('user', 'questionnaire', 'trainers', 'categories'));
-        } else {
-            return view('admin.edit-questionnaire', compact('user', 'questionnaire', 'trainers', 'categories'));
-    
-        }
-
-    
+        return view($user->type_name === 'trainer' ? 'trainer.edit-questionnaire' : 'admin.edit-questionnaire', 
+        compact('user', 'questionnaire', 'trainers', 'categories'));
     }
     
-    public function updateQuestionnaire(Request $request, $id){
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'number_of_items' => 'required|integer',
-            'time_interval' => 'required|integer',
-            'passing_grade' => 'required|integer',
-            'category_id' => 'required|exists:exam_categories,id',
-            'trainer_id' => 'required|array',
-            'trainer_id.*' => 'exists:users,id',
-            'shuffle' => 'nullable|boolean',
-        ]);
 
+    /**
+     * 
+     * Updates the questionnaire data from the Edit Questionnaire Page
+     * @param \App\Http\Requests\StoreQuestionnaireRequest $request
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateQuestionnaire(StoreQuestionnaireRequest $request, $id)
+    {
         $questionnaire = Questionnaire::findOrFail($id);
-        $questionnaire->update([
-            'title' => $request->input('title'),
-            'number_of_items' => $request->input('number_of_items'),
-            'time_interval' => $request->input('time_interval'),
-            'passing_grade' => $request->input('passing_grade'),
-            'category_id' => $request->input('category_id'),
-            'shuffle' => $request->has('shuffle'),
-        ]);
+        $questionnaire->update($request->except('trainer_id'));
         $questionnaire->trainers()->sync($request->input('trainer_id'));
 
         return redirect()->route('admin.all-questionnaire', ['categoryId' => $request->input('category_id')])
                         ->with('success', 'Questionnaire updated successfully!');
     }
 
+
+    /**
+     * 
+     * 
+     * Displays all the questionnaires associated with category and Trainer ID
+     * @param mixed $categoryId
+     * @param mixed $trainerId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function displayAllQuestionnaire($categoryId, $trainerId = null)
     {
         $user = Auth::user();
@@ -107,6 +99,12 @@ class QuestionnaireController extends Controller
         compact('questionnaires', 'user', 'category', 'pendingRequestsCount'));
     }
     
+
+    /**
+     * 
+     * Displays the general list of questionnaires from all of the trainers and categories
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function displayListQuestionnaires()
     {
         $user = Auth::user();
@@ -142,6 +140,7 @@ class QuestionnaireController extends Controller
     public function showQuestionnaireDeleteConfirmation($id){
         $user = Auth::user();
         $questionnaire = Questionnaire::findOrFail($id);
+        
         return view('admin.confirm-delete-questionnaire', compact('questionnaire', 'user'));
     }
 
@@ -153,7 +152,7 @@ class QuestionnaireController extends Controller
         return redirect()->route('admin.all-questionnaire', ['categoryId' => $categoryId])
                         ->with('success', 'Questionnaire deleted successfully!');
     }
-    public function cancelAddQuestionnaire(Request $request)
+    public function cancelAddQuestionnaire()
     {
         return redirect()->route('admin.add-questionnaire')->with('error', 'Adding Questionnaire has been cancelled.');
     }
@@ -161,22 +160,8 @@ class QuestionnaireController extends Controller
     public function toggleVisibility($id)
     {
         $questionnaire = Questionnaire::findOrFail($id);
-        if ($questionnaire->access_status === 'hidden') {
-            Questionnaire::where('trainer_id', $questionnaire->trainer_id)
-                ->where('category_id', $questionnaire->category_id)
-                ->update(['access_status' => 'hidden']);
-            $questionnaire->access_status = 'visible';
-        } else {
-            $questionnaire->access_status = 'hidden';
-        }
-        $questionnaire->save();
+        $questionnaire = $questionnaire->toggleVisibility();
+
         return redirect()->back()->with('status', 'Questionnaire visibility updated!');
     }
-
-    
-    
-    
-
-
-    
 }

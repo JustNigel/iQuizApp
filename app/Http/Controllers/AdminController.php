@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConfirmedRegistration;
 use App\Models\ExamCategory;
 use App\Models\ExamRequest;
 use App\Models\Question;
@@ -17,17 +18,15 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    /**
+     * Display the Admin dashboard
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $user = Auth::user();
         $pendingRequestsCount = ExamRequest::where('request_status', 'pending')->count();
         return view('admin.dashboard.dashboard', compact('user','pendingRequestsCount'));
-    }
-
-    public function trainerList(){
-        $user = Auth::user();
-        return view('admin.all-trainers', compact('user'));
-
     }
 
     public function addTrainer(){
@@ -122,29 +121,22 @@ class AdminController extends Controller
     public function displayAllStudents()
     {
         $user = Auth::user();
-        $student = DB::table('confirmed_registrations')
-            ->join('users', 'confirmed_registrations.student_id', '=', 'users.id')
-            ->where('users.type_name', 'student')
-            ->select('users.name', 'users.last_name', 'users.username', 'users.email', 'confirmed_registrations.id', 'confirmed_registrations.request_status')
-            ->get();
-        
+        $students = ConfirmedRegistration::getAllStudents(); 
         if ($user->type_name === 'trainer') {
-            return view('trainer.all-students', compact('student', 'user'));
+            return view('trainer.all-students', compact('students', 'user'));
         } else {
-            return view('admin.all-students', compact('student', 'user'));
+            return view('admin.all-students', compact('students', 'user'));
         }
-
     }
-
-
-    public function showStudentDeleteConfirmation($id){
-        $user =  Auth::user();
-        $student = User::where('id', $id)
-                        ->where('type_name', 'student')
-                        ->firstOrFail(); 
     
+
+    public function showStudentDeleteConfirmation($id)
+    {
+        $user = Auth::user();
+        $student = User::findStudentById($id);
         return view('admin.confirm-delete-student', compact('user', 'student'));
     }
+    
     
     public function deleteStudent(Request $request, $id){
         $student = User::where('id', $id)

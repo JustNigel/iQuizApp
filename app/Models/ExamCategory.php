@@ -27,4 +27,13 @@ class ExamCategory extends Model
         return $this->hasMany(Questionnaire::class, 'category_id');
     }
 
+    public function assignTrainers(array $trainerIds)
+    {
+        $trainers = User::whereIn('id', $trainerIds)
+                        ->where('type_name', 'trainer')
+                        ->get();
+
+        $this->trainers()->attach($trainers->pluck('id')->toArray());
+    }
+
 }

@@ -8,6 +8,7 @@
         'admin.edit-trainer-profile' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: Edit Trainer Profile',
         'admin.all-trainers' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: All Trainers',
         'admin.all-questionnaires' => '<i class="fa-solid fa-file-lines mr-2"></i> Questionnaires: All Questionnaires',
+        'admin.all-questionnaire' => '<i class="fa-solid fa-file-lines mr-2"></i> Questionnaires: All Questionnaires',
         'admin.delete-trainer' => '<i class="fa-solid fa-user-gear mr-2"></i> Users: Confirm Delete Trainer',
         'admin.all-category' => '<i class="fa-solid fa-folder mr-2"></i> Categories: All Categories',
         'admin.add-category' => '<i class="fa-solid fa-folder mr-2"></i> Categories: New Category',
