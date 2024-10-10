@@ -36,4 +36,19 @@ class ExamCategory extends Model
         $this->trainers()->attach($trainers->pluck('id')->toArray());
     }
 
+
+    public function scopeVisibleQuestionnaires($query, $search = null)
+    {
+        return $query->whereHas('questionnaires', function($q) {
+                $q->where('access_status', 'visible');
+            })
+            ->with(['trainers', 'questionnaires' => function($q) {
+                $q->where('access_status', 'visible');
+            }])
+            ->when($search, function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+            });
+    }
+
 }

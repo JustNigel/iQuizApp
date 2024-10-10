@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JoinRequest;
+use App\Models\ConfirmedExamRequest;
 use App\Models\ExamCategory;
 use App\Models\ExamRequest;
 use Illuminate\Http\Request;
@@ -10,44 +12,30 @@ use Illuminate\Support\Facades\DB;
 
 class ExamRequestController extends Controller
 {
-    public function requestJoin(Request $request)
+    /**
+     * Display the table of available exams to request
+     * 
+     * This method handles a request to join an exam category, fetches relevant categories, 
+     * trainers, and questionnaires, and returns the appropriate view.
+     * 
+     * @param \App\Http\Requests\JoinRequest $request
+     * @return mixed|string|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function requestJoin(JoinRequest $request)
     {
         $user = Auth::user();
-        $query = $request->input('query');
-
-        $categories = ExamCategory::query()
-            ->whereHas('questionnaires', function($query) {
-                $query->where('access_status', 'visible');
-            })
-            ->with(['trainers', 'questionnaires' => function($query) {
-                $query->where('access_status', 'visible');
-            }])
-            ->when($query, function($queryBuilder) use ($query) {
-                $queryBuilder->where('title', 'like', "%$query%")
-                            ->orWhere('description', 'like', "%$query%");
-            })
-            ->get();
-
+        $search = $request->input('query');
+        $categories = ExamCategory::visibleQuestionnaires($search)->get();
         $cards = $categories->flatMap(function($category) use ($user) {
             $questionnaires = $category->questionnaires;
             $trainers = $category->trainers;
 
             return $questionnaires->map(function($questionnaire) use ($category, $trainers, $user) {
                 return $trainers->map(function($trainer) use ($category, $questionnaire, $user) {
-                    $existingRequest = ExamRequest::where('student_id', $user->id)
-                        ->where('category_id', $category->id)
-                        ->where('trainer_id', $trainer->id)
-                        ->where('questionnaire_id', $questionnaire->id)
-                        ->first();
-
-                    $confirmedRequest = DB::table('confirmed_exam_requests')
-                        ->where('student_id', $user->id)
-                        ->where('category_id', $category->id)
-                        ->where('trainer_id', $trainer->id)
-                        ->where('questionnaire_id', $questionnaire->id)
-                        ->first();
-
-                    $trainerName = $trainer->name;
+                    $existingRequest = ExamRequest::getExistingRequest($user->id, $category->id, 
+                    $trainer->id, $questionnaire->id);
+                    $confirmedRequest = ConfirmedExamRequest::getConfirmedRequest($user->id, $category->id, 
+                    $trainer->id, $questionnaire->id);
 
                     return (object) [
                         'title' => $category->title,
@@ -55,7 +43,7 @@ class ExamRequestController extends Controller
                         'questionnaireTitle' => $questionnaire->title,
                         'questionnaireTimeInterval' => $questionnaire->time_interval,
                         'questionnairePassingGrade' => $questionnaire->passing_grade,
-                        'trainerName' => $trainerName,
+                        'trainerName' => $trainer->name,
                         'categoryId' => $category->id,
                         'trainerId' => $trainer->id,
                         'questionnaireId' => $questionnaire->id,
@@ -72,6 +60,7 @@ class ExamRequestController extends Controller
 
         return view('category.join', compact('user', 'cards'));
     }
+
     public function storeRequest(Request $request){
         $user = Auth::user();
         $categoryId = $request->input('category_id');
@@ -208,7 +197,6 @@ class ExamRequestController extends Controller
 
     public function deleteExamAccess($id) {
         DB::table('confirmed_exam_requests')->where('id', $id)->delete();
-        
         return redirect()->route('trainer.all-confirmed-students')->with('status', 'Exam Access deleted successfully');
     }
     
